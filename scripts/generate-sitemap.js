@@ -46,10 +46,13 @@ async function generateSitemap() {
       { path: '/products', priority: '0.9', changefreq: 'weekly' },
       { path: '/about', priority: '0.7', changefreq: 'monthly' },
       { path: '/faq', priority: '0.6', changefreq: 'monthly' },
-      // SEO 策略新增：地理位置/市场着陆页
-      { path: '/usa-clothing-supplier', priority: '0.9', changefreq: 'weekly' },
-      { path: '/uk-fashion-wholesale', priority: '0.9', changefreq: 'weekly' },
-      { path: '/europe-heavyweight-apparel', priority: '0.9', changefreq: 'weekly' },
+      // SEO GEO 战略着陆页矩阵
+      { path: '/usa-heavyweight-hoodie-manufacturer', priority: '0.9', changefreq: 'weekly' },
+      { path: '/uk-streetwear-clothing-manufacturer', priority: '0.9', changefreq: 'weekly' },
+      { path: '/canada-blank-apparel-supplier', priority: '0.9', changefreq: 'weekly' },
+      { path: '/australia-heavyweight-tshirt-supplier', priority: '0.9', changefreq: 'weekly' },
+      { path: '/germany-streetwear-manufacturer', priority: '0.9', changefreq: 'weekly' },
+      { path: '/europe-blank-clothing-wholesale', priority: '0.9', changefreq: 'weekly' },
     ];
 
     const languages = ['', '/zh']; // 空字符串代表默认英文，/zh 代表中文

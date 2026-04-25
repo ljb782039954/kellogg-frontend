@@ -2,9 +2,14 @@ import { useEffect } from 'react';
 import { SEO_CONFIG } from '../../config/seoConfig';
 
 interface SEOManagerProps {
-  pageId: string;
-  defaultTitle: string;
-  defaultDescription: string;
+  pagePath: string;
+  seoData?: {
+    title?: { zh: string; en: string };
+    description?: { zh: string; en: string };
+    keywords?: { zh: string; en: string };
+    targetCountry?: string;
+  };
+  fallbackTitle: string;
   language: 'zh' | 'en';
 }
 
@@ -12,18 +17,23 @@ interface SEOManagerProps {
  * SEO & GEO 独立管理组件
  * 职责：统一管理所有页面的 Meta 标签、GEO 标签和 JSON-LD
  */
-const SEOManager: React.FC<SEOManagerProps> = ({ 
-  pageId, 
-  defaultTitle, 
-  defaultDescription, 
-  language 
+const SEOManager: React.FC<SEOManagerProps> = ({
+  pagePath,
+  seoData,
+  fallbackTitle,
+  language
 }) => {
 
   useEffect(() => {
-    // 1. 获取配置或使用默认值
-    const override = SEO_CONFIG.pageOverrides[pageId as keyof typeof SEO_CONFIG.pageOverrides];
-    const finalTitle = override?.title[language] || defaultTitle;
-    const finalDesc = override?.description[language] || defaultDescription;
+    // 1. 获取本地代码配置作为兜底
+    const cleanPath = pagePath.replace(/^\//, '') || '';
+    const override = SEO_CONFIG.pageOverrides[cleanPath as keyof typeof SEO_CONFIG.pageOverrides];
+    
+    // 2. 优先级：后台填写的 SEO > 代码覆盖配置 > 默认标题
+    const finalTitle = seoData?.title?.[language] || override?.title[language] || fallbackTitle;
+    const finalDesc = seoData?.description?.[language] || override?.description[language] || '';
+    const finalKeywords = seoData?.keywords?.[language] || SEO_CONFIG.keywords.join(', ');
+    const targetCountry = seoData?.targetCountry || override ? (cleanPath.split('-')[0].toUpperCase()) : 'Worldwide';
 
     // 2. 更新标题
     document.title = finalTitle;
@@ -41,8 +51,8 @@ const SEOManager: React.FC<SEOManagerProps> = ({
 
     // 4. 执行 Meta 更新
     updateMeta('description', finalDesc);
-    updateMeta('keywords', SEO_CONFIG.keywords.join(', '));
-    
+    updateMeta('keywords', finalKeywords);
+
     // GEO 标签
     const geo = SEO_CONFIG.company.address;
     updateMeta('geo.region', geo.region);
@@ -78,30 +88,32 @@ const SEOManager: React.FC<SEOManagerProps> = ({
         "latitude": SEO_CONFIG.company.coordinates.latitude,
         "longitude": SEO_CONFIG.company.coordinates.longitude
       },
-      "areaServed": ["Worldwide", "USA", "Europe", "UK", "Australia"],
+      "areaServed": targetCountry !== 'Worldwide' 
+        ? ["Worldwide", targetCountry] 
+        : ["Worldwide", "USA", "Europe", "UK", "Australia"],
       "knowsAbout": ["Heavyweight Hoodies", "Streetwear Manufacturing", "Custom Apparel"]
     };
     scriptTag.text = JSON.stringify(structuredData);
 
     // 6. Hreflang 注入 (简单实现)
     const updateLinkRel = (rel: string, hreflang: string, href: string) => {
-        let link = document.querySelector(`link[rel="${rel}"][hreflang="${hreflang}"]`);
-        if (!link) {
-            link = document.createElement('link');
-            link.setAttribute('rel', rel);
-            link.setAttribute('hreflang', hreflang);
-            document.head.appendChild(link);
-        }
-        link.setAttribute('href', href);
+      let link = document.querySelector(`link[rel="${rel}"][hreflang="${hreflang}"]`);
+      if (!link) {
+        link = document.createElement('link');
+        link.setAttribute('rel', rel);
+        link.setAttribute('hreflang', hreflang);
+        document.head.appendChild(link);
+      }
+      link.setAttribute('href', href);
     };
-    
+
     updateLinkRel('alternate', 'en', `${window.location.origin}/`);
     updateLinkRel('alternate', 'zh', `${window.location.origin}/zh`);
 
     return () => {
       // 卸载时不需要特别清理，因为这些是全局 header
     };
-  }, [pageId, defaultTitle, defaultDescription, language]);
+  }, [pagePath, seoData, fallbackTitle, language]);
 
   return null; // 不渲染任何 UI
 };

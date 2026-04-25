@@ -17,9 +17,9 @@ export default function DynamicPage({ page }: DynamicPageProps) {
   return (
     <main className="min-h-screen">
       <SEOManager
-        pageId={page.id}
-        defaultTitle={defaultTitle}
-        defaultDescription={defaultDescription}
+        pagePath={page.path}
+        seoData={page.seo}
+        fallbackTitle={page.title[language as 'zh' | 'en']}
         language={language as 'zh' | 'en'}
       />
       <DynamicPageRenderer language={language} schema={page} theme="light" />
