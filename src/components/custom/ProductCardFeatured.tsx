@@ -2,20 +2,23 @@ import { motion } from 'framer-motion';
 import {
   Star
 } from 'lucide-react';
+import type { Product } from '@/types';
+import type { BulkPrice } from '../../types/products';
 import { useCurrency } from '@/context/CurrencyContext';
 
 interface ProductCardFeaturedProps {
   t: (obj: { zh: string; en: string }) => string;
-  product: {
-    id: number;
-    name: { zh: string; en: string };
-    image: string;
-    price: number;
-    originalPrice?: number;
-    rating?: number;
-    sales?: number;
-    tag?: { zh: string; en: string };
-  };
+  product: Product;
+  // product: {
+  //   id: number;
+  //   name: { zh: string; en: string };
+  //   image: string;
+  //   price: number;
+  //   originalPrice?: number;
+  //   rating?: number;
+  //   sales?: number;
+  //   tag?: { zh: string; en: string };
+  // };
 }
 
 /**
@@ -28,6 +31,7 @@ export default function ProductCardFeatured({
   t, product
 }: ProductCardFeaturedProps) {
   const { formatPrice } = useCurrency();
+  const bulkPrice: BulkPrice = product.bulkPrices[0];
 
   const style = {
     bg: 'bg-gray-50',
@@ -96,7 +100,7 @@ export default function ProductCardFeatured({
         )}
 
         {/* Price */}
-        <div className="flex items-center gap-2 mb-3">
+        {/* <div className="flex items-center gap-2 mb-3">
           <span className={`text-lg font-bold ${style.price}`}>
             {formatPrice(product.price)}
           </span>
@@ -105,6 +109,21 @@ export default function ProductCardFeatured({
               {formatPrice(product.originalPrice)}
             </span>
           )}
+        </div> */}
+        {/* 批量价格的第一个 */}
+        <div className="flex items-center justify-between mt-auto">
+
+          <p className="text-xs md:text-sm font-semibold text-gray-400 uppercase group-hover:text-amber-600 transition-colors">
+            {bulkPrice.maxQty
+              ? `${bulkPrice.minQty}-${bulkPrice.maxQty} 'PCS'`
+              : `${bulkPrice.minQty}+ 'PCS'`
+            }
+          </p>
+          <p className="text-xs md:text-sm font-bold text-gray-900">
+            {formatPrice(bulkPrice.price)}
+            {/* <span className="text-xs text-gray-400 ml-0.5 font-normal">/PCS</span> */}
+          </p>
+
         </div>
       </div>
     </motion.div>

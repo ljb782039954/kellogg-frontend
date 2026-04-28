@@ -49,7 +49,7 @@ async function generateSitemap() {
       // SEO GEO 战略着陆页矩阵
       { path: '/usa-heavyweight-hoodie-manufacturer', priority: '0.9', changefreq: 'weekly' },
       { path: '/uk-streetwear-clothing-manufacturer', priority: '0.9', changefreq: 'weekly' },
-      // { path: '/canada-blank-apparel-supplier', priority: '0.9', changefreq: 'weekly' },
+      { path: '/canada-blank-apparel-supplier', priority: '0.9', changefreq: 'weekly' },
       { path: '/australia-heavyweight-tshirt-supplier', priority: '0.9', changefreq: 'weekly' },
       // { path: '/germany-streetwear-manufacturer', priority: '0.9', changefreq: 'weekly' },
       // { path: '/europe-blank-clothing-wholesale', priority: '0.9', changefreq: 'weekly' },

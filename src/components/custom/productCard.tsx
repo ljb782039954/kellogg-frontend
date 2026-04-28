@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import type { Product } from '@/types';
 import { useCurrency } from '@/context/CurrencyContext';
-
+import type { BulkPrice } from '../../types/products';
 interface Props {
     product: Product;
     index?: number;
@@ -11,9 +11,10 @@ interface Props {
 export default function ProductCard({
     product,
     index = 0,
-    t
+    t,
 }: Props) {
     const { formatPrice } = useCurrency();
+    const bulkPrice: BulkPrice = product.bulkPrices[0];
 
     return (
         <motion.div
@@ -48,7 +49,7 @@ export default function ProductCard({
                     {t(product.name)}
                 </h3>
                 <div className="flex items-center justify-between mt-auto">
-                    <div className="flex items-center gap-2">
+                    {/* <div className="flex items-center gap-2">
                         <span className="text-lg font-bold text-gray-900">
                             {formatPrice(product.price)}
                         </span>
@@ -57,13 +58,25 @@ export default function ProductCard({
                                 {formatPrice(product.originalPrice)}
                             </span>
                         )}
-                    </div>
-                    {product.rating && (
+                    </div> */}
+                    {/* 批量价格的第一个 */}
+                    <p className="text-xs md:text-sm font-semibold text-gray-400 uppercase group-hover:text-amber-600 transition-colors">
+                        {bulkPrice.maxQty
+                            ? `${bulkPrice.minQty}-${bulkPrice.maxQty} 'PCS'`
+                            : `${bulkPrice.minQty}+ 'PCS'`
+                        }
+                    </p>
+                    <p className="text-sm md:text-base font-bold text-gray-900">
+                        {formatPrice(bulkPrice.price)}
+                        {/* <span className="text-xs text-gray-400 ml-0.5 font-normal">/PCS</span> */}
+                    </p>
+
+                    {/* {product.rating && (
                         <div className="flex items-center gap-1 text-xs text-yellow-500">
                             <span>★</span>
                             <span className="font-medium text-gray-600">{product.rating}</span>
                         </div>
-                    )}
+                    )} */}
                 </div>
             </div>
         </motion.div>
