@@ -7,6 +7,7 @@ import { Loader2 } from 'lucide-react';
 // Components
 import Header from './components/Header';
 import Footer from './components/Footer';
+import TawkChat from './components/tawkChat';
 
 // Pages
 import DynamicPage from './pages/DynamicPage';
@@ -19,6 +20,7 @@ function AppRoutes() {
   return (
     <>
       <Header theme="light" />
+      <TawkChat />
       <div className="mt-16 md:mt-20">
         <Routes>
           {/* Dynamic Pages defined in config */}
