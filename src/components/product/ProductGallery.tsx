@@ -1,5 +1,4 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import api from '@/lib/api';
 import OptimizedImage from '../ui/OptimizedImage';
 
 const MotionOptimizedImage = motion(OptimizedImage);
