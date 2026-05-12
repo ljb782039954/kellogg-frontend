@@ -1,0 +1,132 @@
+---
+import type { CustomPage, Language } from "../types";
+import { api } from "../lib/api";
+
+// 导入积木块
+import ImageBanner from "./blocks/ImageBanner.astro";
+import TextSection from "./blocks/TextSection.astro";
+import Carousel from "./blocks/Carousel";
+import Categories from "./blocks/Categories.astro";
+import ProductGrid from "./product/ProductGrid";
+import FeaturedProducts from "./blocks/FeaturedProducts.astro";
+import InquirySection from "./blocks/InquirySection";
+import BrandValues from "./blocks/BrandValues.astro";
+import Statistics from "./blocks/Statistics";
+import Testimonials from "./blocks/Testimonials.astro";
+import FAQ from "./blocks/FAQ";
+import ImageText from "./blocks/ImageText.astro";
+import CtaBanner from "./blocks/CtaBanner.astro";
+import FeatureList from "./blocks/FeatureList.astro";
+
+interface Props {
+  schema: CustomPage;
+  lang: Language;
+}
+
+const { schema, lang } = Astro.props;
+const enabledBlocks = schema.blocks.filter((block) => block.isVisible);
+
+// 数据注入逻辑 (在服务端预先获取数据)
+const getBlockData = async (blockType: string, content: any) => {
+  if (['productGrid', 'featuredProducts', 'newArrivals'].includes(blockType)) {
+    const params: any = { pageSize: 200 };
+    if (blockType === 'featuredProducts') params.featured = true;
+    if (blockType === 'newArrivals') params.sort = 'newest';
+    if (blockType === 'productGrid' && content.category && content.category !== 'all') {
+      params.category = content.category;
+    }
+    
+    const [productsData, categoriesData] = await Promise.all([
+      api.getProducts(params),
+      api.getCategories()
+    ]);
+    
+    return {
+      products: productsData.data,
+      categories: categoriesData
+    };
+  }
+  
+  if (blockType === 'categories') {
+    const categoriesData = await api.getCategories();
+    return { categories: categoriesData };
+  }
+  
+  return {};
+};
+
+// 预取所有需要数据的区块
+const blocksWithData = await Promise.all(
+  enabledBlocks.map(async (block) => {
+    const data = await getBlockData(block.type, block.content);
+    return { ...block, data };
+  })
+);
+
+---
+
+<div class="dynamic-page">
+  {blocksWithData.map((block, index) => {
+    const isFirst = index === 0;
+    
+    // 根据类型渲染组件
+    switch (block.type) {
+      case 'imageBanner':
+        return <ImageBanner {...block.content} lang={lang} />;
+      
+      case 'textSection':
+        return <TextSection {...block.content} lang={lang} />;
+
+      case 'carousel':
+        return <Carousel {...block.content} lang={lang} client:load />;
+      
+      case 'categories':
+        return <Categories {...block.content} {...block.data} lang={lang} />;
+      
+      case 'productGrid':
+        return <ProductGrid {...block.content} {...block.data} lang={lang} client:load />;
+
+      case 'featuredProducts':
+      case 'newArrivals':
+        return <FeaturedProducts {...block.content} {...block.data} lang={lang} />;
+      
+      case 'inquiry':
+        return <InquirySection lang={lang} client:load />;
+      
+      case 'brandValues':
+        return <BrandValues {...block.content} lang={lang} />;
+      
+      case 'statistics':
+        return <Statistics {...block.content} lang={lang} client:visible />;
+      
+      case 'testimonials':
+        return <Testimonials {...block.content} lang={lang} />;
+
+      case 'faq':
+        return <FAQ {...block.content} lang={lang} client:visible />;
+      
+      case 'imageText':
+        return <ImageText {...block.content} lang={lang} />;
+      
+      case 'ctaBanner':
+        return <CtaBanner {...block.content} lang={lang} />;
+      
+      case 'featureList':
+        return <FeatureList {...block.content} lang={lang} />;
+      
+      default:
+        return (
+          <div class="py-10 border-b border-dashed border-gray-200">
+            <div class="container mx-auto px-4">
+              <p class="text-gray-400 text-sm">
+                [Block: {block.type}] (待迁移实现)
+              </p>
+              <pre class="bg-gray-100 p-4 rounded mt-2 text-xs overflow-auto max-h-40">
+                {JSON.stringify(block.content, null, 2)}
+              </pre>
+            </div>
+          </div>
+        );
+    }
+  })}
+</div>

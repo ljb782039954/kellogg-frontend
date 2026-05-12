@@ -1,10 +1,7 @@
 import { useState } from 'react';
-import { ChevronDown, } from 'lucide-react';
-
-import { Button } from '@/components/ui/button';
-import MotionHeader from '../custom/motionHeader';
+import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
-import type { Translation } from '@/types';
+import type { Translation, Language } from '../../types';
 
 export interface FAQItem {
   id: number;
@@ -16,52 +13,51 @@ export interface FAQProps {
   title?: Translation;
   subtitle?: Translation;
   items?: FAQItem[];
+  lang: Language;
 }
 
-interface Props {
-  t: (obj: { zh: string; en: string }) => string;
-  props: FAQProps;
-}
-
-export default function Faq({ t, props }: Props) {
-  const { title, subtitle, items } = props;
+export default function FAQ({ title, subtitle, items = [], lang }: FAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
+  const t = (obj: Translation | undefined) => {
+    if (!obj) return '';
+    return lang === 'zh' ? obj.zh : obj.en;
+  };
 
   const hasMore = items.length > 5;
   const displayedItems = isExpanded ? items : items.slice(0, 5);
 
-  const toggleExpand = () => setIsExpanded(!isExpanded);
-
-  // 如果没有数据，直接返回null
   if (!items || items.length === 0) return null;
 
   return (
-    <section className="py-8">
+    <section className="py-20 w-full bg-white">
       <div className="container mx-auto px-4">
-        <MotionHeader t={t} title={title} subtitle={subtitle} />
-      </div>
-      <div className="max-w-3xl mx-auto space-y-4">
-        {
-          displayedItems.map((item) => (
+        <div className="text-center mb-16 max-w-2xl mx-auto">
+          {title && <h2 className="text-3xl md:text-5xl font-bold mb-4 text-gray-900">{t(title)}</h2>}
+          {subtitle && <p className="text-gray-500 text-lg">{t(subtitle)}</p>}
+        </div>
+
+        <div className="max-w-3xl mx-auto space-y-4">
+          {displayedItems.map((item) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white border border-gray-100 rounded-xl overflow-hidden"
+              className="bg-gray-50/50 border border-gray-100 rounded-2xl overflow-hidden hover:bg-gray-50 transition-colors"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === item.id ? null : item.id)}
-                className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center justify-between p-6 text-left"
               >
-                <span className="font-medium text-gray-800 pr-4">
+                <span className="font-bold text-gray-800 pr-4">
                   {t(item.question)}
                 </span>
-                <ChevronDown
-                  className={`w-5 h-5 text-gray-400 flex-shrink-0 transition-transform ${openIndex === item.id ? 'rotate-180' : ''
-                    }`}
-                />
+                <div className={`p-1 rounded-full transition-all ${openIndex === item.id ? 'bg-gray-900 text-white' : 'bg-white text-gray-400'}`}>
+                  <ChevronDown
+                    className={`w-5 h-5 transition-transform duration-300 ${openIndex === item.id ? 'rotate-180' : ''}`}
+                  />
+                </div>
               </button>
 
               <AnimatePresence>
@@ -70,31 +66,49 @@ export default function Faq({ t, props }: Props) {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
                   >
-                    <div className="px-6 pb-6">
-                      <div className="pt-2 border-t border-gray-100">
-                        <p className="text-gray-600 leading-relaxed pt-4">
-                          {t(item.answer)}
-                        </p>
-                      </div>
+                    <div className="px-6 pb-6 pt-2">
+                      <p className="text-gray-600 leading-relaxed border-t border-gray-200 pt-6">
+                        {t(item.answer)}
+                      </p>
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
             </motion.div>
-          ))
-        }
+          ))}
+        </div>
+
+        {hasMore && (
+          <div className="text-center mt-10">
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="px-8 py-3 rounded-full border-2 border-gray-900 text-gray-900 font-bold hover:bg-gray-900 hover:text-white transition-all active:scale-95"
+            >
+              {isExpanded 
+                ? (lang === 'zh' ? '收起部分' : 'Show Less') 
+                : (lang === 'zh' ? '查看更多' : 'View More')}
+            </button>
+          </div>
+        )}
       </div>
 
-      {hasMore && (
-        <div className="text-center mt-6">
-          <Button variant="outline" size="sm" onClick={toggleExpand}>
-            {t(isExpanded ? { zh: '收起部分', en: 'Show Less' } : { zh: '查看更多', en: 'View More' })}
-          </Button>
-        </div>
-      )}
-
+      {/* SEO Structured Data */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": items.map(item => ({
+            "@type": "Question",
+            "name": t(item.question),
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": t(item.answer)
+            }
+          }))
+        })
+      }} />
     </section>
   );
 }

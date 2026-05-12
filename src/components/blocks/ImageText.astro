@@ -1,0 +1,98 @@
+---
+import type { Translation, Language } from "../../types";
+import OptimizedImage from "../ui/OptimizedImage.astro";
+import { createTranslate } from "../../lib/i18n";
+
+interface Props {
+  title?: Translation;
+  content?: Translation;
+  image?: string;
+  imagePosition?: 'left' | 'right';
+  buttonText?: Translation;
+  buttonLink?: string;
+  lang: Language;
+}
+
+const { 
+  title, 
+  content, 
+  image, 
+  imagePosition = 'left', 
+  buttonText, 
+  buttonLink,
+  lang
+} = Astro.props;
+
+const t = createTranslate(lang);
+
+const value = content ? t(content) : '';
+// 匹配双正斜杠 // 或双反斜杠 \\ 进行拆分
+const parts = value.split(/\/\/|\\\\/).map(p => p.trim()).filter(p => p !== '');
+
+const isInternal = buttonLink?.startsWith('/');
+---
+
+<section class="py-20 overflow-hidden">
+  <div class="container mx-auto px-4">
+    <div class:list={[
+      "flex flex-col md:flex-row items-center gap-12",
+      imagePosition === 'right' ? 'md:flex-row-reverse' : ''
+    ]}>
+      <!-- Image Part -->
+      <div class="flex-1 w-full">
+        <div class="aspect-[4/3] rounded-[40px] overflow-hidden shadow-2xl shadow-gray-200/50">
+          <OptimizedImage
+            src={image}
+            alt={title ? t(title) : "Section Image"}
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+            responsive={{
+              sm: 640,
+              md: 800,
+              lg: 1024
+            }}
+          />
+        </div>
+      </div>
+
+      <!-- Text Part -->
+      <div class="flex-1 space-y-6">
+        {title && (
+          <h2 class="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
+            {t(title)}
+          </h2>
+        )}
+        
+        <div class="space-y-4">
+          {parts.length > 1 ? (
+            <ul class="space-y-4">
+              {parts.map((part) => (
+                <li class="flex items-start gap-3">
+                  <div class="mt-2 w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                  <span class="text-gray-600 text-lg leading-relaxed">{part}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="text-gray-600 text-lg md:text-xl leading-relaxed">
+              {value}
+            </p>
+          )}
+        </div>
+
+        {buttonText && buttonLink && (
+          <a
+            href={buttonLink}
+            target={isInternal ? undefined : "_blank"}
+            rel={isInternal ? undefined : "noopener noreferrer"}
+            class="inline-flex items-center px-8 py-4 bg-gray-900 text-white rounded-2xl font-bold hover:bg-black transition-all hover:translate-x-2 shadow-xl hover:shadow-gray-200"
+          >
+            {t(buttonText)}
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</section>

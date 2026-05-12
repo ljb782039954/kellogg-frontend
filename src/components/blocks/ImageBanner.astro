@@ -1,0 +1,62 @@
+---
+import type { Translation, Language } from "../../types";
+import OptimizedImage from "../ui/OptimizedImage.astro";
+import SectionHeader from "../SectionHeader.astro";
+import { createTranslate } from "../../lib/i18n";
+
+interface Props {
+  image?: string;
+  title?: Translation;
+  subtitle?: Translation;
+  buttonText?: Translation;
+  linkUrl?: string;
+  height?: 'small' | 'medium' | 'large' | 'full';
+  overlay?: boolean;
+  lang: Language;
+}
+
+const { 
+  image, 
+  title, 
+  subtitle, 
+  buttonText, 
+  linkUrl, 
+  height = 'medium', 
+  overlay = true,
+  lang
+} = Astro.props;
+
+const t = createTranslate(lang);
+
+const heightClasses = {
+  small: 'h-48 md:h-64',
+  medium: 'h-64 md:h-96',
+  large: 'h-96 md:h-[500px]',
+  full: 'h-screen'
+};
+---
+
+<section class:list={["relative overflow-hidden", heightClasses[height]]}>
+  <OptimizedImage
+    src={image}
+    alt={title ? t(title) : "Banner"}
+    class="absolute inset-0 w-full h-full object-cover"
+    sizes="100vw"
+    priority={height === 'large' || height === 'full'}
+  />
+  
+  {overlay && <div class="absolute inset-0 bg-black/40" />}
+  
+  <div class="absolute inset-0 flex flex-col items-center justify-center text-white z-10 px-4">
+    {title && <SectionHeader lang={lang} title={title} subtitle={subtitle} theme="dark" class="mb-6" />}
+    
+    {buttonText && (
+      <a
+        href={linkUrl || "#"}
+        class="px-8 py-3 bg-white text-gray-900 rounded-full text-sm font-bold hover:bg-gray-100 transition-all hover:scale-105 active:scale-95 shadow-lg"
+      >
+        {t(buttonText)}
+      </a>
+    )}
+  </div>
+</section>

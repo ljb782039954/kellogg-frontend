@@ -1,0 +1,48 @@
+---
+import * as LucideIcons from 'lucide-react';
+import type { Translation, Language } from "../../types";
+import SectionHeader from "../SectionHeader.astro";
+import { createTranslate } from "../../lib/i18n";
+
+interface BrandValue {
+  id: number;
+  icon: string;
+  title: Translation;
+  description: Translation;
+}
+
+interface Props {
+  title?: Translation;
+  subtitle?: Translation;
+  items?: BrandValue[];
+  lang: Language;
+}
+
+const { title, subtitle, items = [], lang } = Astro.props;
+const t = createTranslate(lang);
+---
+
+{items.length > 0 && (
+  <section class="py-16 w-full">
+    <div class="container mx-auto px-4">
+      {title && <SectionHeader lang={lang} title={title} subtitle={subtitle} theme="light" />}
+      
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        {items.map((item) => {
+          const Icon = (LucideIcons as any)[item.icon] || LucideIcons.Star;
+          return (
+            <div class="text-center group">
+              <div class="w-16 h-16 mx-auto bg-gray-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-all group-hover:scale-110">
+                <Icon class="w-8 h-8 text-gray-800 group-hover:text-primary transition-colors" />
+              </div>
+              <h4 class="font-bold mb-2 text-gray-900">{t(item.title)}</h4>
+              <p class="text-sm text-gray-500 max-w-[200px] mx-auto leading-relaxed">
+                {t(item.description)}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+)}

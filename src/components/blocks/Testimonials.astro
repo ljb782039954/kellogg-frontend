@@ -1,0 +1,75 @@
+---
+import { Star, Quote } from 'lucide-react';
+import type { Translation, Language } from "../../types";
+import SectionHeader from "../SectionHeader.astro";
+import { createTranslate } from "../../lib/i18n";
+import OptimizedImage from "../ui/OptimizedImage.astro";
+
+interface Testimonial {
+  id: number;
+  name: Translation;
+  role?: Translation;
+  content: Translation;
+  avatar?: string;
+}
+
+interface Props {
+  title?: Translation;
+  subtitle?: Translation;
+  items?: Testimonial[];
+  lang: Language;
+}
+
+const { title, subtitle, items = [], lang } = Astro.props;
+const t = createTranslate(lang);
+---
+
+{items.length > 0 && (
+  <section class="py-20 w-full bg-gray-50/50">
+    <div class="container mx-auto px-4">
+      {title && <SectionHeader lang={lang} title={title} subtitle={subtitle} theme="light" />}
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {items.map((item) => (
+          <div class="bg-white rounded-[32px] p-8 shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 flex flex-col relative group">
+            <div class="absolute top-6 right-8 text-gray-100 group-hover:text-primary/10 transition-colors">
+              <Quote size={48} />
+            </div>
+            
+            <div class="flex gap-1 mb-6">
+              {[1, 2, 3, 4, 5].map(() => (
+                <Star size={16} class="fill-yellow-400 text-yellow-400" />
+              ))}
+            </div>
+
+            <p class="text-gray-600 mb-8 italic leading-relaxed flex-grow">
+              "{t(item.content)}"
+            </p>
+
+            <div class="flex items-center gap-4 border-t border-gray-50 pt-6">
+              <div class="w-12 h-12 bg-gray-100 rounded-full overflow-hidden flex-shrink-0">
+                {item.avatar ? (
+                  <OptimizedImage 
+                    src={item.avatar} 
+                    alt={t(item.name)} 
+                    width={48} 
+                    height={48} 
+                    class="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div class="w-full h-full flex items-center justify-center text-gray-400 font-bold bg-gray-50">
+                    {t(item.name).charAt(0)}
+                  </div>
+                )}
+              </div>
+              <div>
+                <div class="font-bold text-gray-900">{t(item.name)}</div>
+                {item.role && <div class="text-xs text-gray-400 uppercase tracking-wider">{t(item.role)}</div>}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

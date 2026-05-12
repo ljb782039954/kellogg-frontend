@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { api } from '@/lib/api';
-import { useLanguage } from '../context/LanguageContext';
+import { api } from '../lib/api';
+import type { Language } from '../types';
 
 export interface InquiryFormData {
   name: string;
@@ -13,8 +13,7 @@ export interface InquiryFormData {
   message: string;
 }
 
-export function useInquiry() {
-  const { language } = useLanguage();
+export function useInquiry(lang: Language = 'en') {
   const [inquiryConfig, setInquiryConfig] = useState<any>(null);
   const [formData, setFormData] = useState<InquiryFormData>({
     name: '',
@@ -30,7 +29,6 @@ export function useInquiry() {
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
-    // Automatically fetch config, fallback to default if fails
     api.getConfig('inquiry_config').then(data => {
       if (data) setInquiryConfig(data);
     }).catch(() => {});
@@ -61,7 +59,7 @@ export function useInquiry() {
         message: ''
       });
     } catch (err) {
-      alert(language === 'zh' ? '提交失败，请重试' : 'Submission failed, please try again');
+      alert(lang === 'zh' ? '提交失败，请重试' : 'Submission failed, please try again');
     } finally {
       setIsSubmitting(false);
     }
@@ -69,18 +67,18 @@ export function useInquiry() {
 
   const t = {
     form: {
-      name: language === 'zh' ? '姓名' : 'First Name',
-      email: language === 'zh' ? '邮箱' : 'Email',
-      phone: language === 'zh' ? '电话' : 'Phone Number',
-      country: language === 'zh' ? '国家/地区' : 'Country/Region',
-      company: language === 'zh' ? '公司名称' : 'Company Name',
-      productType: language === 'zh' ? '产品类型' : 'Product Type',
-      quantity: language === 'zh' ? '需求数量' : 'Order Quantity',
-      message: language === 'zh' ? '消息详情' : 'Message details',
-      submit: language === 'zh' ? '提交询盘' : 'Submit Inquiry',
-      success: language === 'zh' ? '提交成功！' : 'Success!',
-      successMsg: language === 'zh' ? '感谢您的咨询，我们会尽快与您联系。' : 'Thank you for your inquiry, we will contact you soon.',
-      back: language === 'zh' ? '返回' : 'Go Back'
+      name: lang === 'zh' ? '姓名' : 'First Name',
+      email: lang === 'zh' ? '邮箱' : 'Email',
+      phone: lang === 'zh' ? '电话' : 'Phone Number',
+      country: lang === 'zh' ? '国家/地区' : 'Country/Region',
+      company: lang === 'zh' ? '公司名称' : 'Company Name',
+      productType: lang === 'zh' ? '产品类型' : 'Product Type',
+      quantity: lang === 'zh' ? '需求数量' : 'Order Quantity',
+      message: lang === 'zh' ? '消息详情' : 'Message details',
+      submit: lang === 'zh' ? '提交询盘' : 'Submit Inquiry',
+      success: lang === 'zh' ? '提交成功！' : 'Success!',
+      successMsg: lang === 'zh' ? '感谢您的咨询，我们会尽快与您联系。' : 'Thank you for your inquiry, we will contact you soon.',
+      back: lang === 'zh' ? '返回' : 'Go Back'
     }
   };
 
@@ -93,6 +91,6 @@ export function useInquiry() {
     handleSubmit,
     config,
     t,
-    language
+    language: lang
   };
 }

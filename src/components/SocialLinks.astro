@@ -1,0 +1,41 @@
+---
+import { Facebook, Instagram, Twitter, Youtube, Linkedin, Music2, Phone, Globe, MessageSquare } from 'lucide-react';
+import type { SocialMediaType } from '../types/baseEditor';
+
+interface Props {
+  socialLinks: SocialMediaType;
+}
+
+const { socialLinks } = Astro.props;
+
+const SOCIAL_ICONS: Record<string, any> = {
+  facebook: Facebook,
+  instagram: Instagram,
+  twitter: Twitter,
+  youtube: Youtube,
+  linkedin: Linkedin,
+  tiktok: Music2,
+  whatsapp: Phone,
+  wechat: MessageSquare,
+  weibo: Globe,
+};
+
+const links = Object.entries(socialLinks).filter(([_, url]) => !!url);
+---
+
+<div class="flex flex-wrap gap-4 mt-6">
+  {links.map(([name, url]) => {
+    const Icon = SOCIAL_ICONS[name] || Globe;
+    return (
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="w-10 h-10 rounded-full border border-gray-800 flex items-center justify-center transition-all hover:scale-110 text-gray-400 hover:text-white hover:border-white"
+        title={name}
+      >
+        <Icon size={20} />
+      </a>
+    );
+  })}
+</div>

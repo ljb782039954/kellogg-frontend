@@ -4,8 +4,6 @@ import type { Translation, LinkType, NavLink } from "./common";
 // UI 与导航
 // ============================================
 
-
-
 export interface SocialMediaType {
   wechat?: string;
   weibo?: string;

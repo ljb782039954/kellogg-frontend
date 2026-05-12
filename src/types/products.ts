@@ -44,4 +44,3 @@ export interface Product {
   colors?: { name: Translation; image?: string }[];
   customFields?: { name: Translation; value: Translation }[];
 }
-

@@ -1,0 +1,77 @@
+---
+import type { Translation, NavLink, Language } from "../../types";
+import { createTranslate } from "../../lib/i18n";
+import OptimizedImage from "../ui/OptimizedImage.astro";
+import SectionHeader from "../SectionHeader.astro";
+
+interface CtaBannerValues {
+  primaryButton?: NavLink;
+  secondaryButton?: NavLink;
+  backgroundImage?: string;
+  backgroundColor?: string;
+  alignment?: 'left' | 'center' | 'right';
+}
+
+interface Props {
+  title?: Translation;
+  subtitle?: Translation;
+  values?: CtaBannerValues;
+  lang: Language;
+}
+
+const { title, subtitle, values, lang } = Astro.props;
+const t = createTranslate(lang);
+
+const alignClass = {
+  left: 'text-left items-start',
+  center: 'text-center items-center',
+  right: 'text-right items-end',
+}[values?.alignment || 'center'];
+---
+
+<section class="py-12 px-4 md:px-0">
+  <div class="container mx-auto">
+    <div class="relative rounded-[40px] overflow-hidden text-white min-h-[400px] flex items-center shadow-2xl">
+      <!-- Background -->
+      {values?.backgroundImage ? (
+        <>
+          <OptimizedImage
+            src={values.backgroundImage}
+            alt="CTA Background"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          <div class="absolute inset-0 bg-black/60" />
+        </>
+      ) : (
+        <div
+          class="absolute inset-0 bg-gradient-to-br from-gray-900 to-black"
+          style={values?.backgroundColor ? { backgroundColor: values.backgroundColor } : undefined}
+        />
+      )}
+
+      <!-- Content -->
+      <div class:list={["relative w-full px-8 md:px-16 py-20 flex flex-col", alignClass]}>
+        {title && <SectionHeader lang={lang} title={title} subtitle={subtitle} theme="dark" class="mb-10" />}
+        
+        <div class="flex flex-wrap gap-4">
+          {values?.primaryButton?.name && (
+            <a
+              href={values.primaryButton.href}
+              class="px-10 py-4 bg-white text-gray-900 rounded-2xl font-bold hover:bg-gray-100 transition-all hover:scale-105 active:scale-95 shadow-xl"
+            >
+              {t(values.primaryButton.name)}
+            </a>
+          )}
+          {values?.secondaryButton?.name && (
+            <a
+              href={values.secondaryButton.href}
+              class="px-10 py-4 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-2xl font-bold hover:bg-white/20 transition-all hover:scale-105 active:scale-95"
+            >
+              {t(values.secondaryButton.name)}
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

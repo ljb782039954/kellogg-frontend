@@ -1,0 +1,39 @@
+---
+import type { Category, Language } from "../../types";
+import { createTranslate } from "../../lib/i18n";
+
+interface Props {
+  showAll?: boolean;
+  maxItems?: number;
+  categories: Category[];
+  lang: Language;
+}
+
+const { showAll, maxItems, categories = [], lang } = Astro.props;
+const t = createTranslate(lang);
+
+const displayCategories = showAll ? categories : categories.slice(0, maxItems);
+---
+
+{displayCategories.length > 0 && (
+  <section class="py-12 w-full">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-4 md:grid-cols-8 gap-4">
+        {displayCategories.map((cat) => (
+          <a href={`/products?category=${cat.id}`} class="text-center group cursor-pointer">
+            <div class="w-full aspect-square max-w-[80px] mx-auto bg-white rounded-full overflow-hidden flex items-center justify-center shadow-sm mb-2 group-hover:shadow-md group-hover:scale-105 transition-all">
+              <img
+                src={cat.image}
+                alt={t(cat.name)}
+                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
+              />
+            </div>
+            <span class="text-xs md:text-sm font-medium group-hover:text-primary transition-colors block truncate px-1">
+              {t(cat.name)}
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

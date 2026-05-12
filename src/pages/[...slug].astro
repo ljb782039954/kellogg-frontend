@@ -1,0 +1,53 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { api } from "../lib/api";
+import { getSiteData } from "../lib/site";
+import DynamicRenderer from "../components/DynamicRenderer.astro";
+import InquirySection from "../components/blocks/InquirySection";
+import type { Language } from "../types";
+
+// SSR 模式下不需要 getStaticPaths
+
+const { slug } = Astro.params;
+const path = slug === undefined ? "/" : `/${slug}`;
+
+// 1. 获取站点全局数据和页面列表
+const siteData = await getSiteData();
+const { pages } = siteData;
+
+// 2. 找到匹配的页面
+const page = pages.find((p) => {
+  const normalizedPath = p.path.endsWith('/') ? p.path : p.path + '/';
+  const normalizedSearch = path.endsWith('/') ? path : path + '/';
+  return normalizedPath === normalizedSearch;
+});
+
+if (!page) {
+  console.error(`[Astro] Page not found for path: ${path}`);
+  // 如果是根目录都找不到，说明 API 数据有问题
+  if (path === '/') {
+    return new Response("No homepage found in CMS data. Please check your API/KV configuration.", { status: 404 });
+  }
+  return Astro.redirect("/");
+}
+
+// 3. 获取页面的详细数据 (包含积木块)
+const fullPage = await api.getPageById(page.id);
+
+// 获取语言 (先默认 en，后续可以从 cookie 或 header 获取)
+const lang: Language = "en"; 
+---
+
+<Layout 
+  title={fullPage.title} 
+  lang={lang} 
+  seo={fullPage.seo}
+>
+  {page.id === 'system-inquiry' ? (
+    <div class="py-12">
+      <InquirySection lang={lang} client:load />
+    </div>
+  ) : (
+    <DynamicRenderer schema={fullPage} lang={lang} />
+  )}
+</Layout>
