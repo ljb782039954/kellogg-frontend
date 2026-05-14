@@ -16,3 +16,7 @@ export default defineConfig({
 
   adapter: cloudflare()
 });
+
+/**
+ * 这是一次测试，测试仓库的变化
+ */

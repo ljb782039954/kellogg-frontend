@@ -1,14 +1,14 @@
-23:18:08.191 prerendering static routes
-23:18:09.420 Failed to get static paths from the Cloudflare prerender server (500: Internal Server Error).
-23:18:09.420 TypeError: Invalid URL: /api/config/site_settings
-23:18:09.420 at async Object.fetch (file:///opt/buildhome/repo/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22)
-23:18:09.420 Location:
-23:18:09.420 /opt/buildhome/repo/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22
-23:18:09.420 Stack trace:
-23:18:09.420 at async Object.fetch (file:///opt/buildhome/repo/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22)
-23:18:09.420 at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-23:18:09.420 at async BasicMinimalPluginContext.handler (file:///opt/buildhome/repo/node_modules/astro/dist/core/build/static-build.js:132:11)
-23:18:09.420 at async buildEnvironments (file:///opt/buildhome/repo/node_modules/astro/dist/core/build/static-build.js:332:3)
-23:18:09.420 at async AstroBuilder.build (file:///opt/buildhome/repo/node_modules/astro/dist/core/build/index.js:158:5)
-23:18:09.420 at async build (file:///opt/buildhome/repo/node_modules/astro/dist/core/build/index.js:48:3)
-23:18:09.601 Failed: error occurred while running build command
+23:57:27.827 Provisioning SESSION (KV Namespace)...
+23:57:27.828 🌀 Creating new KV Namespace "kellogg-frontend-dev-test-session"...
+23:57:28.200
+23:57:28.200 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
+23:57:28.203
+23:57:28.313 ✘ [ERROR] A request to the Cloudflare API (/accounts/7137988623d28bb8f88b71540bcd0fd6/storage/kv/namespaces) failed.
+23:57:28.318
+23:57:28.321 a namespace with this account ID and title already exists [code: 10014]
+23:57:28.321   
+23:57:28.322 If you think this is a bug, please open an issue at: https://github.com/cloudflare/workers-sdk/issues/new/choose
+23:57:28.322
+23:57:28.323
+23:57:28.347 🪵 Logs were written to "/opt/buildhome/.config/.wrangler/logs/wrangler-2026-05-13_15-57-18_098.log"
+23:57:28.506 Failed: error occurred while running deploy command
