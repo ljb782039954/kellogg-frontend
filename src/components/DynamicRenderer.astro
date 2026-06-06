@@ -36,11 +36,9 @@ const enabledBlocks = schema.blocks.filter((block) => block.isVisible);
 
 // 数据注入逻辑 (在服务端预先获取数据)
 const getBlockData = async (blockType: string, content: any) => {
-  if (['productGrid', 'featuredProducts', 'newArrivals'].includes(blockType)) {
-    const params: any = { pageSize: 200 };
-    if (blockType === 'featuredProducts') params.featured = true;
-    if (blockType === 'newArrivals') params.sort = 'newest';
-    if (blockType === 'productGrid' && content.category && content.category !== 'all') {
+  if (blockType === 'productGrid') {
+    const params: any = { pageSize: 12, page: 1 };
+    if (content.category && content.category !== 'all') {
       params.category = content.category;
     }
     
@@ -50,8 +48,25 @@ const getBlockData = async (blockType: string, content: any) => {
     ]);
     
     return {
-      products: productsData.data,
-      categories: categoriesData
+      products: productsData.data || [],
+      categories: categoriesData || [],
+      totalProducts: productsData.pagination?.total || 0
+    };
+  }
+
+  if (['featuredProducts', 'newArrivals'].includes(blockType)) {
+    const params: any = { pageSize: 200 };
+    if (blockType === 'featuredProducts') params.featured = true;
+    if (blockType === 'newArrivals') params.sort = 'newest';
+    
+    const [productsData, categoriesData] = await Promise.all([
+      api.getProducts(params),
+      api.getCategories()
+    ]);
+    
+    return {
+      products: productsData.data || [],
+      categories: categoriesData || []
     };
   }
   

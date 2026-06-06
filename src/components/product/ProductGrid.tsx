@@ -1,14 +1,16 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SlidersHorizontal } from 'lucide-react';
 import type { Product, Category, SortOption, Language } from '../../types';
 import ProductCard from './ProductCard';
 import Pagination from '../Pagination';
 import { t } from '../../utils/common';
+import { api } from '../../lib/api';
 
 export interface ProductGridProps {
   itemsPerPage?: number;
   categories: Category[];
   products: Product[];
+  totalProducts?: number;
   lang: Language;
 }
 
@@ -22,49 +24,65 @@ const SORT_OPTIONS: SortOption[] = [
 export default function ProductGrid({
   itemsPerPage: defaultItemsPerPage = 12,
   categories = [],
-  products = [],
+  products: initialProducts = [],
+  totalProducts: initialTotal = 0,
   lang,
 }: ProductGridProps) {
-  const currentItemsPerPage = defaultItemsPerPage;
+  // 强控每页显示 12 个商品，以在各种屏幕下对齐美学实现闭环（4x3=12, 3x4=12, 2x6=12）
+  const currentItemsPerPage = 12;
 
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
+  
+  // 维护客户端展示的产品列表和产品总数
+  const [displayedProducts, setDisplayedProducts] = useState<Product[]>(initialProducts);
+  const [totalCount, setTotalCount] = useState(initialTotal);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // 1. 筛选并排序产品
-  const filteredProducts = useMemo(() => {
-    let result = [...products];
-    
-    // 筛选
-    if (selectedCategory !== 'all') {
-      result = result.filter((p) => p.category === selectedCategory);
+  // 监听翻页、筛选和排序变化，发起客户端 Fetch 请求
+  useEffect(() => {
+    // 首次加载（第一页，且无任何分类/排序条件筛选）时，直接使用静态传入的 products 数组数据
+    // 保证首屏的极致加载速度与零客户端冗余请求
+    if (currentPage === 1 && selectedCategory === 'all' && sortBy === 'newest' && initialTotal > 0) {
+      setDisplayedProducts(initialProducts);
+      setTotalCount(initialTotal);
+      return;
     }
 
-    // 排序
-    switch (sortBy) {
-      case 'price-asc':
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-desc':
-        result.sort((a, b) => b.price - a.price);
-        break;
-      case 'sales':
-        result.sort((a, b) => (b.sales || 0) - (a.sales || 0));
-        break;
-      default:
-        result.sort((a, b) =>
-          new Date(b.releaseDate || 0).getTime() - new Date(a.releaseDate || 0).getTime()
-        );
-    }
-    return result;
-  }, [products, selectedCategory, sortBy]);
+    let isMounted = true;
+    const fetchFilteredProducts = async () => {
+      setIsLoading(true);
+      try {
+        const backendSort = sortBy.replace('-', '_') as any;
+        const res = await api.getProducts({
+          page: currentPage,
+          pageSize: currentItemsPerPage,
+          category: selectedCategory === 'all' ? undefined : selectedCategory,
+          sort: backendSort,
+        });
 
-  // 2. 分页逻辑
-  const totalPages = Math.ceil(filteredProducts.length / currentItemsPerPage);
-  const paginatedProducts = filteredProducts.slice(
-    (currentPage - 1) * currentItemsPerPage,
-    currentPage * currentItemsPerPage
-  );
+        if (isMounted) {
+          setDisplayedProducts(res.data || []);
+          setTotalCount(res.pagination?.total || 0);
+        }
+      } catch (err) {
+        console.error('[ProductGrid] Failed to fetch products on client:', err);
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchFilteredProducts();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [currentPage, selectedCategory, sortBy, initialProducts, initialTotal, currentItemsPerPage]);
+
+  const totalPages = Math.ceil(totalCount / currentItemsPerPage);
 
   return (
     <section className="pt-20 w-full">
@@ -113,9 +131,21 @@ export default function ProductGrid({
           </div>
         </div>
 
-        {/* Products Grid Display */}
-        <div className="py-12">
-          {paginatedProducts.length === 0 ? (
+        {/* Products Grid Display Area */}
+        <div className="py-12 relative min-h-[400px]">
+          {/* Premium Loading Overlay */}
+          {isLoading && (
+            <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex items-center justify-center transition-all duration-300">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-10 h-10 border-4 border-gray-200 border-t-gray-800 rounded-full animate-spin"></div>
+                <p className="text-sm text-gray-500 font-medium tracking-wide">
+                  {lang === 'zh' ? '正在为您加载商品...' : 'Loading products...'}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {displayedProducts.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-gray-500">
                 {lang === 'zh' ? '暂无商品' : 'No products available'}
@@ -123,8 +153,8 @@ export default function ProductGrid({
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4 md:gap-6">
-                {paginatedProducts.map((product, index) => (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                {displayedProducts.map((product, index) => (
                   <a key={product.id} href={`/product/${product.id}`} className="block group h-full">
                     <ProductCard lang={lang} product={product} index={index} />
                   </a>
@@ -136,7 +166,7 @@ export default function ProductGrid({
                   currentPage={currentPage}
                   totalPages={totalPages}
                   onPageChange={setCurrentPage}
-                  totalCount={filteredProducts.length}
+                  totalCount={totalCount}
                   lang={lang}
                 />
               )}

@@ -10,9 +10,10 @@ import type {
   CustomPage
 } from '../types';
 
-// const API_BASE = 
+const isLocalDev = import.meta.env.PUBLIC_IS_LOCAL_DEV === "true" && import.meta.env.DEV;
+
 const API_BASE = (
-  import.meta.env.PUBLIC_IS_LOCAL_DEV === "true" ? import.meta.env.PUBLIC_API_BASE_URL_LOCAL : import.meta.env.PUBLIC_API_BASE_URL
+  isLocalDev ? import.meta.env.PUBLIC_API_BASE_URL_LOCAL : import.meta.env.PUBLIC_API_BASE_URL
 ).replace(/\/$/, '');
 
 // const API_BASE = (
@@ -73,10 +74,12 @@ async function request<T>(
 // 分页响应类型
 interface PaginatedResponse<T> {
   data: T[];
-  total: number;
-  page: number;
-  pageSize: number;
-  totalPages: number;
+  pagination: {
+    page: number;
+    pageSize: number;
+    total: number;
+    totalPages: number;
+  };
 }
 
 // 商品列表查询参数
