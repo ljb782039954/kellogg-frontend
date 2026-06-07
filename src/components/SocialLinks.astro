@@ -1,5 +1,6 @@
 ---
-import { Facebook, Instagram, Twitter, Youtube, Linkedin, Music2, Phone, Globe, MessageSquare } from 'lucide-react';
+import { Music2, Globe, MessageSquare } from 'lucide-react';
+import { FaWhatsapp, FaFacebook, FaTwitter, FaInstagram,FaYoutube,FaLinkedin} from "react-icons/fa";
 import type { SocialMediaType } from '../types/baseEditor';
 
 interface Props {
@@ -9,13 +10,13 @@ interface Props {
 const { socialLinks } = Astro.props;
 
 const SOCIAL_ICONS: Record<string, any> = {
-  facebook: Facebook,
-  instagram: Instagram,
-  twitter: Twitter,
-  youtube: Youtube,
-  linkedin: Linkedin,
+  facebook: FaFacebook,
+  instagram: FaInstagram,
+  twitter: FaTwitter,
+  youtube: FaYoutube,
+  linkedin: FaLinkedin,
   tiktok: Music2,
-  whatsapp: Phone,
+  whatsapp: FaWhatsapp,
   wechat: MessageSquare,
   weibo: Globe,
 };

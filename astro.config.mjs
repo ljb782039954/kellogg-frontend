@@ -10,8 +10,15 @@ export default defineConfig({
   output: 'static',
   integrations: [react()],
 
+  // vite: {
+  //   plugins: [tailwindcss()]
+  // },
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    ssr: {
+      // Force Vite to bundle react-icons on SSR
+      noExternal: ['react-icons']
+    }
   },
 
   adapter: cloudflare()
