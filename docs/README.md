@@ -10,9 +10,11 @@ Astro 6 + React 19 SSR，部署于 Cloudflare Workers。
 components/
 ├── blocks/        22种积木块组件（React Island 或纯 Astro）
 ├── Header/        导航（React Island，含语言/货币切换）
-├── product/       商品卡片/详情/网格（ProductGrid 含筛选排序分页）
-├── DynamicRenderer.astro  积木块渲染引擎入口
+├── product/       商品卡片/详情数据/自定义字段数据
 └── Footer.astro + TawkChat.astro
+functions/
+├── DynamicRenderer.astro  积木块渲染引擎入口
+└── 
 layouts/Layout.astro  全局布局（SEO/站点数据加载/语言检测）
 lib/
 ├── api.ts         所有后端请求封装

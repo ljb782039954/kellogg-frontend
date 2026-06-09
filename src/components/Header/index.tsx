@@ -4,6 +4,7 @@ import { Coins } from 'lucide-react';
 import { useStore } from '@nanostores/react';
 import { $currency, $rates } from '../../lib/currency';
 import { CurrencyService } from '../../services/currencyService';
+import OptimizedImage from '../ui/OptimizedImage';
 import { t } from '../../utils/common';
 import type { CompanyInfo, HeaderContent, Language } from '../../types';
 
@@ -57,7 +58,7 @@ export default function Header({
           {/* Logo */}
           <a href="/" className="flex items-center gap-2">
             {companyInfo.logo && (
-              <img src={companyInfo.logo} alt="Logo" className="w-8 h-8 md:w-10 md:h-10 object-contain" />
+              <OptimizedImage src={companyInfo.logo} alt="Logo" width={80} className="w-8 h-8 md:w-10 md:h-10 object-contain" />
             )}
             <span className={`text-base md:text-lg lg:text-xl font-bold tracking-wider ${style.text}`}>
               {t(companyInfo.name, lang)}

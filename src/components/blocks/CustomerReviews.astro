@@ -5,6 +5,7 @@
  * as a single-column left-media / right-text card list.
  */
 import type { Language } from "../../types";
+import OptimizedImage from "../ui/OptimizedImage.astro";
 import { api } from "../../lib/api";
 import { createTranslate } from "../../lib/i18n";
 
@@ -81,10 +82,10 @@ function extractYoutubeId(url: string): string | null {
                 </div>
               ) : review.media_url ? (
                 <div class="w-full aspect-video rounded-2xl overflow-hidden shadow-md">
-                  <img
+                  <OptimizedImage
                     src={review.media_url}
                     alt={`${review.client_name} review`}
-                    loading="lazy"
+                    width={800}
                     class="w-full h-full object-cover"
                   />
                 </div>

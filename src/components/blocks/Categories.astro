@@ -1,5 +1,6 @@
 ---
 import type { Category, Language } from "../../types";
+import OptimizedImage from "../ui/OptimizedImage.astro";
 import { createTranslate } from "../../lib/i18n";
 
 interface Props {
@@ -29,10 +30,11 @@ const displayCategories = showAll ? categories : categories.slice(0, maxItems);
               group-hover:shadow-md group-hover:scale-105 transition-all
             "
               >
-                <img
+                <OptimizedImage
                   src={cat.image}
                   alt={t(cat.name)}
-                  class="w-full h-full object-cover text-gray-600 group-hover:text-primary transition-colors"
+                  width={120}
+                  class="w-full h-full object-cover"
                 />
               </div>
               <span class="text-sm font-medium group-hover:text-primary transition-colors">

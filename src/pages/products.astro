@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { api } from "../lib/api";
 import { SiteService } from "../services/siteService";
-import DynamicRenderer from "../components/DynamicRenderer.astro";
+import DynamicRenderer from "../functions/DynamicRenderer.astro";
 
 // 1. 设置 CDN 缓存 (1 小时)
 Astro.response.headers.set('Cache-Control', 'public, max-age=3600, s-maxage=3600');

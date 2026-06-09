@@ -2,6 +2,7 @@
 import type { Translation, Language } from "../../types";
 import { createTranslate } from "../../lib/i18n";
 import SectionHeader from "../SectionHeader.astro";
+import OptimizedImage from "../ui/OptimizedImage.astro";
 
 interface Partner {
   id?: string;
@@ -32,7 +33,7 @@ const t = createTranslate(lang);
             class="w-32 h-16 bg-white rounded-lg flex items-center justify-center shadow-sm hover:shadow-md transition-shadow grayscale hover:grayscale-0 cursor-pointer"
           >
             {partner.logo ? (
-              <img src={partner.logo} alt={partner.name} class="max-w-[80%] max-h-[80%] object-contain" />
+              <OptimizedImage src={partner.logo} alt={partner.name} width={200} class="max-w-[80%] max-h-[80%] object-contain" />
             ) : (
               <div
                 class="text-xl font-bold"

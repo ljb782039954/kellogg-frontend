@@ -36,12 +36,12 @@ export default function MobileNav({ navItems, lang, pathname, onNavigate, textSt
               <a 
                 href={hasDropdown ? '#' : targetHref}
                 onClick={(e) => {
-                   if (hasDropdown) {
-                     e.preventDefault();
-                     toggleExpand(itemId);
-                   } else {
-                     onNavigate();
-                   }
+                    if (hasDropdown) {
+                      e.preventDefault();
+                      toggleExpand(itemId);
+                    } else {
+                      onNavigate();
+                    }
                 }}
                 className={`flex-1 text-lg font-bold py-2 ${textStyle} ${pathname === targetHref ? 'opacity-100' : 'opacity-70'}`}
               >

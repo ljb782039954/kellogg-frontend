@@ -2,6 +2,7 @@
 export const prerender = true;
 
 import Layout from "../../layouts/Layout.astro";
+import OptimizedImage from "../../components/ui/OptimizedImage.astro";
 import { api } from "../../lib/api";
 import { SiteService } from "../../services/siteService";
 import type { Blog, BlogSummary } from "../../types";
@@ -129,9 +130,10 @@ try {
     blog.cover_image && (
       <div class="max-w-7xl mx-auto px-6 mb-8">
         <div class="w-full h-64 md:h-96 rounded-2xl overflow-hidden">
-          <img
+          <OptimizedImage
             src={blog.cover_image}
             alt={title}
+            width={1200}
             class="w-full h-full object-cover"
           />
         </div>
@@ -258,11 +260,11 @@ try {
                   <a href={`/blog/${b.slug}`} class="flex gap-3 group">
                     <div class="w-14 h-14 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                       {b.cover_image ? (
-                        <img
+                        <OptimizedImage
                           src={b.cover_image}
                           alt={getBlogTitle(b)}
+                          width={100}
                           class="w-full h-full object-cover"
-                          loading="lazy"
                         />
                       ) : (
                         <div class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200" />
@@ -308,11 +310,11 @@ try {
               >
                 <div class="aspect-[16/9] bg-gray-100 overflow-hidden">
                   {b.cover_image ? (
-                    <img
+                    <OptimizedImage
                       src={b.cover_image}
                       alt={getBlogTitle(b)}
+                      width={600}
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
                     />
                   ) : (
                     <div class="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100" />

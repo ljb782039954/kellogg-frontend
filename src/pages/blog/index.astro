@@ -2,6 +2,7 @@
 export const prerender = true;
 
 import Layout from "../../layouts/Layout.astro";
+import OptimizedImage from "../../components/ui/OptimizedImage.astro";
 import { api } from "../../lib/api";
 import { SiteService } from "../../services/siteService";
 import type { BlogSummary, Language } from "../../types";
@@ -127,10 +128,10 @@ const blogSEO = blogPageDetail?.seo || {
             <!-- Cover -->
             <div class="overflow-hidden aspect-[16/9] bg-gray-100">
               {blog.cover_image ? (
-                <img
+                <OptimizedImage
                   src={blog.cover_image}
                   alt={getBlogTitle(blog)}
-                  loading="lazy"
+                  width={600}
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               ) : (

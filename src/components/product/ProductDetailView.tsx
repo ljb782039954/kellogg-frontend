@@ -181,7 +181,7 @@ export default function ProductDetailView({ product, lang }: Props) {
                     }`}
                   >
                     {color.image ? (
-                      <img src={color.image} alt="" className="w-full h-full object-cover rounded-full" />
+                      <OptimizedImage src={color.image} alt="" width={80} className="w-full h-full object-cover rounded-full" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-full text-[10px] font-bold uppercase">
                         {t(color.name, lang).slice(0, 2)}

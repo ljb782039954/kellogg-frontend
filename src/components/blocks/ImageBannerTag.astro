@@ -1,4 +1,5 @@
 ---
+import { api } from "../../lib/api";
 import type { Translation, Language } from "../../types";
 import { createTranslate } from "../../lib/i18n";
 import { Sparkles } from "lucide-react";
@@ -13,12 +14,13 @@ interface Props {
 
 const { tag, title, subtitle, image, lang } = Astro.props;
 const t = createTranslate(lang);
+const optimizedBgImage = image ? api.getOptimizedImageUrl(image, 1920) : '';
 ---
 
 <section class="relative h-[40vh] flex items-center justify-center overflow-hidden bg-gray-900">
   <div
     class="absolute inset-0 bg-cover bg-center opacity-40"
-    style={`background-image: url('${image}')`}
+    style={`background-image: url('${optimizedBgImage}')`}
   ></div>
   <div class="relative z-10 text-center px-4">
     <div class="flex items-center justify-center gap-2 mb-4">
@@ -30,7 +32,7 @@ const t = createTranslate(lang);
     <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
       {title ? t(title) : ''}
     </h1>
-    <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto font-light">
+    <p class="text-lg md:text-xl text-white max-w-2xl mx-auto font-light">
       {subtitle ? t(subtitle) : ''}
     </p>
   </div>

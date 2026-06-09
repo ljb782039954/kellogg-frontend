@@ -2,6 +2,7 @@
 import { Star, } from "lucide-react";
 import type { Translation, Language } from "../../types";
 import SectionHeader from "../SectionHeader.astro";
+import OptimizedImage from "../ui/OptimizedImage.astro";
 import { createTranslate } from "../../lib/i18n";
 
 interface Testimonial {
@@ -42,9 +43,10 @@ const t = createTranslate(lang);
               <div class="flex items-center gap-3 mb-3">
                 <div class="w-10 h-10 bg-gray-200 rounded-full overflow-hidden">
                   {item.avatar && (
-                    <img
+                    <OptimizedImage
                       src={item.avatar}
                       alt=""
+                      width={80}
                       class="w-full h-full object-cover"
                     />
                   )}

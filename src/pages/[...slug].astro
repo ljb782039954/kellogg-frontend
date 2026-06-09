@@ -4,7 +4,7 @@ export const prerender = true;
 import Layout from "../layouts/Layout.astro";
 import { api } from "../lib/api";
 import { SiteService } from "../services/siteService";
-import DynamicRenderer from "../components/DynamicRenderer.astro";
+import DynamicRenderer from "../functions/DynamicRenderer.astro";
 
 export async function getStaticPaths() {
   // 在构建时获取所有站点数据

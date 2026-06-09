@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import * as LucideIcons from 'lucide-react';
+import OptimizedImage from '../ui/OptimizedImage';
 import type { Translation, Language } from "../../types";
 
 interface GalleryItem {
@@ -58,9 +59,10 @@ export default function GalleryLightbox({ items, lang, initialIndex, onClose }: 
       </button>
 
       <div className="max-w-5xl max-h-[85vh] p-4 flex flex-col items-center">
-        <img
+        <OptimizedImage
           src={items[currentIndex].src}
           alt={t(items[currentIndex].caption)}
+          width={1200}
           className="max-w-full max-h-[75vh] object-contain shadow-2xl animate-in zoom-in-95 duration-300"
           onClick={(e) => e.stopPropagation()}
         />

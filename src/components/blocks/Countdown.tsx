@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import OptimizedImage from '../ui/OptimizedImage';
 import type { Translation, Language } from "../../types";
 
 export interface CountdownValues {
@@ -44,9 +45,10 @@ export default function Countdown({ title, subtitle, values, lang }: CountdownPr
 
   return (
     <div className="relative py-16 overflow-hidden text-center">
-      <img
+      <OptimizedImage
         src={values?.backgroundImage}
         alt=""
+        width={1920}
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-r from-red-600/90 to-orange-500/90" />

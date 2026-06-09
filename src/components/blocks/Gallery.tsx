@@ -103,9 +103,10 @@ export default function Gallery({ title, subtitle, items = [], lang }: GalleryPr
             >
               <LucideIcons.ChevronLeft className="w-12 h-12" />
             </button>
-            <img
+            <OptimizedImage
               src={items[selectedImage].src}
               alt={t(items[selectedImage].caption)}
+              width={1200}
               className="max-w-4xl max-h-[80vh] object-contain"
               onClick={(e) => e.stopPropagation()}
             />

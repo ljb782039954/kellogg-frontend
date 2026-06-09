@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { SlidersHorizontal } from 'lucide-react';
 import type { Product, Category, SortOption, Language } from '../../types';
-import ProductCard from './ProductCard';
-import Pagination from '../Pagination';
+import ProductCard from '../product/ProductCard';
+import Pagination from '../base/Pagination';
 import { t } from '../../utils/common';
 import { api } from '../../lib/api';
 
@@ -28,8 +28,8 @@ export default function ProductGrid({
   totalProducts: initialTotal = 0,
   lang,
 }: ProductGridProps) {
-  // 强控每页显示 12 个商品，以在各种屏幕下对齐美学实现闭环（4x3=12, 3x4=12, 2x6=12）
-  const currentItemsPerPage = 12;
+  // 读取后台配置的每页显示数量，若未指定则默认显示 12 个
+  const currentItemsPerPage = defaultItemsPerPage || 12;
 
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('newest');

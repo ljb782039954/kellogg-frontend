@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import type { Language } from '../types';
+import type { Language } from '../../types';
 
 interface PaginationProps {
   currentPage: number;

@@ -3,28 +3,28 @@ import type { CustomPage, Language } from "../types";
 import { api } from "../lib/api";
 
 // 导入积木块
-import ImageBanner from "./blocks/ImageBanner.astro";
-import TextSection from "./blocks/TextSection.astro";
-import Carousel from "./blocks/Carousel";
-import Categories from "./blocks/Categories.astro";
-import ProductGrid from "./product/ProductGrid";
-import FeaturedProducts from "./blocks/FeaturedProducts.astro";
-import InquirySection from "./blocks/InquirySection";
-import BrandValues from "./blocks/BrandValues.astro";
-import Statistics from "./blocks/Statistics";
-import Testimonials from "./blocks/Testimonials.astro";
-import FAQ from "./blocks/FAQ";
-import ImageText from "./blocks/ImageText.astro";
-import CtaBanner from "./blocks/CtaBanner.astro";
-import FeatureList from "./blocks/FeatureList.astro";
-import NewArrivals from "./blocks/NewArrivals.astro";
-import Countdown from "./blocks/Countdown";
-import Gallery from "./blocks/Gallery";
-import ImageBannerTag from "./blocks/ImageBannerTag.astro";
-import ImageFull from "./blocks/ImageFull";
-import PartnerLogos from "./blocks/PartnerLogos.astro";
-import VideoSection from "./blocks/VideoSection.astro";
-import CaseStudies from "./blocks/CustomerReviews.astro";
+import ImageBanner from "../components/blocks/ImageBanner.astro";
+import TextSection from "../components/blocks/TextSection.astro";
+import Carousel from "../components/blocks/Carousel";
+import Categories from "../components/blocks/Categories.astro";
+import ProductGrid from "../components/blocks/ProductGrid";
+import FeaturedProducts from "../components/blocks/FeaturedProducts.astro";
+import InquirySection from "../components/blocks/InquirySection";
+import BrandValues from "../components/blocks/BrandValues.astro";
+import Statistics from "../components/blocks/Statistics";
+import Testimonials from "../components/blocks/Testimonials.astro";
+import FAQ from "../components/blocks/FAQ";
+import ImageText from "../components/blocks/ImageText.astro";
+import CtaBanner from "../components/blocks/CtaBanner.astro";
+import FeatureList from "../components/blocks/FeatureList.astro";
+import NewArrivals from "../components/blocks/NewArrivals.astro";
+import Countdown from "../components/blocks/Countdown";
+import Gallery from "../components/blocks/Gallery";
+import ImageBannerTag from "../components/blocks/ImageBannerTag.astro";
+import ImageFull from "../components/blocks/ImageFull";
+import PartnerLogos from "../components/blocks/PartnerLogos.astro";
+import VideoSection from "../components/blocks/VideoSection.astro";
+import CaseStudies from "../components/blocks/CustomerReviews.astro";
 
 interface Props {
   schema: CustomPage;
@@ -37,7 +37,8 @@ const enabledBlocks = schema.blocks.filter((block) => block.isVisible);
 // 数据注入逻辑 (在服务端预先获取数据)
 const getBlockData = async (blockType: string, content: any) => {
   if (blockType === 'productGrid') {
-    const params: any = { pageSize: 12, page: 1 };
+    const pageSize = content.itemsPerPage || 12;
+    const params: any = { pageSize, page: 1 };
     if (content.category && content.category !== 'all') {
       params.category = content.category;
     }
