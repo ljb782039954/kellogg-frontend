@@ -9,14 +9,16 @@ test("sanitizeCmsHtml removes executable markup and unsafe URLs", () => {
   const html = sanitizeCmsHtml(`
     <p onclick="alert(1)">Hello <strong>world</strong></p>
     <script>alert(1)</script>
+    <style>body { display: none }</style>
     <img src="x" onerror="alert(1)">
+    <img src="data:text/html,danger">
     <a href="javascript:alert(1)" target="_blank">bad</a>
     <a href="https://example.com" target="_blank">good</a>
   `);
 
   assert.match(html, /<strong>world<\/strong>/);
   assert.doesNotMatch(html, /<script/i);
-  assert.doesNotMatch(html, /onclick|onerror|javascript:/i);
+  assert.doesNotMatch(html, /<style|display: none|onclick|onerror|javascript:|data:text/i);
   assert.match(html, /rel="noopener noreferrer"/);
 });
 

@@ -4,6 +4,7 @@ import { Coins } from 'lucide-react';
 import { useStore } from '@nanostores/react';
 import { $currency, $rates } from '../../lib/currency';
 import { CurrencyService } from '../../services/currencyService';
+import { getHydrationSafeRates } from '../../lib/hydrationState';
 import OptimizedImage from '../ui/OptimizedImage';
 import { t } from '../../utils/common';
 import type { CompanyInfo, HeaderContent, Language } from '../../types';
@@ -30,6 +31,7 @@ export default function Header({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const currency = useStore($currency);
   const rates = useStore($rates);
+  const effectiveRates = getHydrationSafeRates(rates, initialRates);
 
   // 初始化逻辑转移到 Service
   useEffect(() => {
@@ -71,7 +73,7 @@ export default function Header({
           {/* Right Actions */}
           <HeaderActions 
             currency={currency}
-            rates={rates}
+            rates={effectiveRates}
             lang={lang}
             companyInfo={companyInfo}
             isMobileMenuOpen={isMobileMenuOpen}
@@ -103,7 +105,7 @@ export default function Header({
                         onChange={(e) => CurrencyService.switchCurrency(e.target.value)}
                         className="bg-transparent appearance-none border-none outline-none cursor-pointer font-bold"
                       >
-                        {(rates ? Object.keys(rates) : ['USD', 'CNY']).map(cur => (
+                        {(effectiveRates ? Object.keys(effectiveRates) : ['USD', 'CNY']).map(cur => (
                           <option key={cur} value={cur} className="text-gray-900 bg-white">{cur}</option>
                         ))}
                       </select>

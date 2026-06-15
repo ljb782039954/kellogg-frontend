@@ -1,6 +1,5 @@
-import type { Language, Translation } from "../types";
-import { createTranslate } from "../lib/i18n";
-import RichText from "./RichText";
+import type { Language, Translation } from "../../types";
+import { createTranslate } from "../../lib/i18n";
 
 export interface SectionHeaderProps {
   title: Translation;
@@ -24,12 +23,7 @@ export default function SectionHeader({
   return (
     <div className={["text-center mb-12 max-w-2xl mx-auto", className].filter(Boolean).join(" ")}>
       <h2 className={`text-2xl md:text-4xl font-bold mb-4 ${titleClass}`}>{t(title)}</h2>
-      {subtitle && (
-        <RichText
-          value={t(subtitle)}
-          className={`text-md md:text-lg content-rich-text ${subtitleClass}`}
-        />
-      )}
+      <p className={`text-lg md:text-xl max-w-2xl mx-auto ${subtitleClass} `}>{subtitle ? t(subtitle) : ""}</p>
     </div>
   );
 }

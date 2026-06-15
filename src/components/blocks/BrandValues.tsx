@@ -2,8 +2,8 @@ import * as LucideIcons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { Language, Translation } from "../../types";
 import { createTranslate } from "../../lib/i18n";
-import RichText from "../RichText";
-import SectionHeader from "../SectionHeader";
+import RichText from "../base/RichText";
+import SectionHeader from "../base/SectionHeader";
 
 export interface BrandValue {
   id: number;

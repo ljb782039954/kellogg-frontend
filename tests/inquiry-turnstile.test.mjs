@@ -13,6 +13,7 @@ test("inquiry forms render Turnstile with the expected action", async () => {
 
   assert.match(widget, /data-action="turnstile-spin-v1"/);
   assert.match(widget, /action:\s*["']turnstile-spin-v1["']/);
+  assert.match(widget, /0x4AAAAAADlOjyIsNJkg69Te/);
   assert.match(blockForm, /<TurnstileWidget/);
   assert.match(pageForm, /<TurnstileWidget/);
 });

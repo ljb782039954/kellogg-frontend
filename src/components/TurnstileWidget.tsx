@@ -17,11 +17,13 @@ declare global {
 
 const SCRIPT_ID = "cloudflare-turnstile-script";
 const TEST_SITE_KEY = "1x00000000000000000000AA";
+const PRODUCTION_SITE_KEY = "0x4AAAAAADlOjyIsNJkg69Te";
 
 export default function TurnstileWidget({ onTokenChange, resetKey = 0, lang = "en" }: TurnstileWidgetProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | undefined>(undefined);
-  const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || (import.meta.env.DEV ? TEST_SITE_KEY : "");
+  const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY
+    || (import.meta.env.DEV ? TEST_SITE_KEY : PRODUCTION_SITE_KEY);
 
   useEffect(() => {
     if (!siteKey || !containerRef.current) return;
@@ -63,8 +65,6 @@ export default function TurnstileWidget({ onTokenChange, resetKey = 0, lang = "e
       }
     };
   }, [lang, onTokenChange, resetKey, siteKey]);
-
-  if (!siteKey) return <p className="text-sm text-red-600">Turnstile site key is not configured.</p>;
 
   return <div ref={containerRef} data-action="turnstile-spin-v1" className="min-h-[65px]" />;
 }

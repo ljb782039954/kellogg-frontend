@@ -2,7 +2,7 @@ import { Star } from "lucide-react";
 import type { Language, Translation } from "../../types";
 import { createTranslate } from "../../lib/i18n";
 import OptimizedImage from "../ui/OptimizedImage";
-import SectionHeader from "../SectionHeader";
+import SectionHeader from "../base/SectionHeader";
 
 export interface Testimonial {
   id: number;

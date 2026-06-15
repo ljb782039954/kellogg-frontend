@@ -1,4 +1,4 @@
-import { getSafeVideoSource } from "../lib/video";
+import { getSafeVideoSource } from "../../lib/video";
 
 interface ProductVideoProps {
   url: string;

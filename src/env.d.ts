@@ -8,6 +8,8 @@ declare namespace App {
   }
 }
 
-interface Window {
-  __EXCHANGE_RATES__: Record<string, number> | undefined;
+declare global {
+  interface Window {
+    __EXCHANGE_RATES__?: Record<string, number>;
+  }
 }

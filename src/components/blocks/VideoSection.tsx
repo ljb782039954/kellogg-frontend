@@ -1,6 +1,6 @@
 import type { Language, Translation } from "../../types";
 import { createTranslate } from "../../lib/i18n";
-import ProductVideo from "../ProductVideo";
+import ProductVideo from "../base/ProductVideo";
 
 export interface VideoSectionValues {
   videoUrl?: string;
