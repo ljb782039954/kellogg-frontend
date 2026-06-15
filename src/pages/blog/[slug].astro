@@ -7,6 +7,7 @@ import { api } from "../../lib/api";
 import { SiteService } from "../../services/siteService";
 import type { Blog, BlogSummary } from "../../types";
 import "../../styles/blog-prose.css";
+import { sanitizeCmsHtml } from "../../lib/contentSecurity";
 
 // ---- Generate static paths from all published blogs ----
 export async function getStaticPaths() {
@@ -94,10 +95,10 @@ const readingTime = Math.max(1, Math.round(words));
 let htmlContent = "";
 try {
   const { marked } = await import("marked");
-  htmlContent = await marked.parse(content || "");
+  htmlContent = sanitizeCmsHtml(await marked.parse(content || ""));
 } catch {
   // Fallback: basic markdown conversion
-  htmlContent = (content || "")
+  htmlContent = sanitizeCmsHtml((content || "")
     .replace(/^### (.+)$/gm, "<h3>$1</h3>")
     .replace(/^## (.+)$/gm, "<h2>$1</h2>")
     .replace(/^# (.+)$/gm, "<h1>$1</h1>")
@@ -105,7 +106,7 @@ try {
     .replace(/\*(.+?)\*/g, "<em>$1</em>")
     .replace(/\n\n/g, "</p><p>")
     .replace(/^/, "<p>")
-    .replace(/$/, "</p>");
+    .replace(/$/, "</p>"));
 }
 ---
 

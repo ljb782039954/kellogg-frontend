@@ -4,19 +4,15 @@ import { api } from "../../lib/api";
 import { SiteService } from "../../services/siteService";
 import ProductDetailView from "../../components/product/ProductDetailView";
 import ProductCustomFields from "../../components/product/ProductCustomFields.astro";
-import ProductCard from "../../components/product/ProductCard.astro";
+import ProductCard from "../../components/product/ProductCardStatic";
 import SectionHeader from "../../components/SectionHeader";
+import ProductVideo from "../../components/ProductVideo";
 import type { Language, Product } from "../../types";
 import { createTranslate } from "../../lib/i18n";
 
-export const prerender = true; // SSG
+export const prerender = false;
 
-export async function getStaticPaths() {
-  const productsRes = await api.getProducts({ pageSize: 1000 });
-  return productsRes.data.map((p) => ({
-    params: { id: String(p.id) },
-  }));
-}
+Astro.response.headers.set('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=600');
 
 const { id } = Astro.params;
 const { lang } = await SiteService.getSiteData(Astro);
@@ -75,16 +71,7 @@ const seo = {
           <div class="max-w-4xl mx-auto">
             <SectionHeader lang={lang} title={{ zh: '视频展示', en: 'Video Showcase' }} theme="light" />
             <div class="grid grid-cols-1 gap-12 mt-12">
-              {product.videos.map((vid) => (
-                <div class="aspect-video rounded-[40px] overflow-hidden shadow-2xl bg-black">
-                  <iframe
-                    src={vid}
-                    class="w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                  ></iframe>
-                </div>
-              ))}
+              {product.videos.map((vid) => <ProductVideo url={vid} />)}
             </div>
           </div>
         </section>
@@ -113,7 +100,7 @@ const seo = {
           <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
             {relatedProducts.map((p) => (
               <a href={`/product/${p.id}`} class="block h-full">
-                <ProductCard product={p as any} lang={lang} />
+                <ProductCard product={p} lang={lang} />
               </a>
             ))}
           </div>

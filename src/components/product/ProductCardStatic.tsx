@@ -6,10 +6,33 @@ import OptimizedImage from "../ui/OptimizedImage";
 interface ProductCardStaticProps {
   product: Product;
   lang: Language;
+  variant?: "standard" | "arrival";
+  priceText?: string;
 }
 
-export default function ProductCardStatic({ product, lang }: ProductCardStaticProps) {
+export default function ProductCardStatic({ product, lang, variant = "standard", priceText }: ProductCardStaticProps) {
   const bulkPrice = product.bulkPrices?.[0];
+  const displayPrice = priceText || formatPrice(bulkPrice?.price ?? product.price);
+
+  if (variant === "arrival") {
+    return (
+      <div className="group">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-gray-100 mb-6">
+          <OptimizedImage src={product.image} alt={t(product.name, lang)} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" width={640} />
+          {product.releaseDate && <div className="absolute top-4 left-4 px-4 py-1.5 bg-white/90 backdrop-blur-md rounded-full text-xs font-bold text-gray-900 shadow-sm">{product.releaseDate}</div>}
+          {product.tag && <div className="absolute bottom-4 left-4 px-4 py-1.5 bg-amber-500 text-white rounded-full text-xs font-bold shadow-sm">{t(product.tag, lang)}</div>}
+          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
+        <div className="space-y-2">
+          <div className="flex justify-between items-start gap-4">
+            <h3 className="text-xl font-bold text-gray-900 group-hover:text-amber-600 transition-colors">{t(product.name, lang)}</h3>
+            <span className="text-lg font-medium text-gray-500 whitespace-nowrap">{formatPrice(product.price)}</span>
+          </div>
+          <p className="text-sm text-gray-400 capitalize">{typeof product.category === "string" ? product.category : t(product.category, lang)}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1 group h-full flex flex-col">
@@ -29,7 +52,7 @@ export default function ProductCardStatic({ product, lang }: ProductCardStaticPr
               <p className="text-xs md:text-sm font-semibold text-gray-400 uppercase group-hover:text-amber-600 transition-colors">
                 {bulkPrice.maxQty ? `${bulkPrice.minQty}-${bulkPrice.maxQty} PCS` : `${bulkPrice.minQty}+ PCS`}
               </p>
-              <p className="text-sm md:text-base font-bold text-gray-900">{formatPrice(bulkPrice.price)}</p>
+              <p className="text-sm md:text-base font-bold text-gray-900" data-base-price={bulkPrice.price}>{displayPrice}</p>
             </>
           )}
         </div>

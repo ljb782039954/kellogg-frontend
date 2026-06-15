@@ -1,68 +1,87 @@
-
 import type { Translation } from "./common";
+import type { BrandValuesProps } from "../components/blocks/BrandValues";
+import type { CarouselProps } from "../components/blocks/Carousel";
+import type { CategoriesProps } from "../components/blocks/Categories";
+import type { CountdownProps } from "../components/blocks/Countdown";
+import type { CtaBannerProps } from "../components/blocks/CtaBanner";
+import type { FAQProps } from "../components/blocks/FAQ";
+import type { FeaturedProductsProps } from "../components/blocks/FeaturedProducts";
+import type { FeatureListProps } from "../components/blocks/FeatureList";
+import type { GalleryProps } from "../components/blocks/Gallery";
+import type { ImageBannerProps } from "../components/blocks/ImageBanner";
+import type { ImageBannerTagProps } from "../components/blocks/ImageBannerTag";
+import type { ImageFullProps } from "../components/blocks/ImageFull";
+import type { ImageTextProps } from "../components/blocks/ImageText";
+import type { NewArrivalsProps } from "../components/blocks/NewArrivals";
+import type { PartnerLogosProps } from "../components/blocks/PartnerLogos";
+import type { ProductGridProps } from "../components/blocks/ProductGrid";
+import type { StatisticProps } from "../components/blocks/Statistics";
+import type { TestimonialsProps } from "../components/blocks/Testimonials";
+import type { TextSectionProps } from "../components/blocks/TextSection";
+import type { VideoSectionProps } from "../components/blocks/VideoSection";
 
-// ============================================
-// 积木块系统 (Block-based System)
-// ============================================
+type WithoutLang<T> = Omit<T, "lang">;
 
-export type BlockType =
-  | 'carousel'
-  | 'categories'
-  | 'caseStudies'
-  | 'newArrivals'
-  | 'featuredProducts'
-  | 'productGrid'
-  | 'brandValues'
-  | 'statistics'
-  | 'testimonials'
-  | 'faq'
-  | 'textSection'
-  | 'imageFull' 
-  | 'inquiry' 
-  | 'imageBanner'
-  | 'imageBannerTag'
-  | 'videoSection'
-  | 'imageText'
-  | 'ctaBanner'
-  | 'countdown'
-  | 'partnerLogos'
-  | 'gallery'
-  | 'featureList';
+export interface BlockContentMap {
+  carousel: WithoutLang<CarouselProps>;
+  categories: Omit<CategoriesProps, "lang" | "categories">;
+  caseStudies: Record<string, never>;
+  newArrivals: Omit<NewArrivalsProps, "lang" | "products">;
+  featuredProducts: Omit<FeaturedProductsProps, "lang" | "products" | "initialProducts">;
+  productGrid: Omit<ProductGridProps, "lang" | "categories" | "products" | "totalProducts"> & { category?: string };
+  brandValues: WithoutLang<BrandValuesProps>;
+  statistics: WithoutLang<StatisticProps>;
+  testimonials: WithoutLang<TestimonialsProps>;
+  faq: WithoutLang<FAQProps>;
+  textSection: WithoutLang<TextSectionProps>;
+  imageFull: WithoutLang<ImageFullProps>;
+  inquiry: Record<string, never>;
+  imageBanner: WithoutLang<ImageBannerProps>;
+  imageBannerTag: WithoutLang<ImageBannerTagProps>;
+  videoSection: WithoutLang<VideoSectionProps>;
+  imageText: WithoutLang<ImageTextProps>;
+  ctaBanner: WithoutLang<CtaBannerProps>;
+  countdown: WithoutLang<CountdownProps>;
+  partnerLogos: WithoutLang<PartnerLogosProps>;
+  gallery: WithoutLang<GalleryProps>;
+  featureList: WithoutLang<FeatureListProps>;
+}
 
-// 组件分类
-export type ComponentCategory = 'product' | 'marketing' | 'content' | 'media';
+export type BlockType = keyof BlockContentMap;
+export type ComponentCategory = "product" | "marketing" | "content" | "media";
 
-// 组件元数据
-export interface ComponentMeta {
-  type: BlockType;
+export interface ComponentMeta<T extends BlockType = BlockType> {
+  type: T;
   name: Translation;
   description: Translation;
-  icon: string;  // lucide 图标名称
+  icon: string;
   category: ComponentCategory;
-  hasGlobalData: boolean;  // 是否使用全局数据（如商品列表、评价列表等）
-  singleton?: boolean;     // 是否只能添加一个
-  defaultProps: any;
+  hasGlobalData: boolean;
+  singleton?: boolean;
+  defaultProps: Partial<BlockContentMap[T]>;
 }
 
-export interface PageBlock {
-  id: string;          // 唯一ID，用于拖拽排序
-  type: BlockType;     // 组件类型
-  content: any;        // 该组件的具体属性 (统一使用 content)
-  isVisible: boolean;   // 是否可见 (统一使用 isVisible)
-}
+export type PageBlock = {
+  [T in BlockType]: {
+    id: string;
+    type: T;
+    content: BlockContentMap[T];
+    isVisible: boolean;
+  };
+}[BlockType];
 
 export interface CustomPage {
-  id: string;          // 页面标识ID (如 'home')
-  path: string;        // 路由地址 (如 '/', '/products')
-  title: Translation;  // 页面名称/标题
-  isFixed: boolean;    // 是否为固定系统页面 (不可删除)
-  type?: 'fixed-block' | 'dynamic-block' | 'fixed-layout'; // 显式页面类型
-  content?: any;       // 页面配置内容
-  blocks: PageBlock[]; // 存放积木块数组
+  id: string;
+  path: string;
+  title: Translation;
+  isFixed: boolean;
+  type?: "fixed-block" | "dynamic-block" | "fixed-layout";
+  content?: unknown;
+  blocks: PageBlock[];
   seo?: {
     title: Translation;
     description: Translation;
     keywords?: Translation;
-    targetCountry?: string; // 用于 GEO 优化，例如 "USA", "UK"
+    targetCountry?: string;
   };
 }

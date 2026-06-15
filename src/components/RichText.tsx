@@ -1,4 +1,5 @@
 import { marked } from "marked";
+import { sanitizeCmsHtml } from "../lib/contentSecurity";
 
 interface RichTextProps {
   value?: string;
@@ -16,9 +17,10 @@ export function decodeHtml(value: string): string {
 }
 
 export default function RichText({ value = "", className, inline = false }: RichTextProps) {
-  const html = inline
+  const parsed = inline
     ? marked.parseInline(decodeHtml(value))
     : marked.parse(decodeHtml(value));
+  const html = sanitizeCmsHtml(parsed as string);
 
   return <div className={className} dangerouslySetInnerHTML={{ __html: html as string }} />;
 }

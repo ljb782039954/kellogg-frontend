@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Send, Loader2, CheckCircle2, Phone, Globe, Building2, Package } from 'lucide-react';
 import { useInquiry } from '../../hooks/useInquiry';
 import type { Language } from '../../types';
+import TurnstileWidget from '../TurnstileWidget';
 
 interface Props {
   lang: Language;
@@ -14,6 +15,8 @@ export default function InquirySection({ lang }: Props) {
     isSubmitting,
     isSuccess,
     setIsSuccess,
+    setTurnstileToken,
+    turnstileResetKey,
     handleSubmit,
     config,
     t,
@@ -178,6 +181,8 @@ export default function InquirySection({ lang }: Props) {
                     className="w-full px-5 py-4 bg-gray-50 border-transparent border-2 rounded-2xl focus:bg-white focus:border-gray-900 focus:ring-0 transition-all text-sm min-h-[140px] outline-none"
                   />
                 </div>
+
+                <TurnstileWidget lang={lang} onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
 
                 <button
                   disabled={isSubmitting}

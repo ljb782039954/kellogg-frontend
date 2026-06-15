@@ -1,15 +1,15 @@
-import React, { useMemo } from 'react';
+import type { ImgHTMLAttributes } from 'react';
 import { api } from '../../lib/api';
 import { cn } from '../../lib/utils';
 
-interface OptimizedImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src'> {
+interface OptimizedImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> {
   src: string | null | undefined;
   width?: number;
   height?: number;
   priority?: boolean;
 }
 
-export const OptimizedImage: React.FC<OptimizedImageProps> = ({
+export default function OptimizedImage({
   src,
   width = 800,
   height,
@@ -18,34 +18,18 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   alt = '',
   sizes: propSizes,
   ...props
-}) => {
-  const imageUrl = useMemo(() => {
-    if (!src) return '';
-    return api.getOptimizedImageUrl(src, width);
-  }, [src, width]);
-
-  const srcSet = useMemo(() => {
-    if (!src) return undefined;
-
-    const defaultWidths = [200, 320, 480, 640, 800, 960, 1080, 1280, 1440, 1600, 1920];
-    return defaultWidths
-      .map(w => `${api.getOptimizedImageUrl(src, w)} ${w}w`)
-      .join(', ');
-  }, [src]);
-
-  const sizes = useMemo(() => {
-    if (propSizes) return propSizes;
-    return '(max-width: 768px) 100vw, 33vw';
-  }, [propSizes]);
-
+}: OptimizedImageProps) {
   if (!src) {
     return (
-      <div 
-        className={cn("bg-gray-100 animate-pulse rounded-lg", className)} 
-        style={{ width: width || '100%', height: height || '100%' }} 
-      />
+      <div className={cn('bg-gray-100 animate-pulse rounded-lg', className)} style={{ width: width || '100%', height: height || '100%' }} />
     );
   }
+
+  const imageUrl = api.getOptimizedImageUrl(src, width);
+  const srcSet = [200, 320, 480, 640, 800, 960, 1080, 1280, 1440, 1600, 1920]
+    .map((candidateWidth) => `${api.getOptimizedImageUrl(src, candidateWidth)} ${candidateWidth}w`)
+    .join(', ');
+  const sizes = propSizes || '(max-width: 768px) 100vw, 33vw';
 
   return (
     <img
@@ -56,12 +40,10 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
       height={height}
       alt={alt}
       loading={priority ? 'eager' : 'lazy'}
+      fetchPriority={priority ? 'high' : undefined}
       decoding="async"
-      className={cn("transition-opacity duration-300", className)}
-      style={props.style}
+      className={cn('transition-opacity duration-300', className)}
       {...props}
     />
   );
-};
-
-export default OptimizedImage;
+}

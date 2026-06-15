@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import * as LucideIcons from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { Translation, Language } from "../../types";
 import OptimizedImage from '../ui/OptimizedImage';
@@ -18,6 +18,27 @@ export interface GalleryProps {
 
 export default function Gallery({ title, subtitle, items = [], lang }: GalleryProps) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (selectedImage === null) return;
+    const previousActive = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    closeButtonRef.current?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSelectedImage(null);
+      if (event.key === 'ArrowLeft') setSelectedImage((current) => current === null ? null : (current - 1 + items.length) % items.length);
+      if (event.key === 'ArrowRight') setSelectedImage((current) => current === null ? null : (current + 1) % items.length);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+      previousActive?.focus();
+    };
+  }, [items.length, selectedImage]);
 
   if (!items || items.length === 0) return null;
 
@@ -61,11 +82,13 @@ export default function Gallery({ title, subtitle, items = [], lang }: GalleryPr
           className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 px-4"
         >
           {items.map((img, i) => (
-            <motion.div
+            <motion.button
+              type="button"
               key={i}
               variants={itemVariants}
               className="group relative aspect-square rounded-lg overflow-hidden cursor-pointer"
               onClick={() => setSelectedImage(i)}
+              aria-label={`${lang === 'zh' ? '查看图片' : 'View image'} ${i + 1}: ${t(img.caption)}`}
             >
               <OptimizedImage
                 src={img.src}
@@ -74,11 +97,11 @@ export default function Gallery({ title, subtitle, items = [], lang }: GalleryPr
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-center">
-                  <LucideIcons.ZoomIn className="w-8 h-8 mx-auto mb-2" />
+                  <ZoomIn className="w-8 h-8 mx-auto mb-2" />
                   <span className="text-sm">{t(img.caption)}</span>
                 </div>
               </div>
-            </motion.div>
+            </motion.button>
           ))}
         </motion.div>
 
@@ -87,21 +110,29 @@ export default function Gallery({ title, subtitle, items = [], lang }: GalleryPr
           <div
             className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center"
             onClick={() => setSelectedImage(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label={lang === 'zh' ? '图片预览' : 'Image preview'}
           >
             <button
+              ref={closeButtonRef}
+              type="button"
               className="absolute top-4 right-4 text-white hover:text-gray-300"
               onClick={() => setSelectedImage(null)}
+              aria-label={lang === 'zh' ? '关闭图片预览' : 'Close image preview'}
             >
-              <LucideIcons.X className="w-8 h-8" />
+              <X className="w-8 h-8" />
             </button>
             <button
+              type="button"
               className="absolute left-4 text-white hover:text-gray-300"
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedImage((prev) => (prev! - 1 + items.length) % items.length);
               }}
+              aria-label={lang === 'zh' ? '上一张图片' : 'Previous image'}
             >
-              <LucideIcons.ChevronLeft className="w-12 h-12" />
+              <ChevronLeft className="w-12 h-12" />
             </button>
             <OptimizedImage
               src={items[selectedImage].src}
@@ -111,13 +142,15 @@ export default function Gallery({ title, subtitle, items = [], lang }: GalleryPr
               onClick={(e) => e.stopPropagation()}
             />
             <button
+              type="button"
               className="absolute right-4 text-white hover:text-gray-300"
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedImage((prev) => (prev! + 1) % items.length);
               }}
+              aria-label={lang === 'zh' ? '下一张图片' : 'Next image'}
             >
-              <LucideIcons.ChevronRight className="w-12 h-12" />
+              <ChevronRight className="w-12 h-12" />
             </button>
             <div className="absolute bottom-8 text-white text-center">
               <p className="text-lg">{t(items[selectedImage].caption)}</p>

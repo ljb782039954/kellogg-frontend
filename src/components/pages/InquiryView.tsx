@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Phone, MapPin, Send, Loader2, CheckCircle2, Globe, Building2, Package } from 'lucide-react';
 import { useInquiry } from '../../hooks/useInquiry';
 import type { Language, CompanyInfo } from '../../types';
+import TurnstileWidget from '../TurnstileWidget';
 
 interface Props {
   lang: Language;
@@ -17,6 +18,8 @@ export default function InquiryView({ lang, companyInfo, pageContent }: Props) {
     isSubmitting,
     isSuccess,
     setIsSuccess,
+    setTurnstileToken,
+    turnstileResetKey,
     handleSubmit,
     config,
     t,
@@ -235,6 +238,8 @@ export default function InquiryView({ lang, companyInfo, pageContent }: Props) {
                           className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-gray-900 transition-all text-sm min-h-[120px] outline-none"
                         />
                       </div>
+
+                      <TurnstileWidget lang={lang} onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
 
                       <button
                         disabled={isSubmitting}

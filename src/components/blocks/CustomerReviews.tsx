@@ -1,5 +1,7 @@
 import type { Language } from "../../types";
 import OptimizedImage from "../ui/OptimizedImage";
+import { sanitizeCmsHtml } from "../../lib/contentSecurity";
+import { getSafeVideoSource } from "../../lib/video";
 
 export interface CustomerReview {
   id?: number | string;
@@ -17,21 +19,6 @@ export interface CustomerReviewsProps {
   reviews?: CustomerReview[];
 }
 
-function extractYoutubeId(url: string): string | null {
-  const patterns = [
-    /[?&]v=([a-zA-Z0-9_-]{11})/,
-    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
-  ];
-
-  for (const pattern of patterns) {
-    const match = url.match(pattern);
-    if (match) return match[1];
-  }
-  return null;
-}
-
 export default function CustomerReviews({ lang, reviews = [] }: CustomerReviewsProps) {
   if (reviews.length === 0) {
     return (
@@ -45,8 +32,9 @@ export default function CustomerReviews({ lang, reviews = [] }: CustomerReviewsP
   return (
     <section className="max-w-5xl mx-auto px-6 py-12 space-y-14">
       {reviews.map((review, index) => {
-        const youtubeId = review.media_type === "video" && review.media_url ? extractYoutubeId(review.media_url) : null;
-        const embedUrl = youtubeId ? `https://www.youtube.com/embed/${youtubeId}?rel=0` : null;
+        const videoSource = review.media_type === "video" && review.media_url
+          ? getSafeVideoSource(review.media_url, import.meta.env.PUBLIC_API_ASSETS)
+          : null;
         const reviewText = lang === "zh" ? review.review_text_zh : review.review_text_en;
         const rating = Math.max(0, Math.min(5, Number(review.rating) || 0));
         const fullStars = Math.floor(rating);
@@ -55,10 +43,12 @@ export default function CustomerReviews({ lang, reviews = [] }: CustomerReviewsP
           <article key={review.id || `${review.client_name}-${index}`} className="group relative overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
             <div className="flex flex-col md:flex-row">
               <div className="w-full md:w-[48%] flex-shrink-0 p-5 md:p-6">
-                {embedUrl ? (
+                {videoSource?.kind === "embed" ? (
                   <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-md bg-black">
-                    <iframe className="w-full h-full" src={embedUrl} title={`Review by ${review.client_name}`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen loading="lazy" />
+                    <iframe className="w-full h-full" src={videoSource.url} title={`Review by ${review.client_name}`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />
                   </div>
+                ) : videoSource?.kind === "video" ? (
+                  <video className="w-full aspect-video rounded-2xl bg-black" src={videoSource.url} controls preload="metadata" />
                 ) : review.media_url ? (
                   <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-md">
                     <OptimizedImage src={review.media_url} alt={`${review.client_name} review`} width={800} className="w-full h-full object-cover" />
@@ -76,7 +66,7 @@ export default function CustomerReviews({ lang, reviews = [] }: CustomerReviewsP
                   ))}
                   <span className="text-sm text-gray-400 ml-1">{rating.toFixed(1)}</span>
                 </div>
-                <div className="mt-4 text-gray-600 leading-relaxed text-[15px]" dangerouslySetInnerHTML={{ __html: reviewText || "" }} />
+                <div className="mt-4 text-gray-600 leading-relaxed text-[15px]" dangerouslySetInnerHTML={{ __html: sanitizeCmsHtml(reviewText || "") }} />
               </div>
             </div>
           </article>

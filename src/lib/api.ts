@@ -46,9 +46,14 @@ async function request<T>(
     ...options.headers,
   };
 
+  const timeoutSignal = AbortSignal.timeout(10000);
+  const signal = options.signal
+    ? AbortSignal.any([options.signal, timeoutSignal])
+    : timeoutSignal;
   const response = await fetch(url, {
     ...options,
     headers,
+    signal,
   });
 
   if (!response.ok) {
@@ -92,9 +97,21 @@ interface ProductsQuery {
   search?: string;
 }
 
+interface SubmitInquiryInput {
+  name: string;
+  email: string;
+  phone: string;
+  country: string;
+  company: string;
+  product_type: string;
+  quantity: string;
+  message: string;
+  turnstileToken: string;
+}
+
 export const api = {
   // 商品
-  getProducts: (params?: ProductsQuery) => {
+  getProducts: (params?: ProductsQuery, options: Pick<RequestInit, 'signal'> = {}) => {
     const query = new URLSearchParams();
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
@@ -105,7 +122,8 @@ export const api = {
     }
     const queryStr = query.toString();
     return request<PaginatedResponse<Product>>(
-      `/api/products${queryStr ? `?${queryStr}` : ''}`
+      `/api/products${queryStr ? `?${queryStr}` : ''}`,
+      options,
     );
   },
 
@@ -166,7 +184,7 @@ export const api = {
     return `${assetsBase}/cdn-cgi/image/width=${width},quality=${quality},format=auto/uploads/${filename}`;
   },
 
-  submitInquiry: (data: any) => request('/api/inquiries/submit', {
+  submitInquiry: (data: SubmitInquiryInput) => request('/api/inquiries/submit', {
     method: 'POST',
     body: JSON.stringify(data)
   }),

@@ -1,6 +1,7 @@
 ---
-import type { CustomPage, Language } from "../types";
+import type { CustomPage, Language, PageBlock } from "../types";
 import { api } from "../lib/api";
+import { createRequestMemo } from "../lib/requestMemo";
 
 // 导入积木块
 import ImageBanner from "../components/blocks/ImageBanner";
@@ -33,19 +34,23 @@ interface Props {
 
 const { schema, lang } = Astro.props;
 const enabledBlocks = schema.blocks.filter((block) => block.isVisible);
+const requestMemo = createRequestMemo();
+const getCategories = () => requestMemo.get('categories', () => api.getCategories());
+const getProducts = (params: Parameters<typeof api.getProducts>[0]) =>
+  requestMemo.get(`products:${JSON.stringify(params)}`, () => api.getProducts(params));
 
 // 数据注入逻辑 (在服务端预先获取数据)
-const getBlockData = async (blockType: string, content: any) => {
-  if (blockType === 'productGrid') {
-    const pageSize = content?.itemsPerPage || 12;
-    const params: any = { pageSize, page: 1 };
-    if (content.category && content.category !== 'all') {
-      params.category = content.category;
+const getBlockData = async (block: PageBlock) => {
+  if (block.type === 'productGrid') {
+    const pageSize = block.content.itemsPerPage || 12;
+    const params: NonNullable<Parameters<typeof api.getProducts>[0]> = { pageSize, page: 1 };
+    if (block.content.category && block.content.category !== 'all') {
+      params.category = block.content.category;
     }
     
     const [productsData, categoriesData] = await Promise.all([
-      api.getProducts(params),
-      api.getCategories()
+      getProducts(params),
+      getCategories()
     ]);
     
     return {
@@ -55,14 +60,14 @@ const getBlockData = async (blockType: string, content: any) => {
     };
   }
 
-  if (['featuredProducts', 'newArrivals'].includes(blockType)) {
-    const params: any = { pageSize: 200 };
-    if (blockType === 'featuredProducts') params.featured = true;
-    if (blockType === 'newArrivals') params.sort = 'newest';
+  if (block.type === 'featuredProducts' || block.type === 'newArrivals') {
+    const params: NonNullable<Parameters<typeof api.getProducts>[0]> = { pageSize: 200 };
+    if (block.type === 'featuredProducts') params.featured = true;
+    if (block.type === 'newArrivals') params.sort = 'newest';
     
     const [productsData, categoriesData] = await Promise.all([
-      api.getProducts(params),
-      api.getCategories()
+      getProducts(params),
+      getCategories()
     ]);
     
     return {
@@ -71,13 +76,13 @@ const getBlockData = async (blockType: string, content: any) => {
     };
   }
   
-  if (blockType === 'categories') {
-    const categoriesData = await api.getCategories();
+  if (block.type === 'categories') {
+    const categoriesData = await getCategories();
     return { categories: categoriesData };
   }
 
-  if (blockType === 'caseStudies') {
-    const reviews = await api.getReviews();
+  if (block.type === 'caseStudies') {
+    const reviews = await requestMemo.get('reviews', () => api.getReviews());
     return { reviews: reviews || [] };
   }
   
@@ -87,7 +92,7 @@ const getBlockData = async (blockType: string, content: any) => {
 // 预取所有需要数据的区块
 const blocksWithData = await Promise.all(
   enabledBlocks.map(async (block) => {
-    const data = await getBlockData(block.type, block.content);
+    const data = await getBlockData(block);
     return { ...block, data };
   })
 );
@@ -120,7 +125,7 @@ const blocksWithData = await Promise.all(
         return <NewArrivals {...block.content} {...block.data} lang={lang} />;
       
       case 'inquiry':
-        return <InquirySection lang={lang} client:load />;
+        return <InquirySection lang={lang} client:visible />;
       
       case 'brandValues':
         return <BrandValues {...block.content} lang={lang} />;
@@ -147,13 +152,13 @@ const blocksWithData = await Promise.all(
         return <Countdown {...block.content} lang={lang} client:load />;
 
       case 'gallery':
-        return <Gallery {...block.content} lang={lang} client:load />;
+        return <Gallery {...block.content} lang={lang} client:visible />;
 
       case 'imageBannerTag':
         return <ImageBannerTag {...block.content} lang={lang} />;
 
       case 'imageFull':
-        return <ImageFull {...block.content} lang={lang} client:load />;
+        return <ImageFull {...block.content} lang={lang} client:visible />;
 
       case 'partnerLogos':
         return <PartnerLogos {...block.content} lang={lang} />;
@@ -165,6 +170,7 @@ const blocksWithData = await Promise.all(
         return <CustomerReviews {...block.data} lang={lang} />;
       
       default:
+        if (!import.meta.env.DEV) return null;
         return (
           <div class="py-10 border-b border-dashed border-gray-200">
             <div class="container mx-auto px-4">

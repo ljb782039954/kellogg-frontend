@@ -27,7 +27,6 @@ export default function Header({
   pathname,
   initialRates = null
 }: HeaderProps) {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const currency = useStore($currency);
   const rates = useStore($rates);
@@ -37,12 +36,6 @@ export default function Header({
     CurrencyService.initRates(initialRates);
     CurrencyService.autoDetectCurrency();
   }, [initialRates]);
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // 样式定义
   const style = {

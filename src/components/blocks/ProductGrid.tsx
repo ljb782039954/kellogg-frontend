@@ -50,7 +50,7 @@ export default function ProductGrid({
       return;
     }
 
-    let isMounted = true;
+    const controller = new AbortController();
     const fetchFilteredProducts = async () => {
       setIsLoading(true);
       try {
@@ -60,16 +60,16 @@ export default function ProductGrid({
           pageSize: currentItemsPerPage,
           category: selectedCategory === 'all' ? undefined : selectedCategory,
           sort: backendSort,
-        });
+        }, { signal: controller.signal });
 
-        if (isMounted) {
+        if (!controller.signal.aborted) {
           setDisplayedProducts(res.data || []);
           setTotalCount(res.pagination?.total || 0);
         }
       } catch (err) {
-        console.error('[ProductGrid] Failed to fetch products on client:', err);
+        if (!controller.signal.aborted) console.error('[ProductGrid] Failed to fetch products on client:', err);
       } finally {
-        if (isMounted) {
+        if (!controller.signal.aborted) {
           setIsLoading(false);
         }
       }
@@ -78,7 +78,7 @@ export default function ProductGrid({
     fetchFilteredProducts();
 
     return () => {
-      isMounted = false;
+      controller.abort();
     };
   }, [currentPage, selectedCategory, sortBy, initialProducts, initialTotal, currentItemsPerPage]);
 

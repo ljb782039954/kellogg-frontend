@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { marked } from 'marked';
 import type { Translation, NavLink, Language } from '../../types';
 import OptimizedImage from '../ui/OptimizedImage';
 
@@ -85,7 +84,7 @@ export default function Carousel({
   if (!slide) return null;
 
   return (
-    <div className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden bg-gray-900">
+    <div className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden bg-gray-900" role="region" aria-roledescription="carousel" aria-label={lang === 'zh' ? '精选内容轮播' : 'Featured content carousel'}>
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={currentIndex}
@@ -124,8 +123,9 @@ export default function Carousel({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5, duration: 0.6 }}
                   className="text-lg md:text-xl mb-8 text-white/80 content-rich-text"
-                  dangerouslySetInnerHTML={{ __html: marked.parseInline(decodeHtml(t(slide.subtitle))) as string }}
-                />
+                >
+                  {decodeHtml(t(slide.subtitle))}
+                </motion.div>
               )}
               {slide.cta && (
                 <motion.a
@@ -144,14 +144,18 @@ export default function Carousel({
       </AnimatePresence>
 
       <button
+        type="button"
         onClick={prevSlide}
         className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10 bg-white/20 hover:bg-white/30 text-white"
+        aria-label={lang === 'zh' ? '上一张' : 'Previous slide'}
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
       <button
+        type="button"
         onClick={nextSlide}
         className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10 bg-white/20 hover:bg-white/30 text-white"
+        aria-label={lang === 'zh' ? '下一张' : 'Next slide'}
       >
         <ChevronRight className="w-6 h-6" />
       </button>
@@ -159,6 +163,7 @@ export default function Carousel({
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-10">
         {items.map((_, index) => (
           <button
+            type="button"
             key={index}
             onClick={() => {
               setDirection(index > currentIndex ? 1 : -1);
@@ -167,10 +172,11 @@ export default function Carousel({
             className={`w-3 h-3 rounded-full transition-all ${
               index === currentIndex ? "bg-white" : "bg-white/50 hover:bg-white"
             }`}
+            aria-label={`${lang === 'zh' ? '转到第' : 'Go to slide'} ${index + 1}`}
+            aria-current={index === currentIndex ? 'true' : undefined}
           />
         ))}
       </div>
     </div>
   );
 }
-

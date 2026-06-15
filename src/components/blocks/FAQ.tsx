@@ -27,6 +27,15 @@ export default function FAQ({ title, subtitle, items = [], lang }: FAQProps) {
 
   const hasMore = items.length > 5;
   const displayedItems = isExpanded ? items : items.slice(0, 5);
+  const structuredData = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": items.map(item => ({
+      "@type": "Question",
+      "name": t(item.question),
+      "acceptedAnswer": { "@type": "Answer", "text": t(item.answer) },
+    })),
+  }).replace(/</g, '\\u003c');
 
   if (!items || items.length === 0) return null;
 
@@ -47,8 +56,11 @@ export default function FAQ({ title, subtitle, items = [], lang }: FAQProps) {
               className="bg-white border border-gray-100 rounded-xl overflow-hidden"
             >
               <button
+                type="button"
                 onClick={() => setOpenIndex(openIndex === item.id ? null : item.id)}
                 className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                aria-expanded={openIndex === item.id}
+                aria-controls={`faq-answer-${item.id}`}
               >
                 <span className="font-medium text-gray-800 pr-4">
                   {t(item.question)}
@@ -61,6 +73,7 @@ export default function FAQ({ title, subtitle, items = [], lang }: FAQProps) {
               <AnimatePresence>
                 {openIndex === item.id && (
                   <motion.div
+                    id={`faq-answer-${item.id}`}
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
@@ -83,6 +96,7 @@ export default function FAQ({ title, subtitle, items = [], lang }: FAQProps) {
         {hasMore && (
           <div className="text-center mt-6">
             <button
+              type="button"
               onClick={() => setIsExpanded(!isExpanded)}
               className="px-4 py-2 border border-gray-200 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors"
             >
@@ -95,20 +109,7 @@ export default function FAQ({ title, subtitle, items = [], lang }: FAQProps) {
       </div>
 
       {/* SEO Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": items.map(item => ({
-            "@type": "Question",
-            "name": t(item.question),
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": t(item.answer)
-            }
-          }))
-        })
-      }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData }} />
     </section>
   );
 }

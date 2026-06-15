@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Maximize2, X } from 'lucide-react';
 import type { Translation, Language } from "../../types";
 import OptimizedImage from '../ui/OptimizedImage';
@@ -23,6 +23,24 @@ export default function ImageFull({
   lang
 }: ImageFullProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!isFullscreen) return;
+    const previousActive = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    closeButtonRef.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsFullscreen(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+      previousActive?.focus();
+    };
+  }, [isFullscreen]);
 
   const t = (obj: Translation | undefined) => {
     if (!obj) return '';
@@ -57,9 +75,11 @@ export default function ImageFull({
   return (
     <>
       <div className={widthClasses[width]}>
-        <section 
-          className={`relative ${heightClasses[height]} overflow-hidden group cursor-zoom-in transition-all duration-500 rounded-lg shadow-sm`}
+        <button
+          type="button"
+          className={`relative w-full ${heightClasses[height]} overflow-hidden group cursor-zoom-in transition-all duration-500 rounded-lg shadow-sm`}
           onClick={() => setIsFullscreen(true)}
+          aria-label={lang === 'zh' ? '打开全屏图片' : 'Open fullscreen image'}
         >
           <OptimizedImage
             src={image}
@@ -84,7 +104,7 @@ export default function ImageFull({
               <Maximize2 className="w-5 h-5 text-gray-800" />
             </div>
           </div>
-        </section>
+        </button>
       </div>
 
       {/* Fullscreen Modal */}
@@ -92,13 +112,19 @@ export default function ImageFull({
         <div 
           className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-4 md:p-10 animate-in fade-in duration-300"
           onClick={() => setIsFullscreen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={lang === 'zh' ? '全屏图片预览' : 'Fullscreen image preview'}
         >
           <button 
+            ref={closeButtonRef}
+            type="button"
             className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors p-2"
             onClick={(e) => {
               e.stopPropagation();
               setIsFullscreen(false);
             }}
+            aria-label={lang === 'zh' ? '关闭全屏图片' : 'Close fullscreen image'}
           >
             <X className="w-8 h-8" />
           </button>
