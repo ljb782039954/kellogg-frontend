@@ -4,7 +4,7 @@ export const prerender = true;
 import Layout from "../layouts/Layout.astro";
 import { api } from "../lib/api";
 import { SiteService } from "../services/siteService";
-import CustomerReviews from "../components/blocks/CustomerReviews.astro";
+import CustomerReviews from "../components/blocks/CustomerReviews";
 
 // 1. 获取站点全局数据
 const siteData = await SiteService.getSiteData(Astro);
@@ -12,8 +12,12 @@ const { lang } = siteData;
 
 // 2. 匹配 customer-reviews 页面的 SEO 配置
 let customerReviewsPage: any = null;
+let reviews: any[] = [];
 try {
-  customerReviewsPage = await api.getPageById('customer-reviews');
+  [customerReviewsPage, reviews] = await Promise.all([
+    api.getPageById('customer-reviews'),
+    api.getReviews(),
+  ]);
 } catch (e) {
   console.error('[Customer Reviews SSR] Failed to fetch customer-reviews page details:', e);
 }
@@ -48,5 +52,5 @@ const pageSEO = customerReviewsPage?.seo || {
   </section>
 
   <!-- 真实数据展示 -->
-  <CustomerReviews lang={lang} />
+  <CustomerReviews lang={lang} reviews={reviews} />
 </Layout>

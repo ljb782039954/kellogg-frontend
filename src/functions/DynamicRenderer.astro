@@ -3,28 +3,28 @@ import type { CustomPage, Language } from "../types";
 import { api } from "../lib/api";
 
 // 导入积木块
-import ImageBanner from "../components/blocks/ImageBanner.astro";
-import TextSection from "../components/blocks/TextSection.astro";
+import ImageBanner from "../components/blocks/ImageBanner";
+import TextSection from "../components/blocks/TextSection";
 import Carousel from "../components/blocks/Carousel";
-import Categories from "../components/blocks/Categories.astro";
+import Categories from "../components/blocks/Categories";
 import ProductGrid from "../components/blocks/ProductGrid";
-import FeaturedProducts from "../components/blocks/FeaturedProducts.astro";
+import FeaturedProducts from "../components/blocks/FeaturedProducts";
 import InquirySection from "../components/blocks/InquirySection";
-import BrandValues from "../components/blocks/BrandValues.astro";
+import BrandValues from "../components/blocks/BrandValues";
 import Statistics from "../components/blocks/Statistics";
-import Testimonials from "../components/blocks/Testimonials.astro";
+import Testimonials from "../components/blocks/Testimonials";
 import FAQ from "../components/blocks/FAQ";
-import ImageText from "../components/blocks/ImageText.astro";
-import CtaBanner from "../components/blocks/CtaBanner.astro";
-import FeatureList from "../components/blocks/FeatureList.astro";
-import NewArrivals from "../components/blocks/NewArrivals.astro";
+import ImageText from "../components/blocks/ImageText";
+import CtaBanner from "../components/blocks/CtaBanner";
+import FeatureList from "../components/blocks/FeatureList";
+import NewArrivals from "../components/blocks/NewArrivals";
 import Countdown from "../components/blocks/Countdown";
 import Gallery from "../components/blocks/Gallery";
-import ImageBannerTag from "../components/blocks/ImageBannerTag.astro";
+import ImageBannerTag from "../components/blocks/ImageBannerTag";
 import ImageFull from "../components/blocks/ImageFull";
-import PartnerLogos from "../components/blocks/PartnerLogos.astro";
-import VideoSection from "../components/blocks/VideoSection.astro";
-import CaseStudies from "../components/blocks/CustomerReviews.astro";
+import PartnerLogos from "../components/blocks/PartnerLogos";
+import VideoSection from "../components/blocks/VideoSection";
+import CustomerReviews from "../components/blocks/CustomerReviews";
 
 interface Props {
   schema: CustomPage;
@@ -37,7 +37,7 @@ const enabledBlocks = schema.blocks.filter((block) => block.isVisible);
 // 数据注入逻辑 (在服务端预先获取数据)
 const getBlockData = async (blockType: string, content: any) => {
   if (blockType === 'productGrid') {
-    const pageSize = content.itemsPerPage || 12;
+    const pageSize = content?.itemsPerPage || 12;
     const params: any = { pageSize, page: 1 };
     if (content.category && content.category !== 'all') {
       params.category = content.category;
@@ -75,6 +75,11 @@ const getBlockData = async (blockType: string, content: any) => {
     const categoriesData = await api.getCategories();
     return { categories: categoriesData };
   }
+
+  if (blockType === 'caseStudies') {
+    const reviews = await api.getReviews();
+    return { reviews: reviews || [] };
+  }
   
   return {};
 };
@@ -90,7 +95,7 @@ const blocksWithData = await Promise.all(
 ---
 
 <div class="dynamic-page">
-  {blocksWithData.map((block, index) => {
+  {blocksWithData.map((block) => {
     // 根据类型渲染组件
     switch (block.type) {
       case 'imageBanner':
@@ -157,7 +162,7 @@ const blocksWithData = await Promise.all(
         return <VideoSection {...block.content} lang={lang} />;
 
       case 'caseStudies':
-        return <CaseStudies lang={lang} />;
+        return <CustomerReviews {...block.data} lang={lang} />;
       
       default:
         return (

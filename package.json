@@ -10,6 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "test:architecture": "node --test tests/blocks-migration.test.mjs",
     "generate-types": "wrangler types"
   },
   "dependencies": {

@@ -1,0 +1,52 @@
+import { Star } from "lucide-react";
+import type { Language, Translation } from "../../types";
+import { createTranslate } from "../../lib/i18n";
+import OptimizedImage from "../ui/OptimizedImage";
+import SectionHeader from "../SectionHeader";
+
+export interface Testimonial {
+  id: number;
+  name: Translation;
+  role?: Translation;
+  content: Translation;
+  avatar?: string;
+}
+
+export interface TestimonialsProps {
+  title?: Translation;
+  subtitle?: Translation;
+  items?: Testimonial[];
+  lang: Language;
+}
+
+export default function Testimonials({ title, subtitle, items = [], lang }: TestimonialsProps) {
+  const t = createTranslate(lang);
+  if (items.length === 0) return null;
+
+  return (
+    <section className="py-12 w-full">
+      <div className="container mx-auto px-4">
+        {title && <SectionHeader lang={lang} title={title} subtitle={subtitle} theme="light" />}
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
+          {items.map((item) => (
+            <div key={item.id} className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-gray-200 rounded-full overflow-hidden">
+                  {item.avatar && <OptimizedImage src={item.avatar} alt="" width={80} className="w-full h-full object-cover" />}
+                </div>
+                <div>
+                  <div className="font-medium text-sm">{t(item.name)}</div>
+                  {item.role && <div className="text-xs text-gray-500">{t(item.role)}</div>}
+                </div>
+              </div>
+              <p className="text-sm text-gray-600 line-clamp-3">{t(item.content)}</p>
+              <div className="flex mt-3">
+                {[1, 2, 3, 4, 5].map((star) => <Star key={star} size={16} className="fill-yellow-400 text-yellow-400" />)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
