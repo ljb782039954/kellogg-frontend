@@ -1,8 +1,6 @@
-import MotionHeaderDark from "../custom/motionHeaderDark";
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useEffect, useRef, useState } from "react";
-import { useInView } from "framer-motion";
-import type { Translation } from "@/types";
+import type { Translation, Language } from '../../types';
 
 export interface Statistic {
   id: number;
@@ -14,24 +12,25 @@ export interface StatisticProps {
   title?: Translation;
   subtitle?: Translation;
   items?: Statistic[];
+  lang: Language;
 }
 
-interface Props {
-  t: (obj: { zh: string; en: string }) => string;
-  props: StatisticProps;
-}
+export default function Statistics({ title, subtitle, items = [], lang }: StatisticProps) {
+  const t = (obj: Translation | undefined) => {
+    if (!obj) return '';
+    return lang === 'zh' ? obj.zh : obj.en;
+  };
 
-export default function Statistics({ t, props }: Props) {
-  const { title, subtitle, items } = props;
-
-  // 如果没有数据，直接返回null
   if (items.length === 0) return null;
 
   return (
     <section className="py-12 bg-gray-900 text-white">
       <div className="container mx-auto px-4">
-        <MotionHeaderDark t={t} title={title} subtitle={subtitle} />
-        {/* Stats Grid */}
+        <div className="text-center mb-12 max-w-2xl mx-auto">
+          {title && <h2 className="text-2xl md:text-4xl font-bold mb-4">{t(title)}</h2>}
+          {subtitle && <p className="text-gray-400 text-md md:text-lg">{t(subtitle)}</p>}
+        </div>
+        
         <div className="flex flex-row justify-between max-w-6xl mx-auto gap-2 md:gap-4">
           {items.map((item, index) => (
             <motion.div
@@ -42,10 +41,10 @@ export default function Statistics({ t, props }: Props) {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="text-center"
             >
-              <div className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-white`}>
+              <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-white">
                 <AnimatedNumber value={item.value} />
               </div>
-              <div className={`text-sm md:text-base text-gray-400`}>
+              <div className="text-sm md:text-base text-gray-400">
                 {t(item.label)}
               </div>
             </motion.div>
@@ -59,7 +58,7 @@ export default function Statistics({ t, props }: Props) {
 function AnimatedNumber({ value }: { value: string }) {
   const [displayValue, setDisplayValue] = useState('0');
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   useEffect(() => {
     if (isInView) {

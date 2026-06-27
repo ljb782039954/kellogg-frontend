@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import type { Translation, NavLink } from '@/types';
+import type { Translation, NavLink, Language } from '../../types';
 import OptimizedImage from '../ui/OptimizedImage';
 
 export interface CarouselValues {
@@ -17,11 +17,7 @@ export interface CarouselProps {
   autoPlay?: boolean;
   interval?: number;
   items?: CarouselValues[];
-}
-
-interface Props {
-  t: (obj: { zh: string; en: string }) => string;
-  props: CarouselProps;
+  lang: Language;
 }
 
 const slideVariants = {
@@ -41,50 +37,54 @@ const slideVariants = {
   }),
 };
 
-export default function Carousel({ t, props }: Props) {
-  const { items, autoPlay = true, interval } = props;
+function decodeHtml(html: string) {
+  return (html || '')
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&");
+}
+
+export default function Carousel({ 
+  items = [], 
+  autoPlay = true, 
+  interval = 5000,
+  lang
+}: CarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
+  const t = useCallback((obj: Translation | undefined) => {
+    if (!obj) return '';
+    return lang === 'zh' ? obj.zh : obj.en;
+  }, [lang]);
 
   const nextSlide = useCallback(() => {
+    if (items.length === 0) return;
     setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % items.length);
   }, [items.length]);
 
   const prevSlide = useCallback(() => {
+    if (items.length === 0) return;
     setDirection(-1);
     setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
   }, [items.length]);
 
-  // 自动轮播
   useEffect(() => {
     if (!autoPlay || !items.length) return;
-
     const timer = setInterval(nextSlide, interval);
     return () => clearInterval(timer);
   }, [nextSlide, autoPlay, interval, items.length]);
 
-  // 如果没有数据，直接返回null
   if (!items || items.length === 0) return null;
 
   const slide = items[currentIndex];
   if (!slide) return null;
 
-  const style = {
-    title: 'text-white',
-    subtitle: 'text-white/80',
-    button: 'bg-white text-gray-900 hover:bg-gray-100',
-    indicator: 'bg-white/50 hover:bg-white',
-    activeIndicator: 'bg-white',
-    arrow: 'bg-white/20 hover:bg-white/30 text-white',
-  };
-
-
-
   return (
-    <div className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden bg-gray-900">
-      {/* Slides */}
+    <div className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden bg-gray-900" role="region" aria-roledescription="carousel" aria-label={lang === 'zh' ? '精选内容轮播' : 'Featured content carousel'}>
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={currentIndex}
@@ -96,7 +96,6 @@ export default function Carousel({ t, props }: Props) {
           transition={{ duration: 0.6, ease: 'easeInOut' }}
           className="absolute inset-0"
         >
-          {/* Background Image */}
           <div className="absolute inset-0">
             <OptimizedImage
               src={slide.image}
@@ -105,30 +104,28 @@ export default function Carousel({ t, props }: Props) {
               priority={currentIndex === 0}
               sizes="100vw"
             />
-            {/* Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
           </div>
 
-          {/* Content */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center px-4 max-w-4xl">
               <motion.h2
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
-                className={`text-4xl md:text-6xl lg:text-7xl font-bold mb-4 ${style.title}`}
+                className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 lg:mb-8 text-white"
               >
                 {t(slide.title)}
               </motion.h2>
               {slide.subtitle && (
-                <motion.p
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5, duration: 0.6 }}
-                  className={`text-lg md:text-xl mb-8 ${style.subtitle}`}
+                  className="text-lg md:text-xl mb-8 text-white/70"
                 >
-                  {t(slide.subtitle)}
-                </motion.p>
+                  {decodeHtml(t(slide.subtitle))}
+                </motion.div>
               )}
               {slide.cta && (
                 <motion.a
@@ -136,7 +133,7 @@ export default function Carousel({ t, props }: Props) {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.7, duration: 0.6 }}
-                  className={`inline-block px-8 py-3 rounded-full font-semibold transition-all hover:scale-105 ${style.button}`}
+                  className="inline-block px-8 py-3 rounded-full font-semibold transition-all hover:scale-105 bg-white text-gray-900 hover:bg-gray-100"
                 >
                   {t(slide.cta)}
                 </motion.a>
@@ -146,31 +143,37 @@ export default function Carousel({ t, props }: Props) {
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation Arrows */}
       <button
+        type="button"
         onClick={prevSlide}
-        className={`absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10 ${style.arrow}`}
+        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10 bg-white/20 hover:bg-white/30 text-white"
+        aria-label={lang === 'zh' ? '上一张' : 'Previous slide'}
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
       <button
+        type="button"
         onClick={nextSlide}
-        className={`absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10 ${style.arrow}`}
+        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10 bg-white/20 hover:bg-white/30 text-white"
+        aria-label={lang === 'zh' ? '下一张' : 'Next slide'}
       >
         <ChevronRight className="w-6 h-6" />
       </button>
 
-      {/* Indicators */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-10">
         {items.map((_, index) => (
           <button
+            type="button"
             key={index}
             onClick={() => {
               setDirection(index > currentIndex ? 1 : -1);
               setCurrentIndex(index);
             }}
-            className={`w-3 h-3 rounded-full transition-all ${index === currentIndex ? style.activeIndicator : style.indicator
-              }`}
+            className={`w-3 h-3 rounded-full transition-all ${
+              index === currentIndex ? "bg-white" : "bg-white/50 hover:bg-white"
+            }`}
+            aria-label={`${lang === 'zh' ? '转到第' : 'Go to slide'} ${index + 1}`}
+            aria-current={index === currentIndex ? 'true' : undefined}
           />
         ))}
       </div>

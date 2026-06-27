@@ -1,0 +1,42 @@
+---
+import { Music2, Globe, MessageSquare } from 'lucide-react';
+import { FaWhatsapp, FaFacebook, FaTwitter, FaInstagram,FaYoutube,FaLinkedin} from "react-icons/fa";
+import type { SocialMediaType } from '../types/baseEditor';
+
+interface Props {
+  socialLinks: SocialMediaType;
+}
+
+const { socialLinks } = Astro.props;
+
+const SOCIAL_ICONS: Record<string, any> = {
+  facebook: FaFacebook,
+  instagram: FaInstagram,
+  twitter: FaTwitter,
+  youtube: FaYoutube,
+  linkedin: FaLinkedin,
+  tiktok: Music2,
+  whatsapp: FaWhatsapp,
+  wechat: MessageSquare,
+  weibo: Globe,
+};
+
+const links = Object.entries(socialLinks).filter(([_, url]) => !!url);
+---
+
+<div class="flex flex-wrap gap-4 mt-6">
+  {links.map(([name, url]) => {
+    const Icon = SOCIAL_ICONS[name] || Globe;
+    return (
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="w-10 h-10 rounded-full border border-gray-800 flex items-center justify-center transition-all hover:scale-110 text-gray-400 hover:text-white hover:border-white"
+        title={name}
+      >
+        <Icon size={20} />
+      </a>
+    );
+  })}
+</div>

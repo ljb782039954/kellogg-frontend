@@ -1,7 +1,4 @@
 User-agent: *
 Allow: /
+
 Sitemap: https://kelloggfashion.com/sitemap.xml
-Sitemap: https://kelloggfashion.com/sitemap-usa.xml
-Sitemap: https://kelloggfashion.com/sitemap-uk.xml
-Sitemap: https://kelloggfashion.com/sitemap-australia.xml
-Sitemap: https://kelloggfashion.com/sitemap-canada.xml

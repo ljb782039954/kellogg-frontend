@@ -1,0 +1,267 @@
+---
+export const prerender = true;
+
+import Layout from "../../layouts/Layout.astro";
+import OptimizedImage from "../../components/ui/OptimizedImage.astro";
+import { api } from "../../lib/api";
+import { SiteService } from "../../services/siteService";
+import type { BlogSummary, Language } from "../../types";
+
+// ---- Build-time data fetch ----
+const siteData = await SiteService.getSiteData(Astro);
+const { lang } = siteData;
+
+// Fetch first page for static generation (enough for SSG)
+let blogs: BlogSummary[] = [];
+let categories: string[] = ['All'];
+let totalBlogs = 0;
+
+try {
+  const resp = await api.getBlogs({ page: 1, pageSize: 100, sort: 'newest' });
+  blogs = resp.data || [];
+  totalBlogs = resp.pagination?.total || 0;
+  // Collect unique categories
+  const cats = new Set<string>();
+  blogs.forEach(b => { if (b.category) cats.add(b.category); });
+  categories = ['All', ...Array.from(cats)];
+} catch (e) {
+  console.error('[Blog Index] Failed to fetch blogs:', e);
+}
+
+// ---- Helpers ----
+function t(zh: string, en: string) { return lang === 'zh' ? zh : en; }
+function formatDate(d: string | null) {
+  if (!d) return '';
+  return new Date(d).toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+function getBlogTitle(b: BlogSummary) { return lang === 'zh' ? b.title_zh : b.title_en; }
+function getBlogSummary(b: BlogSummary) { return lang === 'zh' ? (b.summary_zh || '') : (b.summary_en || ''); }
+
+let blogPageDetail: any = null;
+try {
+  blogPageDetail = await api.getPageById('system-blog');
+} catch (e) {
+  console.error('[Blog Index SSR] Failed to fetch system-blog page details:', e);
+}
+
+const blogSEO = blogPageDetail?.seo || {
+  title: { zh: '博客与资讯 - Kellogg Fashion', en: 'Blog & Resources - Kellogg Fashion' },
+  description: {
+    zh: '浏览 Kellogg Fashion 博客，获取最新行业资讯、面料指南、服装制造技巧和流行趋势报告。',
+    en: 'Explore Kellogg Fashion blog for industry news, fabric guides, OEM tips, and trend reports from a leading apparel manufacturer.'
+  }
+};
+---
+
+<Layout seo={blogSEO} lang={lang}>
+  <!-- Hero Banner -->
+  <section class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-2xl"></div>
+      <div class="absolute -bottom-8 right-0 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-2xl"></div>
+    </div>
+    <div class="relative max-w-7xl mx-auto px-6 py-20 text-center">
+      <span class="inline-block px-3 py-1 bg-white/10 text-white/80 text-xs font-semibold rounded-full uppercase tracking-widest mb-4">
+        {t('行业洞察', 'Industry Insights')}
+      </span>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+        {t('博客与资讯', 'Blog & Resources')}
+      </h1>
+      <p class="text-lg text-white/70 max-w-xl mx-auto">
+        {t('探索面料科学、制造技巧和行业趋势，助力您的品牌成长。', 'Explore fabric science, manufacturing tips, and trends to grow your apparel brand.')}
+      </p>
+    </div>
+  </section>
+
+  <!-- Filter Bar -->
+  <section class="sticky top-16 md:top-20 z-20 bg-white/90 backdrop-blur-sm border-b border-gray-100 shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between gap-4 flex-wrap">
+      <!-- Category tabs -->
+      <div class="flex gap-1 overflow-x-auto" id="category-tabs">
+        {categories.map(cat => (
+          <button
+            data-cat={cat}
+            class={`category-btn px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${cat === 'All' ? 'active bg-gray-900 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      <!-- View toggle -->
+      <div class="flex gap-1 p-1 bg-gray-100 rounded-lg flex-shrink-0">
+        <button id="btn-grid" title="Grid view" class="view-btn p-1.5 rounded-md bg-white shadow-sm text-gray-700 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+          </svg>
+        </button>
+        <button id="btn-list" title="List view" class="view-btn p-1.5 rounded-md text-gray-400 hover:text-gray-600 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+            <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
+            <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Grid -->
+  <section class="max-w-7xl mx-auto px-6 py-12">
+    {blogs.length === 0 ? (
+      <div class="text-center py-24 text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 mx-auto mb-4 stroke-[1.2]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+        </svg>
+        <p class="text-lg font-medium">{t('暂无文章', 'No articles yet')}</p>
+        <p class="text-sm mt-1">{t('敬请期待精彩内容', 'Stay tuned for exciting content')}</p>
+      </div>
+    ) : (
+      <div id="blog-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {blogs.map(blog => (
+          <a
+            href={`/blog/${blog.slug}`}
+            data-cat={blog.category || 'All'}
+            class="blog-card group block bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          >
+            <!-- Cover -->
+            <div class="overflow-hidden aspect-[16/9] bg-gray-100">
+              {blog.cover_image ? (
+                <OptimizedImage
+                  src={blog.cover_image}
+                  alt={getBlogTitle(blog)}
+                  width={600}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              ) : (
+                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-gray-300 stroke-[1]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                  </svg>
+                </div>
+              )}
+            </div>
+
+            <!-- Content -->
+            <div class="p-5">
+              {blog.category && (
+                <span class="inline-block px-2.5 py-0.5 bg-blue-50 text-blue-600 text-xs font-semibold rounded-full mb-3">
+                  {blog.category}
+                </span>
+              )}
+              <h2 class="font-bold text-gray-900 text-lg leading-snug mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                {getBlogTitle(blog)}
+              </h2>
+              {getBlogSummary(blog) && (
+                <p class="text-gray-500 text-sm line-clamp-2 mb-4">
+                  {getBlogSummary(blog)}
+                </p>
+              )}
+
+              <!-- Meta -->
+              <div class="flex items-center justify-between text-xs text-gray-400 border-t border-gray-100 pt-3 mt-auto">
+                <div class="flex items-center gap-2">
+                  <span>{blog.author}</span>
+                  <span>·</span>
+                  <span>{formatDate(blog.publish_date || blog.created_at)}</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                  </svg>
+                  {blog.view_count.toLocaleString()}
+                </div>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+</Layout>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* List view styles */
+  #blog-container.list-view {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  #blog-container.list-view .blog-card {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
+  #blog-container.list-view .blog-card > div:first-child {
+    width: 180px;
+    flex-shrink: 0;
+    aspect-ratio: unset;
+    min-height: 120px;
+    border-radius: 0;
+  }
+  #blog-container.list-view .blog-card > div:last-child {
+    flex: 1;
+    padding: 1rem 1.25rem;
+  }
+
+  /* Hidden card (category filter) */
+  .blog-card.hidden { display: none; }
+</style>
+
+<script>
+  // Category filter
+  const categoryBtns = document.querySelectorAll<HTMLButtonElement>('.category-btn');
+  const blogCards = document.querySelectorAll<HTMLAnchorElement>('.blog-card');
+
+  categoryBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.cat || 'All';
+      // Update active state
+      categoryBtns.forEach(b => {
+        b.classList.remove('active', 'bg-gray-900', 'text-white');
+        b.classList.add('bg-gray-100', 'text-gray-500');
+      });
+      btn.classList.add('active', 'bg-gray-900', 'text-white');
+      btn.classList.remove('bg-gray-100', 'text-gray-500');
+
+      // Filter cards
+      blogCards.forEach(card => {
+        const cardCat = card.dataset.cat || 'All';
+        if (cat === 'All' || cardCat === cat) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // View toggle
+  const container = document.getElementById('blog-container');
+  const btnGrid = document.getElementById('btn-grid');
+  const btnList = document.getElementById('btn-list');
+
+  btnGrid?.addEventListener('click', () => {
+    container?.classList.remove('list-view');
+    btnGrid.classList.add('bg-white', 'shadow-sm', 'text-gray-700');
+    btnGrid.classList.remove('text-gray-400');
+    btnList?.classList.remove('bg-white', 'shadow-sm', 'text-gray-700');
+    btnList?.classList.add('text-gray-400');
+  });
+
+  btnList?.addEventListener('click', () => {
+    container?.classList.add('list-view');
+    btnList.classList.add('bg-white', 'shadow-sm', 'text-gray-700');
+    btnList.classList.remove('text-gray-400');
+    btnGrid?.classList.remove('bg-white', 'shadow-sm', 'text-gray-700');
+    btnGrid?.classList.add('text-gray-400');
+  });
+</script>

@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { api } from "../lib/api";
+import { SiteService } from "../services/siteService";
+import DynamicRenderer from "../functions/DynamicRenderer.astro";
+
+// 1. 设置 CDN 缓存 (1 小时)
+Astro.response.headers.set('Cache-Control', 'public, max-age=3600, s-maxage=3600');
+
+// 2. 获取数据
+const siteData = await SiteService.getSiteData(Astro);
+const { lang } = siteData;
+
+// 3. 直接获取名为 'products' 的 CMS 页面数据
+const fullPage = await api.getPageById('products');
+
+if (!fullPage) {
+  return Astro.redirect('/');
+}
+---
+
+<Layout title={fullPage.title} lang={lang} seo={fullPage.seo}>
+  <DynamicRenderer schema={fullPage} lang={lang} />
+</Layout>

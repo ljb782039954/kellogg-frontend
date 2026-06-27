@@ -1,0 +1,43 @@
+---
+export const prerender = true;
+
+import Layout from "../layouts/Layout.astro";
+import { api } from "../lib/api";
+import { SiteService } from "../services/siteService";
+import DynamicRenderer from "../functions/DynamicRenderer.astro";
+
+export async function getStaticPaths() {
+  // 在构建时获取所有站点数据
+  const { pages } = await SiteService.getSiteData(); 
+  
+  return pages
+    .filter(page => page.id !== 'products' && page.type !== 'fixed-layout') // 排除商品页以及所有固定布局系统页面（如博客、询盘、客户案例，已由各自的物理页面承载）
+    .map(page => {
+      // 处理路径，去掉前缀斜杠并处理空路径（首页）
+      const slug = page.path === '/' ? undefined : page.path.replace(/^\//, '');
+      return {
+        params: { slug },
+        props: { pageId: page.id } // 传给页面，避免重复查找
+      };
+    });
+}
+
+const { slug } = Astro.params;
+const { pageId } = Astro.props;
+
+// 1. 获取站点全局数据
+const siteData = await SiteService.getSiteData(Astro);
+const { lang } = siteData;
+
+// 2. 获取页面的详细数据 (包含积木块)
+const fullPage = await api.getPageById(pageId);
+
+if (!fullPage) {
+  console.error(`[Astro] Page not found for ID: ${pageId}`);
+  return Astro.redirect("/");
+}
+---
+
+<Layout title={fullPage.title} lang={lang} seo={fullPage.seo}>
+  <DynamicRenderer schema={fullPage} lang={lang} />
+</Layout>

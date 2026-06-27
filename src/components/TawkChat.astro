@@ -1,0 +1,107 @@
+---
+/**
+ * Tawk.to Live Chat Widget (Astro Script version) with Custom Fallback
+ */
+import { createTranslate } from "../lib/i18n";
+import type { Language } from "../types";
+
+interface Props {
+  lang?: Language;
+}
+
+const { lang = "en" } = Astro.props;
+const t = createTranslate(lang);
+
+// 备用按钮的目标跳转路由
+const inquiryUrl = "/inquiry";
+---
+
+<!-- 优雅降级（Fallback）悬浮按钮：当 Tawk.to 加载被浏览器或 Adblocker 屏蔽时显示 -->
+<a
+  id="tawk-fallback-btn"
+  href={inquiryUrl}
+  class="group fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-tawkChat text-primary-foreground shadow-lg hover:shadow-primary/30 transition-all duration-500 transform opacity-0 translate-y-4 scale-95 pointer-events-none cursor-pointer"
+  aria-label={t("Contact Us", "Contact Us")}
+  title={t("Contact Us", "Contact Us")}
+>
+  <!-- 呼吸脉动外圈 -->
+  <span class="absolute inset-0 rounded-full bg-primary/20 animate-ping -z-10 group-hover:animate-none"></span>
+  
+  <!-- 精美毛玻璃质感背景 -->
+  <div class="absolute inset-0 rounded-full bg-white/5 backdrop-blur-md border border-white/10 -z-20 group-hover:scale-105 transition-transform duration-300"></div>
+  
+  <!-- 聊天 SVG 图标 -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transform group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+  </svg>
+  
+  <!-- 高级微动效提示词气泡 (Tooltip) -->
+  <div class="absolute right-16 bg-tawkChat text-primary-foreground text-xs font-medium px-3 py-2 rounded-xl whitespace-nowrap shadow-md opacity-0 scale-90 translate-x-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0 transition-all duration-300 pointer-events-none border border-border">
+    {t("在线询盘", "Inquire Now")}
+    <!-- 气泡右侧尖角 -->
+    <div class="absolute top-1/2 -translate-y-1/2 right-[-4px] w-2 h-2 bg-tawkChat rotate-45 border-r border-t border-border"></div>
+  </div>
+</a>
+
+<script is:inline define:vars={{ lang }}>
+  // 1. 初始化 Tawk.to 的加载
+  var Tawk_API = Tawk_API || {};
+  var Tawk_LoadStart = new Date();
+
+  function initTawk() {
+    var s1 = document.createElement("script");
+    var s0 = document.getElementsByTagName("script")[0];
+    s1.async = true;
+    s1.src = 'https://embed.tawk.to/69f7493d0b9cc71c320940a8/1jnmvc6gf';
+    s1.charset = 'UTF-8';
+    
+    // 移除不合规范的 crossorigin="*" 以消除 CORS 拦截异常风险
+    // 监听加载成功和失败
+    s1.onload = function() {
+      console.log("[TawkChat] Script loaded successfully.");
+    };
+    
+    s1.onerror = function() {
+      console.warn("[TawkChat] Script failed to load (blocked by browser or extensions).");
+      showFallbackButton();
+    };
+
+    s0.parentNode.insertBefore(s1, s0);
+  }
+
+  function showFallbackButton() {
+    var btn = document.getElementById("tawk-fallback-btn");
+    if (btn) {
+      btn.classList.remove("opacity-0", "translate-y-4", "scale-95", "pointer-events-none");
+      btn.classList.add("opacity-100", "translate-y-0", "scale-100", "pointer-events-auto");
+    }
+  }
+
+  // 2. 超时检测：如果 4 秒后 Tawk_API 仍然没有初始化完成（表明可能由于网络或安全防护阻止了连接），
+  // 则启用备用按钮。
+  var timeoutId = setTimeout(function() {
+    if (!window.Tawk_API || typeof window.Tawk_API.toggle !== 'function') {
+      console.warn("[TawkChat] Widget failed to initialize within timeout. Showing fallback button.");
+      showFallbackButton();
+    }
+  }, 4000);
+
+  // 监听 Tawk_API 的自带 load 事件以清除超时器
+  Tawk_API.onLoad = function() {
+    console.log("[TawkChat] Widget loaded successfully.");
+    clearTimeout(timeoutId);
+    // 确保隐藏备用按钮
+    var btn = document.getElementById("tawk-fallback-btn");
+    if (btn) {
+      btn.classList.remove("opacity-100", "translate-y-0", "scale-100", "pointer-events-auto");
+      btn.classList.add("opacity-0", "translate-y-4", "scale-95", "pointer-events-none");
+    }
+  };
+
+  // 在页面完全加载后异步加载 Tawk 脚本，避免阻塞首屏渲染，同时提升严格环境下的兼容表现
+  if (document.readyState === 'complete') {
+    initTawk();
+  } else {
+    window.addEventListener('load', initTawk);
+  }
+</script>

@@ -1,0 +1,40 @@
+---
+export const prerender = true;
+
+import Layout from "../layouts/Layout.astro";
+import { api } from "../lib/api";
+import { SiteService } from "../services/siteService";
+import InquiryView from "../components/pages/InquiryView";
+
+// 1. 获取站点全局数据
+const siteData = await SiteService.getSiteData(Astro);
+const { lang, companyInfo } = siteData;
+
+// 2. 获取 Inquiry 页面配置与提示文案 (content)，防崩溃 try-catch 兜底
+let fullPage: any = null;
+try {
+  fullPage = await api.getPageById('system-inquiry');
+} catch (e) {
+  console.error('[Inquiry SSR] Failed to fetch system-inquiry config:', e);
+}
+
+const pageTitle = fullPage?.title || { zh: '询盘与联系我们', en: 'Inquiry & Contact' };
+const pageSEO = fullPage?.seo || {
+  title: pageTitle,
+  description: {
+    zh: '如果您有任何关于产品的咨询，请填写下方表格，我们的团队会尽快与您联系。',
+    en: 'If you have any inquiries about our products, please fill out the form below and our team will get back to you as soon as possible.'
+  }
+};
+const pageContent = fullPage?.content || {
+  title: { zh: '联系我们要样品', en: 'Contact Us For Samples' },
+  description: {
+    zh: '如果您有任何关于产品的咨询，请填写下方表格，我们的团队会尽快与您联系。',
+    en: 'If you have any inquiries about our products, please fill out the form below and our team will get back to you as soon as possible.'
+  }
+};
+---
+
+<Layout title={pageTitle} lang={lang} seo={pageSEO} hideInquiry={true}>
+  <InquiryView lang={lang} companyInfo={companyInfo} pageContent={pageContent} client:load />
+</Layout>

@@ -1,37 +1,28 @@
-import MotionHeader from '../custom/motionHeader';
-import ProductCardNew from '../custom/productCardNew';
-import { useMemo } from 'react';
-import type { Translation, Product } from '@/types';
+import type { Language, Product, Translation } from "../../types";
+import ProductCardStatic from "../product/ProductCardStatic";
+import SectionHeader from "../base/SectionHeader";
 
 export interface NewArrivalsProps {
   title?: Translation;
   subtitle?: Translation;
   maxItems?: number;
-}
-
-interface Props {
-  t: (obj: { zh: string; en: string }) => string;
-  props: NewArrivalsProps;
   products: Product[];
+  lang: Language;
 }
 
-export default function NewArrivals({ t, props, products }: Props) {
-  const { title, subtitle, maxItems, } = props;
-
-  const displayProducts = useMemo(() => {
-    return products.slice(0, maxItems);
-  }, [products, maxItems]);
-
-  // 如果没有数据，直接返回null
-  if (!displayProducts || displayProducts.length === 0) return null;
+export default function NewArrivals({ title, subtitle, maxItems, products = [], lang }: NewArrivalsProps) {
+  const displayProducts = maxItems ? products.slice(0, maxItems) : products;
+  if (displayProducts.length === 0) return null;
 
   return (
     <section className="py-8">
       <div className="container mx-auto px-4">
-        <MotionHeader t={t} title={title} subtitle={subtitle} />
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 px-4 pb-4">
-          {displayProducts.map((product, index) => (
-            <ProductCardNew key={product.id} product={product} t={t} index={index} />
+        {title && <SectionHeader lang={lang} title={title} subtitle={subtitle} theme="light" />}
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-2 md:gap-4 px-4 pb-4">
+          {displayProducts.map((product) => (
+            <a key={product.id} href={`/product/${product.id}`} className="block">
+              <ProductCardStatic product={product} lang={lang} variant="arrival" />
+            </a>
           ))}
         </div>
       </div>

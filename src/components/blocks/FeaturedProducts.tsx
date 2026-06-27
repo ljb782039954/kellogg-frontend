@@ -1,48 +1,51 @@
-import MotionHeader from '../custom/motionHeader';
-import { Link } from 'react-router-dom';
-import ProductCardFeatured from '../custom/ProductCardFeatured';
-import type { Translation, Product } from '@/types';
+import type { Translation, Product, Language } from "../../types";
+import { createTranslate } from "../../lib/i18n";
+import ProductCardStatic from "../product/ProductCardStatic";
 
 export interface FeaturedProductsProps {
   title?: Translation;
   subtitle?: Translation;
   maxItems?: number;
+  initialProducts?: Product[];
+  products?: Product[];
+  lang: Language;
 }
 
-interface Props {
-  t: (obj: { zh: string; en: string }) => string;
-  props: FeaturedProductsProps;
-  products: Product[];
-}
+const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ 
+  title, 
+  subtitle, 
+  maxItems, 
+  initialProducts = [],
+  products: providedProducts,
+  lang 
+}) => {
+  const products = providedProducts || initialProducts;
+  const t = createTranslate(lang);
 
-export default function FeaturedProducts({ t, props, products }: Props) {
-  const { title, subtitle, maxItems } = props;
+  const displayLimit = maxItems || 8;
 
-  const displayedProducts = maxItems ? products.slice(0, maxItems) : products;
-
-  // 如果没有数据，直接返回null
-  if (!displayedProducts || displayedProducts.length === 0) return null;
+  if (products.length === 0) return null;
 
   return (
     <section className="py-8 w-full">
       <div className="container mx-auto px-4">
-        <MotionHeader t={t} title={title} subtitle={subtitle} />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {displayedProducts.map((product) => (
-            <Link
-              key={product.id}
-              to={`/product/${product.id}`}
-              className="block group"
-            >
-              <ProductCardFeatured
-                key={product.id} t={t}
-                product={product}
-              />
-            </Link>
+        {title && (
+          <div className="mb-8 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">{t(title)}</h2>
+            {subtitle && <p className="mt-2 text-gray-600">{t(subtitle)}</p>}
+          </div>
+        )}
+        
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
+          {products.slice(0, displayLimit).map((product) => (
+            <a key={product.id} href={`/product/${product.id}`} className="block group">
+              <ProductCardStatic product={product} lang={lang} />
+            </a>
           ))}
         </div>
-
       </div>
     </section>
   );
-}
+};
+
+export default FeaturedProducts;

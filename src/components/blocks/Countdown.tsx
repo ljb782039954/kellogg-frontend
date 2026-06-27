@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import MotionHeaderDark from '../custom/motionHeaderDark';
-import type { Translation } from '@/types';
+import OptimizedImage from '../ui/OptimizedImage';
+import type { Translation, Language } from "../../types";
 
 export interface CountdownValues {
   endTime?: string;
@@ -11,17 +11,18 @@ export interface CountdownProps {
   title?: Translation;
   subtitle?: Translation;
   values?: CountdownValues;
+  lang: Language;
 }
 
-interface Props {
-  t: (obj: { zh: string; en: string }) => string;
-  props: CountdownProps;
-}
+export default function Countdown({ title, subtitle, values, lang }: CountdownProps) {
+  const t = (obj: Translation | undefined) => {
+    if (!obj) return '';
+    return lang === 'zh' ? obj.zh : obj.en;
+  };
 
-export default function Countdown({ t, props }: Props) {
-  const { title, subtitle, values } = props;
   const calculateTimeLeft = useCallback(() => {
-    const difference = +new Date(values?.endTime) - +new Date();
+    if (!values?.endTime) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+    const difference = +new Date(values.endTime) - +new Date();
     if (difference > 0) {
       return {
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -42,18 +43,20 @@ export default function Countdown({ t, props }: Props) {
     return () => clearInterval(timer);
   }, [calculateTimeLeft]);
 
-
-
   return (
     <div className="relative py-16 overflow-hidden text-center">
-      <img
+      <OptimizedImage
         src={values?.backgroundImage}
         alt=""
+        width={1920}
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-r from-red-600/90 to-orange-500/90" />
       <div className="relative text-white">
-        <MotionHeaderDark t={t} title={title} subtitle={subtitle} />
+        <div className="text-center mb-12 max-w-2xl mx-auto">
+          {title && <h2 className="text-2xl md:text-4xl font-bold mb-4 text-white">{t(title)}</h2>}
+          {subtitle && <p className="text-md md:text-lg text-white/70">{t(subtitle)}</p>}
+        </div>
         <div className="flex justify-center gap-4 mb-8">
           <div className="flex flex-col items-center">
             <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center text-3xl font-bold text-gray-900 shadow-lg">

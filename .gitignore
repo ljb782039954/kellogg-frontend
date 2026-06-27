@@ -1,31 +1,26 @@
-.env.local
-.env.test
-.env
+# build output
+dist/
+# generated types
+.astro/
 
-# Dependencies
+# dependencies
 node_modules/
 
-# Build output
-dist/
-*.log
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# Test coverage
-coverage/
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
+# environment variables
+.env
+.env.local
+.env.production
 
-# Operating System
+# macOS-specific files
 .DS_Store
-Thumbs.db
 
-# markdown
-tmp.txt
-docs/
-rules/
-*log.md
-*gitFix.md
-*error.md
+# jetbrains setting folder
+.idea/
+log.md

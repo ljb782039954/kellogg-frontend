@@ -1,33 +1,31 @@
-import type { Translation } from '@/types';
+import type { CSSProperties } from "react";
+import type { Language, Translation } from "../../types";
+import { createTranslate } from "../../lib/i18n";
+import RichText from "../base/RichText";
 
 export interface TextSectionProps {
   title?: Translation;
   content?: Translation;
-  alignment?: 'left' | 'center' | 'right';
-  paddingY?: 'small' | 'medium' | 'large';
+  alignment?: "left" | "center" | "right";
+  paddingY?: "small" | "medium" | "large";
   backgroundColor?: string;
+  lang: Language;
 }
 
-interface Props {
-  t: (obj: { zh: string; en: string }) => string;
-  props: TextSectionProps;
-}
-
-export default function TextSection({ t, props }: Props) {
-  const { title, content, alignment, backgroundColor } = props;
-
-  // backgroundColor 是16进制的 #ffffff
-  const bgColor = backgroundColor ? `bg-[${backgroundColor}]` : 'bg-gray-50';
+export default function TextSection({ title, content, alignment = "center", backgroundColor, lang }: TextSectionProps) {
+  const t = createTranslate(lang);
+  const style: CSSProperties | undefined = backgroundColor ? { backgroundColor } : undefined;
+  const alignmentClass = {
+    left: "text-left",
+    center: "text-center",
+    right: "text-right",
+  }[alignment];
 
   return (
-    <section className={`py-12 ${bgColor} ${alignment === 'center' ? 'text-center' : alignment === 'right' ? 'text-right' : 'text-left'}`}>
+    <section className={`py-12 ${backgroundColor ? "" : "bg-gray-50"} ${alignmentClass}`} style={style}>
       <div className="container mx-auto px-4">
-        <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-4">
-          {t(title)}
-        </h1>
-        <p className="text-gray-500 max-w-2xl text-md md:text-lg mx-auto leading-relaxed">
-          {t(content)}
-        </p>
+        {title && <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-4">{t(title)}</h1>}
+        {content && <RichText value={t(content)} className="text-sm content-rich-text" />}
       </div>
     </section>
   );
