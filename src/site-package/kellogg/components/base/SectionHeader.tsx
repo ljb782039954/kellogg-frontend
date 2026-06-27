@@ -1,5 +1,5 @@
-import type { Language, Translation } from "../../site-package/kellogg/types/common";
-import { createTranslate } from "../lib/i18n";
+import type { Language, Translation } from "../../types";
+import { createTranslate } from "../../utils/i18n";
 
 export interface SectionHeaderProps {
   title: Translation;

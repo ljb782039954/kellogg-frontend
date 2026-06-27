@@ -4,6 +4,8 @@ import { Phone, MapPin, Send, Loader2, CheckCircle2, Globe, Building2, Package }
 import { useInquiry } from '../../../../core/hooks/useInquiry';
 import type { Language, CompanyInfo } from '../../types';
 import TurnstileWidget from '../../../../core/components/TurnstileWidget';
+import { kelloggSiteConfig } from '../../config';
+import { api } from '../../../../services/api';
 
 interface Props {
   lang: Language;
@@ -24,7 +26,9 @@ export default function InquiryView({ lang, companyInfo, pageContent }: Props) {
     config,
     t,
     language
-  } = useInquiry(lang, pageContent);
+  } = useInquiry(lang, pageContent, undefined, {
+    submitInquiry: api.submitInquiry,
+  });
 
   const contactInfo = companyInfo?.contact || {
     address: { zh: '中国 广州', en: 'Guangzhou, China' },
@@ -239,7 +243,12 @@ export default function InquiryView({ lang, companyInfo, pageContent }: Props) {
                         />
                       </div>
 
-                      <TurnstileWidget lang={lang} onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
+                  <TurnstileWidget
+                    lang={lang}
+                    siteKey={kelloggSiteConfig.turnstile?.siteKey}
+                    onTokenChange={setTurnstileToken}
+                    resetKey={turnstileResetKey}
+                  />
 
                       <button
                         disabled={isSubmitting}

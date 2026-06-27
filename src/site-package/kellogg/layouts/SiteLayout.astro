@@ -1,10 +1,11 @@
 ---
 import "../styles/global.css";
-import { SiteService } from "../../../core/services/siteService";
+import { SiteService } from "../../../services/siteService";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import TawkChat from "../components/TawkChat";
-import { createTranslate } from "../../../core/lib/i18n";
+import { createTranslate } from "../utils/i18n";
+import { kelloggSiteConfig } from "../config";
 import type { Translation, Language } from "../types";
 import InquirySection from "../components/blocks/InquirySection";
 
@@ -20,7 +21,7 @@ interface Props {
   };
 }
 
-const { lang = "en", seo, hideInquiry = false } = Astro.props;
+const { lang = kelloggSiteConfig.defaultLanguage, seo, hideInquiry = false } = Astro.props;
 const siteData = await SiteService.getSiteData(Astro);
 const {
   companyInfo,
@@ -42,7 +43,7 @@ const displayTitle = seo?.title
     ? Astro.props.title
     : Astro.props.title
       ? t(Astro.props.title)
-      : "Kellogg Fashion";
+      : kelloggSiteConfig.seo?.defaultTitle || kelloggSiteConfig.displayName;
 const displayDescription = seo?.description
   ? t(seo.description)
   : typeof Astro.props.description === "string"
@@ -65,31 +66,9 @@ const displayKeywords = seo?.keywords ? t(seo.keywords) : "";
     <meta name="description" content={displayDescription} />
     {displayKeywords && <meta name="keywords" content={displayKeywords} />}
 
-    <link
-      rel="alternate"
-      href="https://kellogg-fashion.com/"
-      hreflang="x-default"
-    />
-    <link
-      rel="alternate"
-      href="https://kelloggfashion.com/usa-heavyweight-hoodie-manufacturer"
-      hreflang="en-US"
-    />
-    <link
-      rel="alternate"
-      href="https://kelloggfashion.com/uk-streetwear-clothing-manufacturer"
-      hreflang="en-UK"
-    />
-    <link
-      rel="alternate"
-      href="https://kelloggfashion.com/canada-blank-apparel-supplier"
-      hreflang="en-CA"
-    />
-    <link
-      rel="alternate"
-      href="https://kelloggfashion.com/australia-heavyweight-tshirt-supplier"
-      hreflang="en-AU"
-    />
+    {kelloggSiteConfig.seo?.alternates?.map((alternate) => (
+      <link rel="alternate" href={alternate.href} hreflang={alternate.hreflang} />
+    ))}
 
     <!-- Google Fonts or other assets can be added here -->
     <script is:inline define:vars={{ initialRates: exchangeRates?.rates }}>

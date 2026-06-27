@@ -1,5 +1,5 @@
 import type { Translation, Product, Language } from "../../types";
-import { createTranslate } from "../../../../core/lib/i18n";
+import { createTranslate } from "../../utils/i18n";
 import ProductCardStatic from "../product/ProductCardStatic";
 
 export interface FeaturedProductsProps {

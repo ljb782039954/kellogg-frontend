@@ -1,5 +1,5 @@
 import type { Language, Translation } from "../../types";
-import { createTranslate } from "../../../../core/lib/i18n";
+import { createTranslate } from "../../utils/i18n";
 import OptimizedImage from "../../../../core/components/OptimizedImage";
 import RichText from "../../../../core/components/RichText";
 

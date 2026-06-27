@@ -1,0 +1,21 @@
+---
+import Layout from "../layouts/SiteLayout";
+import DynamicRenderer from "../../../core/components/DynamicRenderer";
+import BlockRenderer from "../components/BlockRenderer";
+import { api } from "../../../services/api";
+import { SiteService } from "../../../services/siteService";
+
+Astro.response.headers.set("Cache-Control", "public, max-age=3600, s-maxage=3600");
+
+const siteData = await SiteService.getSiteData(Astro);
+const { lang } = siteData;
+const fullPage = await api.getPageById("products");
+
+if (!fullPage) {
+  return Astro.redirect("/");
+}
+---
+
+<Layout title={fullPage.title} lang={lang} seo={fullPage.seo}>
+  <DynamicRenderer schema={fullPage} lang={lang} api={api} blockRenderer={BlockRenderer} />
+</Layout>

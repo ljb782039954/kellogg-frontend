@@ -1,6 +1,6 @@
 import type { Language, Product, Translation } from "../../types";
 import ProductCardStatic from "../product/ProductCardStatic";
-import SectionHeader from "../../../../core/components/SectionHeader";
+import SectionHeader from "../base/SectionHeader";
 
 export interface NewArrivalsProps {
   title?: Translation;

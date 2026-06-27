@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import type { Language, Translation } from "../../types";
-import { createTranslate } from "../../../../core/lib/i18n";
+import { createTranslate } from "../../utils/i18n";
 import RichText from "../../../../core/components/RichText";
 
 export interface TextSectionProps {

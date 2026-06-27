@@ -5,6 +5,7 @@ interface TurnstileWidgetProps {
   onTokenChange: (token: string) => void;
   resetKey?: number;
   lang?: Language;
+  siteKey?: string;
 }
 
 declare global {
@@ -18,7 +19,6 @@ declare global {
 
 const SCRIPT_ID = "cloudflare-turnstile-script";
 const TEST_SITE_KEY = "1x00000000000000000000AA";
-const PRODUCTION_SITE_KEY = "0x4AAAAAADlOjyIsNJkg69Te";
 
 function toTurnstileLanguage(lang?: Language): string {
   if (!lang) return "en";
@@ -27,11 +27,15 @@ function toTurnstileLanguage(lang?: Language): string {
   return normalized;
 }
 
-export default function TurnstileWidget({ onTokenChange, resetKey = 0, lang = "en" }: TurnstileWidgetProps) {
+export default function TurnstileWidget({
+  onTokenChange,
+  resetKey = 0,
+  lang = "en",
+  siteKey: configuredSiteKey,
+}: TurnstileWidgetProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | undefined>(undefined);
-  const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY
-    || (import.meta.env.DEV ? TEST_SITE_KEY : PRODUCTION_SITE_KEY);
+  const siteKey = configuredSiteKey || (import.meta.env.DEV ? TEST_SITE_KEY : "");
 
   useEffect(() => {
     if (!siteKey || !containerRef.current) return;

@@ -1,0 +1,99 @@
+---
+import type { Language, PageBlock } from "../types";
+
+import ImageBanner from "./blocks/ImageBanner";
+import TextSection from "./blocks/TextSection";
+import Carousel from "./blocks/Carousel";
+import Categories from "./blocks/Categories";
+import ProductGrid from "./blocks/ProductGrid";
+import FeaturedProducts from "./blocks/FeaturedProducts";
+import InquirySection from "./blocks/InquirySection";
+import BrandValues from "./blocks/BrandValues";
+import Statistics from "./blocks/Statistics";
+import Testimonials from "./blocks/Testimonials";
+import FAQ from "./blocks/FAQ";
+import ImageText from "./blocks/ImageText";
+import CtaBanner from "./blocks/CtaBanner";
+import FeatureList from "./blocks/FeatureList";
+import NewArrivals from "./blocks/NewArrivals";
+import Countdown from "./blocks/Countdown";
+import Gallery from "./blocks/Gallery";
+import ImageBannerTag from "./blocks/ImageBannerTag";
+import ImageFull from "./blocks/ImageFull";
+import PartnerLogos from "./blocks/PartnerLogos";
+import VideoSection from "./blocks/VideoSection";
+import CustomerReviews from "./blocks/CustomerReviews";
+
+type BlockWithData = PageBlock & {
+  data?: Record<string, any>;
+};
+
+interface Props {
+  block: BlockWithData;
+  lang: Language;
+}
+
+const { block, lang } = Astro.props;
+const content = block.content ?? {};
+const data = block.data ?? {};
+const knownBlockTypes = new Set([
+  "imageBanner",
+  "textSection",
+  "carousel",
+  "categories",
+  "productGrid",
+  "featuredProducts",
+  "newArrivals",
+  "inquiry",
+  "brandValues",
+  "statistics",
+  "testimonials",
+  "faq",
+  "imageText",
+  "ctaBanner",
+  "featureList",
+  "countdown",
+  "gallery",
+  "imageBannerTag",
+  "imageFull",
+  "partnerLogos",
+  "videoSection",
+  "caseStudies",
+]);
+---
+
+{block.type === "imageBanner" && <ImageBanner {...content} lang={lang} />}
+{block.type === "textSection" && <TextSection {...content} lang={lang} />}
+{block.type === "carousel" && <Carousel {...content} lang={lang} client:load />}
+{block.type === "categories" && <Categories {...content} {...data} lang={lang} />}
+{block.type === "productGrid" && <ProductGrid {...content} {...data} lang={lang} client:load />}
+{block.type === "featuredProducts" && <FeaturedProducts {...content} {...data} lang={lang} />}
+{block.type === "newArrivals" && <NewArrivals {...content} {...data} lang={lang} />}
+{block.type === "inquiry" && <InquirySection lang={lang} client:visible />}
+{block.type === "brandValues" && <BrandValues {...content} lang={lang} />}
+{block.type === "statistics" && <Statistics {...content} lang={lang} client:visible />}
+{block.type === "testimonials" && <Testimonials {...content} lang={lang} />}
+{block.type === "faq" && <FAQ {...content} lang={lang} client:visible />}
+{block.type === "imageText" && <ImageText {...content} lang={lang} />}
+{block.type === "ctaBanner" && <CtaBanner {...content} lang={lang} />}
+{block.type === "featureList" && <FeatureList {...content} lang={lang} />}
+{block.type === "countdown" && <Countdown {...content} lang={lang} client:load />}
+{block.type === "gallery" && <Gallery {...content} lang={lang} client:visible />}
+{block.type === "imageBannerTag" && <ImageBannerTag {...content} lang={lang} />}
+{block.type === "imageFull" && <ImageFull {...content} lang={lang} client:visible />}
+{block.type === "partnerLogos" && <PartnerLogos {...content} lang={lang} />}
+{block.type === "videoSection" && <VideoSection {...content} lang={lang} />}
+{block.type === "caseStudies" && <CustomerReviews {...data} lang={lang} />}
+
+{!knownBlockTypes.has(block.type) && import.meta.env.DEV && (
+  <div class="py-10 border-b border-dashed border-gray-200">
+    <div class="container mx-auto px-4">
+      <p class="text-gray-400 text-sm">
+        [Block: {block.type}] (待迁移实现)
+      </p>
+      <pre class="bg-gray-100 p-4 rounded mt-2 text-xs overflow-auto max-h-40">
+        {JSON.stringify(block.content, null, 2)}
+      </pre>
+    </div>
+  </div>
+)}

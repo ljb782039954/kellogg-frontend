@@ -1,9 +1,9 @@
 import * as LucideIcons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { Language, Translation } from "../../types";
-import { createTranslate } from "../../../../core/lib/i18n";
+import { createTranslate } from "../../utils/i18n";
 import RichText from "../../../../core/components/RichText";
-import SectionHeader from "../../../../core/components/SectionHeader";
+import SectionHeader from "../base/SectionHeader";
 
 export interface FeatureListItem {
   icon: string;

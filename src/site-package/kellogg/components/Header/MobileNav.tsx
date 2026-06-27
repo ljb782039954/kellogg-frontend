@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import { t } from '../../../../core/lib/common';
+import { t } from '../../utils/i18n';
 import type { NavLink, Language } from '../../types';
 
 interface MobileNavProps {

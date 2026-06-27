@@ -1,8 +1,8 @@
 import type { CSSProperties } from "react";
 import type { Language, NavLink, Translation } from "../../types";
-import { createTranslate } from "../../../../core/lib/i18n";
+import { createTranslate } from "../../utils/i18n";
 import OptimizedImage from "../../../../core/components/OptimizedImage";
-import SectionHeader from "../../../../core/components/SectionHeader";
+import SectionHeader from "../base/SectionHeader";
 
 export interface CtaBannerValues {
   primaryButton?: NavLink;

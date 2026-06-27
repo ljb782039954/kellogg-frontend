@@ -4,6 +4,49 @@ export interface Translation {
   [lang: string]: string;
 }
 
+export interface SiteLanguageConfig {
+  languages: readonly Language[];
+  defaultLanguage: Language;
+  fallbackLanguages?: readonly Language[];
+}
+
+export interface SiteConfig extends SiteLanguageConfig {
+  name: string;
+  displayName: string;
+  siteUrl: string;
+  api: {
+    baseUrl?: string;
+    localBaseUrl?: string;
+    assetsBaseUrl?: string;
+    assetHostnames?: readonly string[];
+  };
+  currency?: {
+    defaultCurrency?: string;
+  };
+  turnstile?: {
+    siteKey?: string;
+  };
+  tawk?: {
+    scriptUrl?: string;
+  };
+  seo?: {
+    defaultTitle?: string;
+    alternates?: readonly {
+      href: string;
+      hreflang: string;
+    }[];
+  };
+  security?: {
+    csp?: {
+      scriptSrc?: readonly string[];
+      frameSrc?: readonly string[];
+      connectSrc?: readonly string[];
+    };
+    videoProviders?: readonly string[];
+  };
+  pages?: Record<string, any>;
+}
+
 export type LinkType = 'internal' | 'external';
 
 export interface NavLink {

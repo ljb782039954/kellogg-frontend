@@ -4,8 +4,8 @@ import path from "node:path";
 import test from "node:test";
 
 const root = path.resolve(import.meta.dirname, "..");
-const blocksDir = path.join(root, "src", "components", "blocks");
-const rendererPath = path.join(root, "src", "functions", "DynamicRenderer.astro");
+const blocksDir = path.join(root, "src", "site-package", "kellogg", "components", "blocks");
+const rendererPath = path.join(root, "src", "site-package", "kellogg", "components", "BlockRenderer.astro");
 
 test("block components no longer use Astro component files", async () => {
   const files = await readdir(blocksDir);

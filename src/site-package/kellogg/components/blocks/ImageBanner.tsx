@@ -1,7 +1,7 @@
 import type { Language, Translation } from "../../types";
-import { createTranslate } from "../../../../core/lib/i18n";
+import { createTranslate } from "../../utils/i18n";
 import OptimizedImage from "../../../../core/components/OptimizedImage";
-import SectionHeader from "../../../../core/components/SectionHeader";
+import SectionHeader from "../base/SectionHeader";
 
 export interface ImageBannerProps {
   image?: string;

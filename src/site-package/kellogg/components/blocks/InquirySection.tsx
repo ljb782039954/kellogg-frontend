@@ -3,6 +3,8 @@ import { Send, Loader2, CheckCircle2, Phone, Globe, Building2, Package } from 'l
 import { useInquiry } from '../../../../core/hooks/useInquiry';
 import type { Language } from '../../types';
 import TurnstileWidget from '../../../../core/components/TurnstileWidget';
+import { kelloggSiteConfig } from '../../config';
+import { api } from '../../../../services/api';
 
 interface Props {
   lang: Language;
@@ -21,7 +23,9 @@ export default function InquirySection({ lang }: Props) {
     config,
     t,
     language
-  } = useInquiry(lang);
+  } = useInquiry(lang, undefined, undefined, {
+    submitInquiry: api.submitInquiry,
+  });
 
   return (
     <section className="py-24 bg-gray-50/50">
@@ -182,7 +186,12 @@ export default function InquirySection({ lang }: Props) {
                   />
                 </div>
 
-                <TurnstileWidget lang={lang} onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
+                <TurnstileWidget
+                  lang={lang}
+                  siteKey={kelloggSiteConfig.turnstile?.siteKey}
+                  onTokenChange={setTurnstileToken}
+                  resetKey={turnstileResetKey}
+                />
 
                 <button
                   disabled={isSubmitting}

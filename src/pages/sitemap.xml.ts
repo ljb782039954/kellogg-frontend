@@ -1,5 +1,5 @@
-import { api } from "../core/lib/api";
-import { SiteService } from "../core/services/siteService";
+import { api } from "../services/api";
+import { SiteService, siteConfig } from "../services/siteService";
 
 export const prerender = false;
 
@@ -8,7 +8,7 @@ export const prerender = false;
  * 包含静态页面 (CustomPages) 和动态商品详情页 (Products)
  */
 export async function GET() {
-  const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'https://kelloggfashion.com';
+  const siteUrl = siteConfig.siteUrl;
 
   try {
     // 1. 并发获取页面和商品数据

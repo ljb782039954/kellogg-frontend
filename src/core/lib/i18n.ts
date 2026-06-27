@@ -2,7 +2,7 @@ import type { Translation, Language } from "../types";
 
 export function createTranslate(
   language: Language,
-  fallbackLanguages: Language[] = ["en", "zh"]
+  fallbackLanguages: readonly Language[] = []
 ) {
   return (
     value: string | Translation | null | undefined,

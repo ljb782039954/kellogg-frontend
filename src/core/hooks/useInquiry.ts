@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { api } from '../lib/api';
 import type { Language } from '../types';
 
 export interface InquiryFormData {
@@ -37,6 +36,14 @@ export interface InquiryTranslations {
     turnstileRequired: string;
     submitFailed: string;
   };
+}
+
+export interface SubmitInquiryInput extends InquiryFormData {
+  turnstileToken: string;
+}
+
+export interface UseInquiryOptions {
+  submitInquiry: (data: SubmitInquiryInput) => Promise<unknown>;
 }
 
 const emptyForm: InquiryFormData = {
@@ -96,7 +103,8 @@ const defaultTranslations: Record<Language, InquiryTranslations> = {
 export function useInquiry(
   lang: Language = 'en',
   pageContent?: InquiryPageContent,
-  translations?: InquiryTranslations
+  translations?: InquiryTranslations,
+  options?: UseInquiryOptions
 ) {
   const [formData, setFormData] = useState<InquiryFormData>(emptyForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -124,7 +132,10 @@ export function useInquiry(
 
     setIsSubmitting(true);
     try {
-      await api.submitInquiry({ ...formData, turnstileToken });
+      if (!options?.submitInquiry) {
+        throw new Error('Missing inquiry submit handler');
+      }
+      await options.submitInquiry({ ...formData, turnstileToken });
       setIsSuccess(true);
       setFormData(emptyForm);
       setTurnstileToken('');

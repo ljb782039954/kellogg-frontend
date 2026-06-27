@@ -3,8 +3,8 @@ import { SlidersHorizontal } from 'lucide-react';
 import type { Product, Category, SortOption, Language } from '../../types';
 import ProductCard from '../product/ProductCard';
 import Pagination from '../base/Pagination';
-import { t } from '../../../../core/lib/common';
-import { api } from '../../../../core/lib/api';
+import { t } from '../../utils/i18n';
+import { api } from '../../../../services/api';
 
 export interface ProductGridProps {
   itemsPerPage?: number;

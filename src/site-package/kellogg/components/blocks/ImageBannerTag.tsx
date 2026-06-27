@@ -1,7 +1,7 @@
 import { Sparkles } from "lucide-react";
 import type { Language, Translation } from "../../types";
-import { createTranslate } from "../../../../core/lib/i18n";
-import { api } from "../../../../core/lib/api";
+import { createTranslate } from "../../utils/i18n";
+import { api } from "../../../../services/api";
 
 export interface ImageBannerTagProps {
   tag?: Translation;

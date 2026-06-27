@@ -1,6 +1,7 @@
 import { Globe, Share2, Menu, X, Coins } from 'lucide-react';
 import { CurrencyService } from '../../../../core/services/currencyService';
-import { t } from '../../../../core/lib/common';
+import { t } from '../../utils/i18n';
+import { kelloggSiteConfig } from '../../config';
 import type { CompanyInfo, Language } from '../../types';
 
 interface HeaderActionsProps {
@@ -42,7 +43,9 @@ export default function HeaderActions({
   };
 
   const switchLanguage = () => {
-    const newLang = lang === 'zh' ? 'en' : 'zh';
+    const languages = kelloggSiteConfig.languages;
+    const currentIndex = languages.indexOf(lang);
+    const newLang = languages[(currentIndex + 1) % languages.length] || kelloggSiteConfig.defaultLanguage;
     document.cookie = `lang=${newLang};path=/;max-age=31536000`;
     window.location.reload();
   };

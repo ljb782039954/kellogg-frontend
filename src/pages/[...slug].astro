@@ -1,10 +1,8 @@
 ---
 export const prerender = true;
 
-import Layout from "../site-package/kellogg/layouts/SiteLayout";
-import { api } from "../core/lib/api";
-import { SiteService } from "../core/services/siteService";
-import DynamicRenderer from "../core/components/DynamicRenderer";
+import { SiteService } from "../services/siteService";
+import { currentSite } from "../site-package";
 
 export async function getStaticPaths() {
   // 在构建时获取所有站点数据
@@ -22,22 +20,10 @@ export async function getStaticPaths() {
     });
 }
 
-const { slug } = Astro.params;
 const { pageId } = Astro.props;
+const CmsPage = currentSite.pages?.cms;
 
-// 1. 获取站点全局数据
-const siteData = await SiteService.getSiteData(Astro);
-const { lang } = siteData;
-
-// 2. 获取页面的详细数据 (包含积木块)
-const fullPage = await api.getPageById(pageId);
-
-if (!fullPage) {
-  console.error(`[Astro] Page not found for ID: ${pageId}`);
-  return Astro.redirect("/");
-}
+if (!CmsPage) return Astro.redirect("/404");
 ---
 
-<Layout title={fullPage.title} lang={lang} seo={fullPage.seo}>
-  <DynamicRenderer schema={fullPage} lang={lang} />
-</Layout>
+<CmsPage pageId={pageId} />

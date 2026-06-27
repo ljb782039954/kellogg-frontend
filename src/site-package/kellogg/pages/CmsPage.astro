@@ -1,0 +1,25 @@
+---
+import Layout from "../layouts/SiteLayout";
+import DynamicRenderer from "../../../core/components/DynamicRenderer";
+import BlockRenderer from "../components/BlockRenderer";
+import { api } from "../../../services/api";
+import { SiteService } from "../../../services/siteService";
+
+interface Props {
+  pageId: string;
+}
+
+const { pageId } = Astro.props;
+const siteData = await SiteService.getSiteData(Astro);
+const { lang } = siteData;
+const fullPage = await api.getPageById(pageId);
+
+if (!fullPage) {
+  console.error(`[Astro] Page not found for ID: ${pageId}`);
+  return Astro.redirect("/");
+}
+---
+
+<Layout title={fullPage.title} lang={lang} seo={fullPage.seo}>
+  <DynamicRenderer schema={fullPage} lang={lang} api={api} blockRenderer={BlockRenderer} />
+</Layout>

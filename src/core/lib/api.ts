@@ -6,16 +6,12 @@
 
 import type { Product, Category, CustomPage } from "../types";
 
-const isLocalDev = import.meta.env.PUBLIC_IS_LOCAL_DEV === "true" && import.meta.env.DEV;
-
-const API_BASE = (
-  isLocalDev ? import.meta.env.PUBLIC_API_BASE_URL_LOCAL : import.meta.env.PUBLIC_API_BASE_URL
-).replace(/\/$/, '');
-
-// const API_BASE = (
-//   import.meta.env.PUBLIC_API_BASE_URL || 
-//   ''
-// ).replace(/\/$/, '');
+export interface ApiClientConfig {
+  baseUrl?: string;
+  localBaseUrl?: string;
+  assetsBaseUrl?: string;
+  assetHostnames?: readonly string[];
+}
 
 // API 错误类型
 export class ApiError extends Error {
@@ -30,46 +26,10 @@ export class ApiError extends Error {
   }
 }
 
-// 通用请求函数
-async function request<T>(
-  path: string,
-  options: RequestInit = {}
-): Promise<T> {
-  const url = `${API_BASE}${path}`;
-  
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-    ...options.headers,
-  };
-
-  const timeoutSignal = AbortSignal.timeout(10000);
-  const signal = options.signal
-    ? AbortSignal.any([options.signal, timeoutSignal])
-    : timeoutSignal;
-  const response = await fetch(url, {
-    ...options,
-    headers,
-    signal,
-  });
-
-  if (!response.ok) {
-    let errorData;
-    try {
-      errorData = await response.json();
-    } catch {
-      errorData = { message: response.statusText };
-    }
-    throw new ApiError(
-      errorData.error || errorData.message || 'Request failed',
-      response.status,
-      errorData
-    );
-  }
-
-  const text = await response.text();
-  if (!text) return {} as T;
-
-  return JSON.parse(text);
+function normalizeApiBase(config: ApiClientConfig): string {
+  const isLocalDev = import.meta.env.PUBLIC_IS_LOCAL_DEV === "true" && import.meta.env.DEV;
+  const baseUrl = (isLocalDev ? config.localBaseUrl : config.baseUrl) || "";
+  return baseUrl.replace(/\/$/, "");
 }
 
 // 分页响应类型
@@ -105,7 +65,83 @@ interface SubmitInquiryInput {
   turnstileToken: string;
 }
 
-export const api = {
+function normalizeHost(hostname: string): string {
+  return hostname.toLowerCase().replace(/^www\./, "");
+}
+
+function resolveConfiguredHostnames(config: ApiClientConfig): string[] {
+  const hostnames = [...(config.assetHostnames ?? [])];
+
+  if (config.assetsBaseUrl) {
+    try {
+      hostnames.push(new URL(config.assetsBaseUrl).hostname);
+    } catch {}
+  }
+
+  return hostnames.map(normalizeHost).filter(Boolean);
+}
+
+function isConfiguredAssetUrl(url: string, hostnames: readonly string[]): boolean {
+  if (!hostnames.length) return false;
+
+  try {
+    const host = normalizeHost(new URL(url).hostname);
+    return hostnames.some((configuredHost) => (
+      host === configuredHost || host.endsWith(`.${configuredHost}`)
+    ));
+  } catch {
+    return false;
+  }
+}
+
+export function createApiClient(config: ApiClientConfig) {
+  const apiBase = normalizeApiBase(config);
+  const assetsBase = (config.assetsBaseUrl || "").replace(/\/$/, "");
+  const assetHostnames = resolveConfiguredHostnames(config);
+
+  // 通用请求函数
+  async function request<T>(
+    path: string,
+    options: RequestInit = {}
+  ): Promise<T> {
+    const url = `${apiBase}${path}`;
+
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    };
+
+    const timeoutSignal = AbortSignal.timeout(10000);
+    const signal = options.signal
+      ? AbortSignal.any([options.signal, timeoutSignal])
+      : timeoutSignal;
+    const response = await fetch(url, {
+      ...options,
+      headers,
+      signal,
+    });
+
+    if (!response.ok) {
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch {
+        errorData = { message: response.statusText };
+      }
+      throw new ApiError(
+        errorData.error || errorData.message || 'Request failed',
+        response.status,
+        errorData
+      );
+    }
+
+    const text = await response.text();
+    if (!text) return {} as T;
+
+    return JSON.parse(text);
+  }
+
+  const client = {
   // 商品
   getProducts: (params?: ProductsQuery, options: Pick<RequestInit, 'signal'> = {}) => {
     const query = new URLSearchParams();
@@ -143,11 +179,10 @@ export const api = {
   resolveMediaUrl: (url: string | null | undefined): string => {
     if (!url) return '/placeholder.jpg';
     if (url.startsWith('http')) return url;
-    
-    const assetsBase = import.meta.env.PUBLIC_API_ASSETS;
+
     const cleanPath = url.startsWith('/') ? url.slice(1) : url;
-    
-    return `${assetsBase}/${cleanPath}`;
+
+    return assetsBase ? `${assetsBase}/${cleanPath}` : `/${cleanPath}`;
   },
 
   /**
@@ -155,8 +190,8 @@ export const api = {
    */
   getOptimizedImageUrl: (url: string | null | undefined, width: number): string => {
     if (!url) return '/placeholder.jpg';
-    
-    if (url.startsWith('http') && !url.includes('kelloggfashion.com')) {
+
+    if (url.startsWith('http') && !isConfiguredAssetUrl(url, assetHostnames)) {
       return url;
     }
 
@@ -172,10 +207,11 @@ export const api = {
       .replace(/^\//, '')
       .replace(/^uploads\//, '');
 
-    if (!filename) return api.resolveMediaUrl(url);
+    if (!filename) return client.resolveMediaUrl(url);
 
-    const assetsBase = import.meta.env.PUBLIC_API_ASSETS;
     const quality = width <= 768 ? 75 : 85;
+
+    if (!assetsBase) return client.resolveMediaUrl(url);
 
     return `${assetsBase}/cdn-cgi/image/width=${width},quality=${quality},format=auto/uploads/${filename}`;
   },
@@ -203,6 +239,17 @@ export const api = {
 
   // Customer Reviews
   getReviews: () => request<any[]>('/api/reviews'),
-};
+  };
+
+  return client;
+}
+
+export type ApiClient = ReturnType<typeof createApiClient>;
+
+export const api = createApiClient({
+  baseUrl: import.meta.env.PUBLIC_API_BASE_URL,
+  localBaseUrl: import.meta.env.PUBLIC_API_BASE_URL_LOCAL,
+  assetsBaseUrl: import.meta.env.PUBLIC_API_ASSETS,
+});
 
 export default api;

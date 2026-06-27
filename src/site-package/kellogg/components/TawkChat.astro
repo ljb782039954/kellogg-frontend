@@ -2,15 +2,17 @@
 /**
  * Tawk.to Live Chat Widget (Astro Script version) with Custom Fallback
  */
-import { createTranslate } from "../../../core/lib/i18n";
+import { createTranslate } from "../utils/i18n";
+import { kelloggSiteConfig } from "../config";
 import type { Language } from "../types";
 
 interface Props {
   lang?: Language;
 }
 
-const { lang = "en" } = Astro.props;
+const { lang = kelloggSiteConfig.defaultLanguage } = Astro.props;
 const t = createTranslate(lang);
+const tawkScriptUrl = kelloggSiteConfig.tawk?.scriptUrl || "";
 
 // 备用按钮的目标跳转路由
 const inquiryUrl = "/inquiry";
@@ -43,16 +45,21 @@ const inquiryUrl = "/inquiry";
   </div>
 </a>
 
-<script is:inline define:vars={{ lang }}>
+<script is:inline define:vars={{ lang, tawkScriptUrl }}>
   // 1. 初始化 Tawk.to 的加载
   var Tawk_API = Tawk_API || {};
   var Tawk_LoadStart = new Date();
 
   function initTawk() {
+    if (!tawkScriptUrl) {
+      showFallbackButton();
+      return;
+    }
+
     var s1 = document.createElement("script");
     var s0 = document.getElementsByTagName("script")[0];
     s1.async = true;
-    s1.src = 'https://embed.tawk.to/69f7493d0b9cc71c320940a8/1jnmvc6gf';
+    s1.src = tawkScriptUrl;
     s1.charset = 'UTF-8';
     
     // 移除不合规范的 crossorigin="*" 以消除 CORS 拦截异常风险

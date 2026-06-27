@@ -3,7 +3,7 @@ import type { Language, Translation } from '../types';
 export function t(
   obj: string | Translation | null | undefined,
   lang: Language,
-  fallbackLanguages: Language[] = ['en', 'zh']
+  fallbackLanguages: readonly Language[] = []
 ): string {
   if (!obj) return '';
   if (typeof obj === 'string') return obj;
@@ -11,6 +11,7 @@ export function t(
   return (
     obj[lang] ||
     fallbackLanguages.map((l) => obj[l]).find(Boolean) ||
+    Object.values(obj).find(Boolean) ||
     ''
   );
 }

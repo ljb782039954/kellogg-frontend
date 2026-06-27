@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import { t } from '../../../../core/lib/common';
+import { t } from '../../utils/i18n';
 import type { NavLink, Language } from '../../types';
 
 interface DesktopNavProps {

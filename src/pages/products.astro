@@ -1,24 +1,9 @@
 ---
-import Layout from "../site-package/kellogg/layouts/SiteLayout";
-import { api } from "../core/lib/api";
-import { SiteService } from "../core/services/siteService";
-import DynamicRenderer from "../core/components/DynamicRenderer";
+import { currentSite } from "../site-package";
 
-// 1. 设置 CDN 缓存 (1 小时)
-Astro.response.headers.set('Cache-Control', 'public, max-age=3600, s-maxage=3600');
+const ProductsPage = currentSite.pages?.products;
 
-// 2. 获取数据
-const siteData = await SiteService.getSiteData(Astro);
-const { lang } = siteData;
-
-// 3. 直接获取名为 'products' 的 CMS 页面数据
-const fullPage = await api.getPageById('products');
-
-if (!fullPage) {
-  return Astro.redirect('/');
-}
+if (!ProductsPage) return Astro.redirect("/404");
 ---
 
-<Layout title={fullPage.title} lang={lang} seo={fullPage.seo}>
-  <DynamicRenderer schema={fullPage} lang={lang} />
-</Layout>
+<ProductsPage />

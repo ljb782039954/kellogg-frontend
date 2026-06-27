@@ -6,7 +6,7 @@ import { $currency, $rates } from '../../../../core/lib/currency';
 import { CurrencyService } from '../../../../core/services/currencyService';
 import { getHydrationSafeRates } from '../../../../core/lib/hydrationState';
 import OptimizedImage from '../../../../core/components/OptimizedImage';
-import { t } from '../../../../core/lib/common';
+import { t } from '../../utils/i18n';
 import type { CompanyInfo, HeaderContent, Language } from '../../types';
 
 import DesktopNav from './DesktopNav';
