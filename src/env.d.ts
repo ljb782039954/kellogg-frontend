@@ -1,6 +1,6 @@
 /// <reference types="astro/client" />
 
-import type { SiteData } from "./services/siteService";
+import type { SiteData } from "./core/services/siteService";
 
 declare namespace App {
   interface Locals {

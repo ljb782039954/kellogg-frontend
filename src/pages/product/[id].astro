@@ -1,14 +1,14 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import { api } from "../../lib/api";
-import { SiteService } from "../../services/siteService";
-import ProductDetailView from "../../components/product/ProductDetailView";
-import ProductCustomFields from "../../components/product/ProductCustomFields.astro";
-import ProductCard from "../../components/product/ProductCardStatic";
-import SectionHeader from "../../components/base/SectionHeader";
-import ProductVideo from "../../components/base/ProductVideo";
-import type { Language, Product } from "../../types";
-import { createTranslate } from "../../lib/i18n";
+import Layout from "../../site-package/kellogg/layouts/SiteLayout";
+import { api } from "../../core/lib/api";
+import { SiteService } from "../../core/services/siteService";
+import ProductDetailView from "../../site-package/kellogg/components/product/ProductDetailView";
+import ProductCustomFields from "../../site-package/kellogg/components/product/ProductCustomFields";
+import ProductCard from "../../site-package/kellogg/components/product/ProductCardStatic";
+import SectionHeader from "../../core/components/SectionHeader";
+import ProductVideo from "../../site-package/kellogg/components/base/ProductVideo";
+import type { Language, Product } from "../../site-package/kellogg/types/common";
+import { createTranslate } from "../../core/lib/i18n";
 
 export const prerender = false;
 

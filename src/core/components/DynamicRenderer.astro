@@ -1,0 +1,188 @@
+---
+import type { CustomPage, Language, PageBlock } from "../types";
+import { api } from "../lib/api";
+import { createRequestMemo } from "../lib/requestMemo";
+
+// 导入积木块
+import ImageBanner from "../../site-package/kellogg/components/blocks/ImageBanner";
+import TextSection from "../../site-package/kellogg/components/blocks/TextSection";
+import Carousel from "../../site-package/kellogg/components/blocks/Carousel";
+import Categories from "../../site-package/kellogg/components/blocks/Categories";
+import ProductGrid from "../../site-package/kellogg/components/blocks/ProductGrid";
+import FeaturedProducts from "../../site-package/kellogg/components/blocks/FeaturedProducts";
+import InquirySection from "../../site-package/kellogg/components/blocks/InquirySection";
+import BrandValues from "../../site-package/kellogg/components/blocks/BrandValues";
+import Statistics from "../../site-package/kellogg/components/blocks/Statistics";
+import Testimonials from "../../site-package/kellogg/components/blocks/Testimonials";
+import FAQ from "../../site-package/kellogg/components/blocks/FAQ";
+import ImageText from "../../site-package/kellogg/components/blocks/ImageText";
+import CtaBanner from "../../site-package/kellogg/components/blocks/CtaBanner";
+import FeatureList from "../../site-package/kellogg/components/blocks/FeatureList";
+import NewArrivals from "../../site-package/kellogg/components/blocks/NewArrivals";
+import Countdown from "../../site-package/kellogg/components/blocks/Countdown";
+import Gallery from "../../site-package/kellogg/components/blocks/Gallery";
+import ImageBannerTag from "../../site-package/kellogg/components/blocks/ImageBannerTag";
+import ImageFull from "../../site-package/kellogg/components/blocks/ImageFull";
+import PartnerLogos from "../../site-package/kellogg/components/blocks/PartnerLogos";
+import VideoSection from "../../site-package/kellogg/components/blocks/VideoSection";
+import CustomerReviews from "../../site-package/kellogg/components/blocks/CustomerReviews";
+
+interface Props {
+  schema: CustomPage;
+  lang: Language;
+}
+
+const { schema, lang } = Astro.props;
+const enabledBlocks = schema.blocks.filter((block) => block.isVisible);
+const requestMemo = createRequestMemo();
+const getCategories = () => requestMemo.get('categories', () => api.getCategories());
+const getProducts = (params: Parameters<typeof api.getProducts>[0]) =>
+  requestMemo.get(`products:${JSON.stringify(params)}`, () => api.getProducts(params));
+
+// 数据注入逻辑 (在服务端预先获取数据)
+const getBlockData = async (block: PageBlock): Promise<Record<string, any>> => {
+  if (block.type === 'productGrid') {
+    const pageSize = block.content.itemsPerPage || 12;
+    const params: NonNullable<Parameters<typeof api.getProducts>[0]> = { pageSize, page: 1 };
+    if (block.content.category && block.content.category !== 'all') {
+      params.category = block.content.category;
+    }
+    
+    const [productsData, categoriesData] = await Promise.all([
+      getProducts(params),
+      getCategories()
+    ]);
+    
+    return {
+      products: productsData.data || [],
+      categories: categoriesData || [],
+      totalProducts: productsData.pagination?.total || 0
+    };
+  }
+
+  if (block.type === 'featuredProducts' || block.type === 'newArrivals') {
+    const params: NonNullable<Parameters<typeof api.getProducts>[0]> = { pageSize: 200 };
+    if (block.type === 'featuredProducts') params.featured = true;
+    if (block.type === 'newArrivals') params.sort = 'newest';
+    
+    const [productsData, categoriesData] = await Promise.all([
+      getProducts(params),
+      getCategories()
+    ]);
+    
+    return {
+      products: productsData.data || [],
+      categories: categoriesData || []
+    };
+  }
+  
+  if (block.type === 'categories') {
+    const categoriesData = await getCategories();
+    return { categories: categoriesData };
+  }
+
+  if (block.type === 'caseStudies') {
+    const reviews = await requestMemo.get('reviews', () => api.getReviews());
+    return { reviews: reviews || [] };
+  }
+  
+  return {};
+};
+
+// 预取所有需要数据的区块
+const blocksWithData: any[] = await Promise.all(
+  enabledBlocks.map(async (block) => {
+    const data = await getBlockData(block);
+    return { ...block, data };
+  })
+);
+
+---
+
+<div class="dynamic-page">
+  {blocksWithData.map((block) => {
+    // 根据类型渲染组件
+    switch (block.type) {
+      case 'imageBanner':
+        return <ImageBanner {...block.content} lang={lang} />;
+      
+      case 'textSection':
+        return <TextSection {...block.content} lang={lang} />;
+
+      case 'carousel':
+        return <Carousel {...block.content} lang={lang} client:load />;
+      
+      case 'categories':
+        return <Categories {...block.content} {...block.data} lang={lang} />;
+      
+      case 'productGrid':
+        return <ProductGrid {...block.content} {...block.data} lang={lang} client:load />;
+
+      case 'featuredProducts':
+        return <FeaturedProducts {...block.content} {...block.data} lang={lang} />;
+
+      case 'newArrivals':
+        return <NewArrivals {...block.content} {...block.data} lang={lang} />;
+      
+      case 'inquiry':
+        return <InquirySection lang={lang} client:visible />;
+      
+      case 'brandValues':
+        return <BrandValues {...block.content} lang={lang} />;
+      
+      case 'statistics':
+        return <Statistics {...block.content} lang={lang} client:visible />;
+      
+      case 'testimonials':
+        return <Testimonials {...block.content} lang={lang} />;
+
+      case 'faq':
+        return <FAQ {...block.content} lang={lang} client:visible />;
+      
+      case 'imageText':
+        return <ImageText {...block.content} lang={lang} />;
+      
+      case 'ctaBanner':
+        return <CtaBanner {...block.content} lang={lang} />;
+      
+      case 'featureList':
+        return <FeatureList {...block.content} lang={lang} />;
+
+      case 'countdown':
+        return <Countdown {...block.content} lang={lang} client:load />;
+
+      case 'gallery':
+        return <Gallery {...block.content} lang={lang} client:visible />;
+
+      case 'imageBannerTag':
+        return <ImageBannerTag {...block.content} lang={lang} />;
+
+      case 'imageFull':
+        return <ImageFull {...block.content} lang={lang} client:visible />;
+
+      case 'partnerLogos':
+        return <PartnerLogos {...block.content} lang={lang} />;
+
+      case 'videoSection':
+        return <VideoSection {...block.content} lang={lang} />;
+
+      case 'caseStudies':
+        return <CustomerReviews {...block.data} lang={lang} />;
+      
+      default:
+        if (!import.meta.env.DEV) return null;
+        return (
+          <div class="py-10 border-b border-dashed border-gray-200">
+            <div class="container mx-auto px-4">
+              <p class="text-gray-400 text-sm">
+                [Block: {block.type}] (待迁移实现)
+              </p>
+              <pre class="bg-gray-100 p-4 rounded mt-2 text-xs overflow-auto max-h-40">
+                {JSON.stringify(block.content, null, 2)}
+              </pre>
+            </div>
+          </div>
+        );
+    }
+  })}
+</div>

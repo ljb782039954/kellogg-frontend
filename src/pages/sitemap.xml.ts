@@ -1,5 +1,5 @@
-import { api } from "../lib/api";
-import { SiteService } from "../services/siteService";
+import { api } from "../core/lib/api";
+import { SiteService } from "../core/services/siteService";
 
 export const prerender = false;
 

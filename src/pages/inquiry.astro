@@ -1,10 +1,10 @@
 ---
 export const prerender = true;
 
-import Layout from "../layouts/Layout.astro";
-import { api } from "../lib/api";
-import { SiteService } from "../services/siteService";
-import InquiryView from "../components/pages/InquiryView";
+import Layout from "../site-package/kellogg/layouts/SiteLayout";
+import { api } from "../core/lib/api";
+import { SiteService } from "../core/services/siteService";
+import InquiryView from "../site-package/kellogg/components/pages/InquiryView";
 
 // 1. 获取站点全局数据
 const siteData = await SiteService.getSiteData(Astro);

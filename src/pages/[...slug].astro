@@ -1,10 +1,10 @@
 ---
 export const prerender = true;
 
-import Layout from "../layouts/Layout.astro";
-import { api } from "../lib/api";
-import { SiteService } from "../services/siteService";
-import DynamicRenderer from "../functions/DynamicRenderer.astro";
+import Layout from "../site-package/kellogg/layouts/SiteLayout";
+import { api } from "../core/lib/api";
+import { SiteService } from "../core/services/siteService";
+import DynamicRenderer from "../core/components/DynamicRenderer";
 
 export async function getStaticPaths() {
   // 在构建时获取所有站点数据

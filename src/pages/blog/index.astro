@@ -1,11 +1,11 @@
 ---
 export const prerender = true;
 
-import Layout from "../../layouts/Layout.astro";
-import OptimizedImage from "../../components/ui/OptimizedImage.astro";
-import { api } from "../../lib/api";
-import { SiteService } from "../../services/siteService";
-import type { BlogSummary, Language } from "../../types";
+import Layout from "../../site-package/kellogg/layouts/SiteLayout";
+import OptimizedImage from "../../core/components/OptimizedImage";
+import { api } from "../../core/lib/api";
+import { SiteService } from "../../core/services/siteService";
+import type { BlogSummary, Language } from "../../site-package/kellogg/types/common";
 
 // ---- Build-time data fetch ----
 const siteData = await SiteService.getSiteData(Astro);
