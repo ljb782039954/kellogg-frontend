@@ -1,23 +1,25 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import type { Translation, NavLink, Language } from '../../types';
 import OptimizedImage from '@core/components/OptimizedImage';
 
-export interface CarouselValues {
+export interface CarouselItemView {
   id: number;
   image: string;
-  title: Translation;
-  subtitle?: Translation;
-  cta?: Translation;
-  link: NavLink;
+  titleText: string;
+  subtitleText?: string;
+  ctaText?: string;
+  href?: string;
 }
 
 export interface CarouselProps {
   autoPlay?: boolean;
   interval?: number;
-  items?: CarouselValues[];
-  lang: Language;
+  items?: CarouselItemView[];
+  regionLabel?: string;
+  previousLabel?: string;
+  nextLabel?: string;
+  goToSlideLabelPrefix?: string;
 }
 
 const slideVariants = {
@@ -37,28 +39,17 @@ const slideVariants = {
   }),
 };
 
-function decodeHtml(html: string) {
-  return (html || '')
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&amp;/g, "&");
-}
-
 export default function Carousel({ 
   items = [], 
   autoPlay = true, 
   interval = 5000,
-  lang
+  regionLabel = "Featured content carousel",
+  previousLabel = "Previous slide",
+  nextLabel = "Next slide",
+  goToSlideLabelPrefix = "Go to slide",
 }: CarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
-
-  const t = useCallback((obj: Translation | undefined) => {
-    if (!obj) return '';
-    return lang === 'zh' ? obj.zh : obj.en;
-  }, [lang]);
 
   const nextSlide = useCallback(() => {
     if (items.length === 0) return;
@@ -84,7 +75,7 @@ export default function Carousel({
   if (!slide) return null;
 
   return (
-    <div className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden bg-gray-900" role="region" aria-roledescription="carousel" aria-label={lang === 'zh' ? '精选内容轮播' : 'Featured content carousel'}>
+    <div className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden bg-gray-900" role="region" aria-roledescription="carousel" aria-label={regionLabel}>
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={currentIndex}
@@ -99,7 +90,7 @@ export default function Carousel({
           <div className="absolute inset-0">
             <OptimizedImage
               src={slide.image}
-              alt={t(slide.title)}
+              alt={slide.titleText}
               className="w-full h-full object-cover"
               priority={currentIndex === 0}
               sizes="100vw"
@@ -115,27 +106,27 @@ export default function Carousel({
                 transition={{ delay: 0.3, duration: 0.6 }}
                 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 lg:mb-8 text-white"
               >
-                {t(slide.title)}
+                {slide.titleText}
               </motion.h2>
-              {slide.subtitle && (
+              {slide.subtitleText && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5, duration: 0.6 }}
                   className="text-lg md:text-xl mb-8 text-white/70"
                 >
-                  {decodeHtml(t(slide.subtitle))}
+                  {slide.subtitleText}
                 </motion.div>
               )}
-              {slide.cta && (
+              {slide.ctaText && (
                 <motion.a
-                  href={slide.link?.href || '#'}
+                  href={slide.href || '#'}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.7, duration: 0.6 }}
                   className="inline-block px-8 py-3 rounded-full font-semibold transition-all hover:scale-105 bg-white text-gray-900 hover:bg-gray-100"
                 >
-                  {t(slide.cta)}
+                  {slide.ctaText}
                 </motion.a>
               )}
             </div>
@@ -147,7 +138,7 @@ export default function Carousel({
         type="button"
         onClick={prevSlide}
         className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10 bg-white/20 hover:bg-white/30 text-white"
-        aria-label={lang === 'zh' ? '上一张' : 'Previous slide'}
+        aria-label={previousLabel}
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
@@ -155,7 +146,7 @@ export default function Carousel({
         type="button"
         onClick={nextSlide}
         className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10 bg-white/20 hover:bg-white/30 text-white"
-        aria-label={lang === 'zh' ? '下一张' : 'Next slide'}
+        aria-label={nextLabel}
       >
         <ChevronRight className="w-6 h-6" />
       </button>
@@ -172,7 +163,7 @@ export default function Carousel({
             className={`w-3 h-3 rounded-full transition-all ${
               index === currentIndex ? "bg-white" : "bg-white/50 hover:bg-white"
             }`}
-            aria-label={`${lang === 'zh' ? '转到第' : 'Go to slide'} ${index + 1}`}
+            aria-label={`${goToSlideLabelPrefix} ${index + 1}`}
             aria-current={index === currentIndex ? 'true' : undefined}
           />
         ))}

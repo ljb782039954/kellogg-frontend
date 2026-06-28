@@ -1,32 +1,71 @@
 ---
 import type { Language, PageBlock } from "../types";
-import { toCtaBannerViewProps } from "../block-adapters/ctaBannerAdapter";
-import { toImageBannerTagViewProps } from "../block-adapters/imageBannerTagAdapter";
-import type { CtaBannerContent } from "../block-schemas/ctaBanner";
-import type { ImageBannerTagContent } from "../block-schemas/imageBannerTag";
+import {
+  toBrandValuesViewProps,
+  toCategoriesViewProps,
+  toCarouselViewProps,
+  toCountdownViewProps,
+  toCtaBannerViewProps,
+  toCustomerReviewsViewProps,
+  toFAQViewProps,
+  toFeatureListViewProps,
+  toGalleryViewProps,
+  toImageBannerTagViewProps,
+  toImageBannerViewProps,
+  toImageFullViewProps,
+  toImageTextViewProps,
+  toPartnerLogosViewProps,
+  toStatisticsViewProps,
+  toTestimonialsViewProps,
+  toTextSectionViewProps,
+  toVideoSectionViewProps,
+} from "../block-adapters";
+import type {
+  BrandValuesContent,
+  CategoriesContent,
+  CarouselContent,
+  CountdownContent,
+  CtaBannerContent,
+  FAQContent,
+  FeatureListContent,
+  GalleryContent,
+  ImageBannerContent,
+  ImageBannerTagContent,
+  ImageFullContent,
+  ImageTextContent,
+  PartnerLogosContent,
+  StatisticsContent,
+  TestimonialsContent,
+  TextSectionContent,
+  VideoSectionContent,
+} from "../block-schemas";
 
-import ImageBanner from "../components/blocks/ImageBanner";
-import TextSection from "../components/blocks/TextSection";
-import Carousel from "../components/blocks/Carousel";
-import Categories from "../components/blocks/Categories";
-import ProductGrid from "../components/blocks/ProductGrid";
-import FeaturedProducts from "../components/blocks/FeaturedProducts";
-import InquirySection from "../components/blocks/InquirySection";
-import BrandValues from "../components/blocks/BrandValues";
-import Statistics from "../components/blocks/Statistics";
-import Testimonials from "../components/blocks/Testimonials";
-import FAQ from "../components/blocks/FAQ";
-import ImageText from "../components/blocks/ImageText";
-import CtaBanner from "../components/blocks/CtaBanner";
-import FeatureList from "../components/blocks/FeatureList";
-import NewArrivals from "../components/blocks/NewArrivals";
-import Countdown from "../components/blocks/Countdown";
-import Gallery from "../components/blocks/Gallery";
-import ImageBannerTag from "../components/blocks/ImageBannerTag";
-import ImageFull from "../components/blocks/ImageFull";
-import PartnerLogos from "../components/blocks/PartnerLogos";
-import VideoSection from "../components/blocks/VideoSection";
-import CustomerReviews from "../components/blocks/CustomerReviews";
+import {
+  BrandValues,
+  Carousel,
+  Categories,
+  Countdown,
+  CtaBanner,
+  CustomerReviews,
+  FAQ,
+  FeatureList,
+  Gallery,
+  ImageBanner,
+  ImageBannerTag,
+  ImageFull,
+  ImageText,
+  PartnerLogos,
+  Statistics,
+  Testimonials,
+  TextSection,
+  VideoSection,
+} from "../components/blocks";
+import {
+  FeaturedProducts,
+  InquirySection,
+  NewArrivals,
+  ProductGrid as ProductGridContainer,
+} from "../components/blocks-containers";
 
 type BlockWithData = PageBlock & {
   data?: Record<string, any>;
@@ -44,11 +83,59 @@ const { block, lang, api } = Astro.props;
 const content = block.content ?? {};
 const data = block.data ?? {};
 const getImageUrl = (src: string, width: number) => api.getOptimizedImageUrl(src, width);
+const imageBannerProps = block.type === "imageBanner"
+  ? toImageBannerViewProps(content as ImageBannerContent, lang)
+  : {};
 const imageBannerTagProps = block.type === "imageBannerTag"
   ? toImageBannerTagViewProps(content as ImageBannerTagContent, { lang, getImageUrl })
   : {};
+const textSectionProps = block.type === "textSection"
+  ? toTextSectionViewProps(content as TextSectionContent, lang)
+  : {};
+const brandValuesProps = block.type === "brandValues"
+  ? toBrandValuesViewProps(content as BrandValuesContent, lang)
+  : {};
+const categoriesProps = block.type === "categories"
+  ? toCategoriesViewProps(content as CategoriesContent, { categories: data.categories ?? [], lang })
+  : {};
+const carouselProps = block.type === "carousel"
+  ? toCarouselViewProps(content as CarouselContent, lang)
+  : {};
+const countdownProps = block.type === "countdown"
+  ? toCountdownViewProps(content as CountdownContent, lang)
+  : {};
 const ctaBannerProps = block.type === "ctaBanner"
   ? toCtaBannerViewProps(content as CtaBannerContent, { lang, getImageUrl })
+  : {};
+const imageTextProps = block.type === "imageText"
+  ? toImageTextViewProps(content as ImageTextContent, lang)
+  : {};
+const featureListProps = block.type === "featureList"
+  ? toFeatureListViewProps(content as FeatureListContent, lang)
+  : {};
+const testimonialsProps = block.type === "testimonials"
+  ? toTestimonialsViewProps(content as TestimonialsContent, lang)
+  : {};
+const faqProps = block.type === "faq"
+  ? toFAQViewProps(content as FAQContent, lang)
+  : {};
+const galleryProps = block.type === "gallery"
+  ? toGalleryViewProps(content as GalleryContent, lang)
+  : {};
+const partnerLogosProps = block.type === "partnerLogos"
+  ? toPartnerLogosViewProps(content as PartnerLogosContent, lang)
+  : {};
+const imageFullProps = block.type === "imageFull"
+  ? toImageFullViewProps(content as ImageFullContent, lang)
+  : {};
+const videoSectionProps = block.type === "videoSection"
+  ? toVideoSectionViewProps(content as VideoSectionContent, lang)
+  : {};
+const statisticsProps = block.type === "statistics"
+  ? toStatisticsViewProps(content as StatisticsContent, lang)
+  : {};
+const customerReviewsProps = block.type === "caseStudies"
+  ? toCustomerReviewsViewProps(data.reviews ?? [], lang)
   : {};
 const knownBlockTypes = new Set([
   "imageBanner",
@@ -76,28 +163,28 @@ const knownBlockTypes = new Set([
 ]);
 ---
 
-{block.type === "imageBanner" && <ImageBanner {...content} lang={lang} />}
-{block.type === "textSection" && <TextSection {...content} lang={lang} />}
-{block.type === "carousel" && <Carousel {...content} lang={lang} client:load />}
-{block.type === "categories" && <Categories {...content} {...data} lang={lang} />}
-{block.type === "productGrid" && <ProductGrid {...content} {...data} lang={lang} client:load />}
+{block.type === "imageBanner" && <ImageBanner {...imageBannerProps} />}
+{block.type === "textSection" && <TextSection {...textSectionProps} />}
+{block.type === "carousel" && <Carousel {...carouselProps} client:load />}
+{block.type === "categories" && <Categories {...categoriesProps} />}
+{block.type === "productGrid" && <ProductGridContainer {...content} {...data} lang={lang} client:load />}
 {block.type === "featuredProducts" && <FeaturedProducts {...content} {...data} lang={lang} />}
 {block.type === "newArrivals" && <NewArrivals {...content} {...data} lang={lang} />}
 {block.type === "inquiry" && <InquirySection lang={lang} client:visible />}
-{block.type === "brandValues" && <BrandValues {...content} lang={lang} />}
-{block.type === "statistics" && <Statistics {...content} lang={lang} client:visible />}
-{block.type === "testimonials" && <Testimonials {...content} lang={lang} />}
-{block.type === "faq" && <FAQ {...content} lang={lang} client:visible />}
-{block.type === "imageText" && <ImageText {...content} lang={lang} />}
+{block.type === "brandValues" && <BrandValues {...brandValuesProps} />}
+{block.type === "statistics" && <Statistics {...statisticsProps} client:visible />}
+{block.type === "testimonials" && <Testimonials {...testimonialsProps} />}
+{block.type === "faq" && <FAQ {...faqProps} client:visible />}
+{block.type === "imageText" && <ImageText {...imageTextProps} />}
 {block.type === "ctaBanner" && <CtaBanner {...ctaBannerProps} />}
-{block.type === "featureList" && <FeatureList {...content} lang={lang} />}
-{block.type === "countdown" && <Countdown {...content} lang={lang} client:load />}
-{block.type === "gallery" && <Gallery {...content} lang={lang} client:visible />}
+{block.type === "featureList" && <FeatureList {...featureListProps} />}
+{block.type === "countdown" && <Countdown {...countdownProps} client:load />}
+{block.type === "gallery" && <Gallery {...galleryProps} client:visible />}
 {block.type === "imageBannerTag" && <ImageBannerTag {...imageBannerTagProps} />}
-{block.type === "imageFull" && <ImageFull {...content} lang={lang} client:visible />}
-{block.type === "partnerLogos" && <PartnerLogos {...content} lang={lang} />}
-{block.type === "videoSection" && <VideoSection {...content} lang={lang} />}
-{block.type === "caseStudies" && <CustomerReviews {...data} lang={lang} />}
+{block.type === "imageFull" && <ImageFull {...imageFullProps} client:visible />}
+{block.type === "partnerLogos" && <PartnerLogos {...partnerLogosProps} />}
+{block.type === "videoSection" && <VideoSection {...videoSectionProps} />}
+{block.type === "caseStudies" && <CustomerReviews {...customerReviewsProps} />}
 
 {!knownBlockTypes.has(block.type) && import.meta.env.DEV && (
   <div class="py-10 border-b border-dashed border-gray-200">

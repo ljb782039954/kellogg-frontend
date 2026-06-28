@@ -1,20 +1,25 @@
-import type { Language, Translation } from "../../types";
-import { createTranslate } from "../../utils/i18n";
-import OptimizedImage from "../../../../core/components/OptimizedImage";
-import RichText from "../../../../core/components/RichText";
+import OptimizedImage from "@core/components/OptimizedImage";
+import RichText from "@core/components/RichText";
 
 export interface ImageTextProps {
-  title?: Translation;
-  content?: Translation;
+  titleText?: string;
+  contentText?: string;
   image?: string;
+  imageAlt?: string;
   imagePosition?: "left" | "right";
-  buttonText?: Translation;
+  buttonText?: string;
   buttonLink?: string;
-  lang: Language;
 }
 
-export default function ImageText({ title, content, image, imagePosition = "left", buttonText, buttonLink, lang }: ImageTextProps) {
-  const t = createTranslate(lang);
+export default function ImageText({
+  titleText = "",
+  contentText = "",
+  image,
+  imageAlt = "Section Image",
+  imagePosition = "left",
+  buttonText = "",
+  buttonLink,
+}: ImageTextProps) {
   const isInternal = buttonLink?.startsWith("/");
 
   return (
@@ -23,15 +28,15 @@ export default function ImageText({ title, content, image, imagePosition = "left
         <div className={`grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] items-center gap-8 md:gap-12 px-4 ${imagePosition === "right" ? "md:[&>*:first-child]:order-2" : ""}`}>
           <div className="flex-1 w-full">
             <div className="aspect-[4/3] rounded-lg overflow-hidden">
-              <OptimizedImage src={image} alt={title ? t(title) : "Section Image"} className="w-full h-full object-cover" />
+              <OptimizedImage src={image} alt={imageAlt} className="w-full h-full object-cover" />
             </div>
           </div>
           <div className="flex-1 space-y-4">
-            {title && <h3 className="text-2xl md:text-4xl font-bold">{t(title)}</h3>}
-            {content && <RichText value={t(content)} className="text-gray-600 text-md md:text-lg leading-relaxed content-rich-text" />}
+            {titleText && <h3 className="text-2xl md:text-4xl font-bold">{titleText}</h3>}
+            {contentText && <RichText value={contentText} className="text-gray-600 text-md md:text-lg leading-relaxed content-rich-text" />}
             {buttonText && buttonLink && (
               <a href={buttonLink} target={isInternal ? undefined : "_blank"} rel={isInternal ? undefined : "noopener noreferrer"} className="inline-block px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
-                {t(buttonText)}
+                {buttonText}
               </a>
             )}
           </div>

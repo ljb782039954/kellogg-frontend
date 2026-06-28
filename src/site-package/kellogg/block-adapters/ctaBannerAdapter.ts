@@ -1,6 +1,6 @@
 import type { Language } from "@core/types";
-import type { CtaBannerContent } from "../block-schemas/ctaBanner";
-import type { CtaBannerViewProps } from "../components/ui-blocks/CtaBannerView";
+import type { CtaBannerContent } from "../block-schemas";
+import type { CtaBannerProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 
 interface CtaBannerAdapterContext {
@@ -11,7 +11,7 @@ interface CtaBannerAdapterContext {
 export function toCtaBannerViewProps(
   content: CtaBannerContent,
   { lang, getImageUrl }: CtaBannerAdapterContext,
-): CtaBannerViewProps {
+): CtaBannerProps {
   const translate = createTranslate(lang);
   const values = content.values ?? {};
 

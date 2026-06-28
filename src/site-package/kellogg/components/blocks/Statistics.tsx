@@ -1,34 +1,27 @@
 import { motion, useInView } from 'framer-motion';
 import { useEffect, useRef, useState } from "react";
-import type { Translation, Language } from '../../types';
 
-export interface Statistic {
+export interface StatisticViewItem {
   id: number;
   value: string;
-  label: Translation;
+  labelText: string;
 }
 
-export interface StatisticProps {
-  title?: Translation;
-  subtitle?: Translation;
-  items?: Statistic[];
-  lang: Language;
+export interface StatisticsProps {
+  titleText?: string;
+  subtitleText?: string;
+  items?: StatisticViewItem[];
 }
 
-export default function Statistics({ title, subtitle, items = [], lang }: StatisticProps) {
-  const t = (obj: Translation | undefined) => {
-    if (!obj) return '';
-    return lang === 'zh' ? obj.zh : obj.en;
-  };
-
+export default function Statistics({ titleText, subtitleText, items = [] }: StatisticsProps) {
   if (items.length === 0) return null;
 
   return (
     <section className="py-12 bg-gray-900 text-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 max-w-2xl mx-auto">
-          {title && <h2 className="text-2xl md:text-4xl font-bold mb-4">{t(title)}</h2>}
-          {subtitle && <p className="text-gray-400 text-md md:text-lg">{t(subtitle)}</p>}
+          {titleText && <h2 className="text-2xl md:text-4xl font-bold mb-4">{titleText}</h2>}
+          {subtitleText && <p className="text-gray-400 text-md md:text-lg">{subtitleText}</p>}
         </div>
         
         <div className="flex flex-row justify-between max-w-6xl mx-auto gap-2 md:gap-4">
@@ -45,7 +38,7 @@ export default function Statistics({ title, subtitle, items = [], lang }: Statis
                 <AnimatedNumber value={item.value} />
               </div>
               <div className="text-sm md:text-base text-gray-400">
-                {t(item.label)}
+                {item.labelText}
               </div>
             </motion.div>
           ))}

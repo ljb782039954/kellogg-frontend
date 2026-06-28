@@ -1,28 +1,34 @@
 import { useState, useEffect, useCallback } from 'react';
 import OptimizedImage from '@core/components/OptimizedImage';
-import type { Translation, Language } from "../../types";
-
-export interface CountdownValues {
-  endTime?: string;
-  backgroundImage?: string;
-}
 
 export interface CountdownProps {
-  title?: Translation;
-  subtitle?: Translation;
-  values?: CountdownValues;
-  lang: Language;
+  titleText?: string;
+  subtitleText?: string;
+  endTime?: string;
+  backgroundImage?: string;
+  labels?: {
+    days: string;
+    hours: string;
+    minutes: string;
+    seconds: string;
+  };
 }
 
-export default function Countdown({ title, subtitle, values, lang }: CountdownProps) {
-  const t = (obj: Translation | undefined) => {
-    if (!obj) return '';
-    return lang === 'zh' ? obj.zh : obj.en;
-  };
-
+export default function Countdown({
+  titleText,
+  subtitleText,
+  endTime,
+  backgroundImage,
+  labels = {
+    days: "Days",
+    hours: "Hours",
+    minutes: "Min",
+    seconds: "Sec",
+  },
+}: CountdownProps) {
   const calculateTimeLeft = useCallback(() => {
-    if (!values?.endTime) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-    const difference = +new Date(values.endTime) - +new Date();
+    if (!endTime) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+    const difference = +new Date(endTime) - +new Date();
     if (difference > 0) {
       return {
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -32,7 +38,7 @@ export default function Countdown({ title, subtitle, values, lang }: CountdownPr
       };
     }
     return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-  }, [values?.endTime]);
+  }, [endTime]);
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
@@ -46,7 +52,7 @@ export default function Countdown({ title, subtitle, values, lang }: CountdownPr
   return (
     <div className="relative py-16 overflow-hidden text-center">
       <OptimizedImage
-        src={values?.backgroundImage}
+        src={backgroundImage}
         alt=""
         width={1920}
         className="absolute inset-0 w-full h-full object-cover"
@@ -54,36 +60,36 @@ export default function Countdown({ title, subtitle, values, lang }: CountdownPr
       <div className="absolute inset-0 bg-gradient-to-r from-red-600/90 to-orange-500/90" />
       <div className="relative text-white">
         <div className="text-center mb-12 max-w-2xl mx-auto">
-          {title && <h2 className="text-2xl md:text-4xl font-bold mb-4 text-white">{t(title)}</h2>}
-          {subtitle && <p className="text-md md:text-lg text-white/70">{t(subtitle)}</p>}
+          {titleText && <h2 className="text-2xl md:text-4xl font-bold mb-4 text-white">{titleText}</h2>}
+          {subtitleText && <p className="text-md md:text-lg text-white/70">{subtitleText}</p>}
         </div>
         <div className="flex justify-center gap-4 mb-8">
           <div className="flex flex-col items-center">
             <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center text-3xl font-bold text-gray-900 shadow-lg">
               {String(timeLeft.days).padStart(2, '0')}
             </div>
-            <span className="text-sm mt-2 opacity-80">{t({ zh: '天', en: 'Days' })}</span>
+            <span className="text-sm mt-2 opacity-80">{labels.days}</span>
           </div>
           <div className="text-3xl font-bold self-start mt-4">:</div>
           <div className="flex flex-col items-center">
             <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center text-3xl font-bold text-gray-900 shadow-lg">
               {String(timeLeft.hours).padStart(2, '0')}
             </div>
-            <span className="text-sm mt-2 opacity-80">{t({ zh: '时', en: 'Hours' })}</span>
+            <span className="text-sm mt-2 opacity-80">{labels.hours}</span>
           </div>
           <div className="text-3xl font-bold self-start mt-4">:</div>
           <div className="flex flex-col items-center">
             <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center text-3xl font-bold text-gray-900 shadow-lg">
               {String(timeLeft.minutes).padStart(2, '0')}
             </div>
-            <span className="text-sm mt-2 opacity-80">{t({ zh: '分', en: 'Min' })}</span>
+            <span className="text-sm mt-2 opacity-80">{labels.minutes}</span>
           </div>
           <div className="text-3xl font-bold self-start mt-4">:</div>
           <div className="flex flex-col items-center">
             <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center text-3xl font-bold text-gray-900 shadow-lg">
               {String(timeLeft.seconds).padStart(2, '0')}
             </div>
-            <span className="text-sm mt-2 opacity-80">{t({ zh: '秒', en: 'Sec' })}</span>
+            <span className="text-sm mt-2 opacity-80">{labels.seconds}</span>
           </div>
         </div>
       </div>

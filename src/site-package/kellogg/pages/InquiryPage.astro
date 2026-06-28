@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
-import InquiryView from "../components/pages/InquiryView";
+import InquiryPageView from "../components/pages/InquiryPageView";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
 import type { CompanyInfo } from "../types";
@@ -34,5 +34,5 @@ const pageContent = fullPage?.content || {
 ---
 
 <Layout title={pageTitle} lang={lang} seo={pageSEO} hideInquiry={true}>
-  <InquiryView lang={lang} companyInfo={companyInfo} pageContent={pageContent} client:load />
+  <InquiryPageView lang={lang} companyInfo={companyInfo} pageContent={pageContent} client:load />
 </Layout>

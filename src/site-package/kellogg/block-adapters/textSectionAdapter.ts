@@ -1,12 +1,12 @@
 import type { Language } from "@core/types";
-import type { TextSectionContent } from "../block-schemas/textSection";
-import type { TextSectionViewProps } from "../components/ui-blocks/TextSectionView";
+import type { TextSectionContent } from "../block-schemas";
+import type { TextSectionProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 
 export function toTextSectionViewProps(
   content: TextSectionContent,
   lang: Language,
-): TextSectionViewProps {
+): TextSectionProps {
   const translate = createTranslate(lang);
 
   return {

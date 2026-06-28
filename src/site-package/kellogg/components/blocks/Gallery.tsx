@@ -1,22 +1,42 @@
 import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react';
 import { motion } from 'framer-motion';
-import type { Translation, Language } from "../../types";
-import OptimizedImage from '../../../../core/components/OptimizedImage';
+import OptimizedImage from '@core/components/OptimizedImage';
 
 export interface GalleryValues {
   src: string;
-  caption?: Translation;
+  captionText?: string;
+}
+
+export interface GalleryLabels {
+  viewImage: string;
+  imagePreview: string;
+  closePreview: string;
+  previousImage: string;
+  nextImage: string;
 }
 
 export interface GalleryProps {
-  title?: Translation;
-  subtitle?: Translation;
+  titleText?: string;
+  subtitleText?: string;
   items?: GalleryValues[];
-  lang: Language;
+  labels?: GalleryLabels;
 }
 
-export default function Gallery({ title, subtitle, items = [], lang }: GalleryProps) {
+const fallbackLabels: GalleryLabels = {
+  viewImage: 'View image',
+  imagePreview: 'Image preview',
+  closePreview: 'Close image preview',
+  previousImage: 'Previous image',
+  nextImage: 'Next image',
+};
+
+export default function Gallery({
+  titleText = '',
+  subtitleText = '',
+  items = [],
+  labels = fallbackLabels,
+}: GalleryProps) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -42,11 +62,6 @@ export default function Gallery({ title, subtitle, items = [], lang }: GalleryPr
 
   if (!items || items.length === 0) return null;
 
-  const t = (obj: Translation | undefined) => {
-    if (!obj) return '';
-    return lang === 'zh' ? obj.zh : obj.en;
-  };
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -70,10 +85,10 @@ export default function Gallery({ title, subtitle, items = [], lang }: GalleryPr
     <section className="py-12">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 max-w-2xl mx-auto">
-          {title && <h2 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">{t(title)}</h2>}
-          {subtitle && <p className="text-md md:text-lg text-gray-600">{t(subtitle)}</p>}
+          {titleText && <h2 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">{titleText}</h2>}
+          {subtitleText && <p className="text-md md:text-lg text-gray-600">{subtitleText}</p>}
         </div>
-        
+
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -88,72 +103,71 @@ export default function Gallery({ title, subtitle, items = [], lang }: GalleryPr
               variants={itemVariants}
               className="group relative aspect-square rounded-lg overflow-hidden cursor-pointer"
               onClick={() => setSelectedImage(i)}
-              aria-label={`${lang === 'zh' ? '查看图片' : 'View image'} ${i + 1}: ${t(img.caption)}`}
+              aria-label={`${labels.viewImage} ${i + 1}: ${img.captionText ?? ''}`}
             >
               <OptimizedImage
                 src={img.src}
-                alt={t(img.caption)}
+                alt={img.captionText ?? ''}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-center">
                   <ZoomIn className="w-8 h-8 mx-auto mb-2" />
-                  <span className="text-sm">{t(img.caption)}</span>
+                  <span className="text-sm">{img.captionText}</span>
                 </div>
               </div>
             </motion.button>
           ))}
         </motion.div>
 
-        {/* Lightbox */}
         {selectedImage !== null && (
           <div
             className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center"
             onClick={() => setSelectedImage(null)}
             role="dialog"
             aria-modal="true"
-            aria-label={lang === 'zh' ? '图片预览' : 'Image preview'}
+            aria-label={labels.imagePreview}
           >
             <button
               ref={closeButtonRef}
               type="button"
               className="absolute top-4 right-4 text-white hover:text-gray-300"
               onClick={() => setSelectedImage(null)}
-              aria-label={lang === 'zh' ? '关闭图片预览' : 'Close image preview'}
+              aria-label={labels.closePreview}
             >
               <X className="w-8 h-8" />
             </button>
             <button
               type="button"
               className="absolute left-4 text-white hover:text-gray-300"
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={(event) => {
+                event.stopPropagation();
                 setSelectedImage((prev) => (prev! - 1 + items.length) % items.length);
               }}
-              aria-label={lang === 'zh' ? '上一张图片' : 'Previous image'}
+              aria-label={labels.previousImage}
             >
               <ChevronLeft className="w-12 h-12" />
             </button>
             <OptimizedImage
               src={items[selectedImage].src}
-              alt={t(items[selectedImage].caption)}
+              alt={items[selectedImage].captionText ?? ''}
               width={1200}
               className="max-w-4xl max-h-[80vh] object-contain"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(event) => event.stopPropagation()}
             />
             <button
               type="button"
               className="absolute right-4 text-white hover:text-gray-300"
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={(event) => {
+                event.stopPropagation();
                 setSelectedImage((prev) => (prev! + 1) % items.length);
               }}
-              aria-label={lang === 'zh' ? '下一张图片' : 'Next image'}
+              aria-label={labels.nextImage}
             >
               <ChevronRight className="w-12 h-12" />
             </button>
             <div className="absolute bottom-8 text-white text-center">
-              <p className="text-lg">{t(items[selectedImage].caption)}</p>
+              <p className="text-lg">{items[selectedImage].captionText}</p>
               <p className="text-sm opacity-60">{selectedImage + 1} / {items.length}</p>
             </div>
           </div>

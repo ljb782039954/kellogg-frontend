@@ -1,6 +1,6 @@
 import type { Language } from "@core/types";
-import type { ImageBannerTagViewProps } from "../components/ui-blocks/ImageBannerTagView";
-import type { ImageBannerTagContent } from "../block-schemas/imageBannerTag";
+import type { ImageBannerTagContent } from "../block-schemas";
+import type { ImageBannerTagProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 
 interface ImageBannerTagAdapterContext {
@@ -11,7 +11,7 @@ interface ImageBannerTagAdapterContext {
 export function toImageBannerTagViewProps(
   content: ImageBannerTagContent,
   { lang, getImageUrl }: ImageBannerTagAdapterContext,
-): ImageBannerTagViewProps {
+): ImageBannerTagProps {
   const translate = createTranslate(lang);
 
   return {

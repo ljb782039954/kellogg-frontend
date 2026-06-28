@@ -24,7 +24,7 @@ test("Header uses server rates until the client store is initialized", async () 
 test("inquiry and Header Chinese copy is readable", async () => {
   const files = await Promise.all([
     readFile(new URL("src/site-package/kellogg/utils/inquiry.ts", root), "utf8"),
-    readFile(new URL("src/site-package/kellogg/components/pages/InquiryView.tsx", root), "utf8"),
+    readFile(new URL("src/site-package/kellogg/components/pages/InquiryPageView.tsx", root), "utf8"),
     readFile(new URL("src/site-package/kellogg/components/blocks/InquirySection.tsx", root), "utf8"),
     readFile(new URL("src/site-package/kellogg/components/Header/HeaderActions.tsx", root), "utf8"),
   ]);

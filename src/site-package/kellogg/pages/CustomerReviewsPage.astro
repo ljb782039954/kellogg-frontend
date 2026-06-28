@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
-import CustomerReviews from "../components/blocks/CustomerReviews";
+import { CustomerReviews } from "../components/blocks";
+import { toCustomerReviewsViewProps } from "../block-adapters";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
 
@@ -25,6 +26,7 @@ const pageSEO = customerReviewsPage?.seo || {
     en: "Real try-on videos and honest client reviews from global brand buyers — see Kellogg Fashion apparel quality in action.",
   },
 };
+const customerReviewsProps = toCustomerReviewsViewProps(reviews, lang);
 ---
 
 <Layout seo={pageSEO} lang={lang}>
@@ -46,5 +48,5 @@ const pageSEO = customerReviewsPage?.seo || {
     </div>
   </section>
 
-  <CustomerReviews lang={lang} reviews={reviews} />
+  <CustomerReviews {...customerReviewsProps} />
 </Layout>

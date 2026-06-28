@@ -5,8 +5,9 @@ import type {
   ProductGridItem,
   ProductGridLabels,
   ProductGridOption,
+  ProductGridProps,
   ProductGridSortId,
-} from "../components/ui-blocks/ProductGridView";
+} from "../components/blocks";
 import { t } from "../utils/i18n";
 
 export const PRODUCT_GRID_SORT_OPTIONS: SortOption[] = [
@@ -20,10 +21,47 @@ interface ProductGridAdapterOptions {
   categories: Category[];
   products: Product[];
   totalCount: number;
+  currentPage: number;
+  itemsPerPage: number;
   selectedCategory: string;
   sortBy: ProductGridSortId;
+  isLoading: boolean;
   lang: Language;
   formatPriceText: (price?: number) => string;
+  onCategoryChange: (categoryId: string) => void;
+  onSortChange: (sortId: ProductGridSortId) => void;
+  onPageChange: (page: number) => void;
+}
+
+export type ProductGridBackendSort = "newest" | "price_asc" | "price_desc" | "sales";
+
+export interface ProductGridQueryOptions {
+  currentPage: number;
+  itemsPerPage: number;
+  selectedCategory: string;
+  sortBy: ProductGridSortId;
+}
+
+export function toProductGridInitialCategory(category?: string): string {
+  return category && category !== "all" ? category : "all";
+}
+
+export function toProductGridBackendSort(sortBy: ProductGridSortId): ProductGridBackendSort {
+  return sortBy.replace("-", "_") as ProductGridBackendSort;
+}
+
+export function toProductGridQuery({
+  currentPage,
+  itemsPerPage,
+  selectedCategory,
+  sortBy,
+}: ProductGridQueryOptions) {
+  return {
+    page: currentPage,
+    pageSize: itemsPerPage,
+    category: selectedCategory === "all" ? undefined : selectedCategory,
+    sort: toProductGridBackendSort(sortBy),
+  };
 }
 
 export function toProductGridCategoryOptions({
@@ -76,5 +114,37 @@ export function toProductGridLabels(lang: Language, totalCount: number): Product
     loading: lang === "zh" ? "正在为您加载商品..." : "Loading products...",
     empty: lang === "zh" ? "暂无商品" : "No products available",
     total: lang === "zh" ? `共 ${totalCount} 件商品` : `${totalCount} products total`,
+  };
+}
+
+export function toProductGridViewProps({
+  categories,
+  products,
+  totalCount,
+  currentPage,
+  itemsPerPage,
+  selectedCategory,
+  sortBy,
+  isLoading,
+  lang,
+  formatPriceText,
+  onCategoryChange,
+  onSortChange,
+  onPageChange,
+}: ProductGridAdapterOptions): ProductGridProps {
+  return {
+    categories: toProductGridCategoryOptions({ categories, selectedCategory, lang }),
+    sortOptions: toProductGridSortOptions(sortBy, lang),
+    products: toProductGridItems({ products, lang, formatPriceText }),
+    labels: toProductGridLabels(lang, totalCount),
+    totalCount,
+    totalPages: Math.ceil(totalCount / itemsPerPage),
+    currentPage,
+    selectedCategory,
+    sortBy,
+    isLoading,
+    onCategoryChange,
+    onSortChange,
+    onPageChange,
   };
 }

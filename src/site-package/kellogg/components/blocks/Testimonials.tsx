@@ -1,32 +1,32 @@
 import { Star } from "lucide-react";
-import type { Language, Translation } from "../../types";
-import { createTranslate } from "../../utils/i18n";
-import OptimizedImage from "../../../../core/components/OptimizedImage";
-import SectionHeader from "../base/SectionHeader";
+import OptimizedImage from "@core/components/OptimizedImage";
 
 export interface Testimonial {
   id: number;
-  name: Translation;
-  role?: Translation;
-  content: Translation;
+  nameText: string;
+  roleText?: string;
+  contentText: string;
   avatar?: string;
 }
 
 export interface TestimonialsProps {
-  title?: Translation;
-  subtitle?: Translation;
+  titleText?: string;
+  subtitleText?: string;
   items?: Testimonial[];
-  lang: Language;
 }
 
-export default function Testimonials({ title, subtitle, items = [], lang }: TestimonialsProps) {
-  const t = createTranslate(lang);
+export default function Testimonials({ titleText = "", subtitleText = "", items = [] }: TestimonialsProps) {
   if (items.length === 0) return null;
 
   return (
     <section className="py-12 w-full">
       <div className="container mx-auto px-4">
-        {title && <SectionHeader lang={lang} title={title} subtitle={subtitle} theme="light" />}
+        {titleText && (
+          <div className="text-center mb-12 max-w-2xl mx-auto">
+            <h2 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">{titleText}</h2>
+            {subtitleText && <p className="text-lg md:text-xl max-w-2xl mx-auto text-gray-600">{subtitleText}</p>}
+          </div>
+        )}
         <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
           {items.map((item) => (
             <div key={item.id} className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow">
@@ -35,11 +35,11 @@ export default function Testimonials({ title, subtitle, items = [], lang }: Test
                   {item.avatar && <OptimizedImage src={item.avatar} alt="" width={80} className="w-full h-full object-cover" />}
                 </div>
                 <div>
-                  <div className="font-medium text-sm">{t(item.name)}</div>
-                  {item.role && <div className="text-xs text-gray-500">{t(item.role)}</div>}
+                  <div className="font-medium text-sm">{item.nameText}</div>
+                  {item.roleText && <div className="text-xs text-gray-500">{item.roleText}</div>}
                 </div>
               </div>
-              <p className="text-sm text-gray-600 line-clamp-3">{t(item.content)}</p>
+              <p className="text-sm text-gray-600 line-clamp-3">{item.contentText}</p>
               <div className="flex mt-3">
                 {[1, 2, 3, 4, 5].map((star) => <Star key={star} size={16} className="fill-yellow-400 text-yellow-400" />)}
               </div>

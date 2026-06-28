@@ -1,41 +1,43 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
-import type { Translation, Language } from '../../types';
 
 export interface FAQItem {
   id: number;
-  question: Translation;
-  answer: Translation;
+  questionText: string;
+  answerText: string;
+}
+
+export interface FAQLabels {
+  showLess: string;
+  viewMore: string;
 }
 
 export interface FAQProps {
-  title?: Translation;
-  subtitle?: Translation;
+  titleText?: string;
+  subtitleText?: string;
   items?: FAQItem[];
-  lang: Language;
+  labels?: FAQLabels;
+  structuredData?: string;
 }
 
-export default function FAQ({ title, subtitle, items = [], lang }: FAQProps) {
+const fallbackLabels: FAQLabels = {
+  showLess: 'Show Less',
+  viewMore: 'View More',
+};
+
+export default function FAQ({
+  titleText = '',
+  subtitleText = '',
+  items = [],
+  labels = fallbackLabels,
+  structuredData,
+}: FAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const t = (obj: Translation | undefined) => {
-    if (!obj) return '';
-    return lang === 'zh' ? obj.zh : obj.en;
-  };
-
   const hasMore = items.length > 5;
   const displayedItems = isExpanded ? items : items.slice(0, 5);
-  const structuredData = JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": items.map(item => ({
-      "@type": "Question",
-      "name": t(item.question),
-      "acceptedAnswer": { "@type": "Answer", "text": t(item.answer) },
-    })),
-  }).replace(/</g, '\\u003c');
 
   if (!items || items.length === 0) return null;
 
@@ -43,8 +45,8 @@ export default function FAQ({ title, subtitle, items = [], lang }: FAQProps) {
     <section className="py-8">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 max-w-2xl mx-auto">
-          {title && <h2 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">{t(title)}</h2>}
-          {subtitle && <p className="text-gray-500 text-md md:text-lg">{t(subtitle)}</p>}
+          {titleText && <h2 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">{titleText}</h2>}
+          {subtitleText && <p className="text-gray-500 text-md md:text-lg">{subtitleText}</p>}
         </div>
 
         <div className="max-w-3xl mx-auto space-y-4">
@@ -63,7 +65,7 @@ export default function FAQ({ title, subtitle, items = [], lang }: FAQProps) {
                 aria-controls={`faq-answer-${item.id}`}
               >
                 <span className="font-medium text-gray-800 pr-4">
-                  {t(item.question)}
+                  {item.questionText}
                 </span>
                 <ChevronDown
                   className={`w-5 h-5 text-gray-400 flex-shrink-0 transition-transform ${openIndex === item.id ? 'rotate-180' : ''}`}
@@ -82,7 +84,7 @@ export default function FAQ({ title, subtitle, items = [], lang }: FAQProps) {
                     <div className="px-6 pb-6">
                       <div className="pt-2 border-t border-gray-100">
                         <p className="text-gray-600 leading-relaxed pt-4">
-                          {t(item.answer)}
+                          {item.answerText}
                         </p>
                       </div>
                     </div>
@@ -100,16 +102,13 @@ export default function FAQ({ title, subtitle, items = [], lang }: FAQProps) {
               onClick={() => setIsExpanded(!isExpanded)}
               className="px-4 py-2 border border-gray-200 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors"
             >
-              {isExpanded 
-                ? (lang === 'zh' ? '收起部分' : 'Show Less') 
-                : (lang === 'zh' ? '查看更多' : 'View More')}
+              {isExpanded ? labels.showLess : labels.viewMore}
             </button>
           </div>
         )}
       </div>
 
-      {/* SEO Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData }} />
+      {structuredData && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData }} />}
     </section>
   );
 }
