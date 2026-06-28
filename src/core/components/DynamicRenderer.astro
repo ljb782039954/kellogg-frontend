@@ -4,7 +4,6 @@ import { createRequestMemo, type RequestMemo } from "@core/lib/requestMemo";
 
 type LoadBlockData = (options: {
   block: PageBlock;
-  lang: Language;
   api: any;
   requestMemo: RequestMemo;
 }) => Promise<Record<string, any>>;
@@ -25,7 +24,7 @@ const requestMemo = createRequestMemo();
 const blocksWithData: any[] = await Promise.all(
   enabledBlocks.map(async (block) => {
     const data = loadBlockData
-      ? await loadBlockData({ block, lang, api, requestMemo })
+      ? await loadBlockData({ block, api, requestMemo })
       : {};
     return { ...block, data };
   })
@@ -35,6 +34,6 @@ const blocksWithData: any[] = await Promise.all(
 
 <div class="dynamic-page">
   {blocksWithData.map((block) => (
-    <BlockRenderer block={block} lang={lang} />
+    <BlockRenderer block={block} lang={lang} api={api} />
   ))}
 </div>

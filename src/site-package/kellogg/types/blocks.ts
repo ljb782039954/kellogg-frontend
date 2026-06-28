@@ -1,11 +1,12 @@
 import type { Translation } from "./common";
+import type { CtaBannerContent } from "../block-schemas/ctaBanner";
 import type { ImageBannerTagContent } from "../block-schemas/imageBannerTag";
 import type { ProductGridContent } from "../block-schemas/productGrid";
+import type { TextSectionContent } from "../block-schemas/textSection";
 import type { BrandValuesProps } from "../components/blocks/BrandValues";
 import type { CarouselProps } from "../components/blocks/Carousel";
 import type { CategoriesProps } from "../components/blocks/Categories";
 import type { CountdownProps } from "../components/blocks/Countdown";
-import type { CtaBannerProps } from "../components/blocks/CtaBanner";
 import type { FAQProps } from "../components/blocks/FAQ";
 import type { FeaturedProductsProps } from "../components/blocks/FeaturedProducts";
 import type { FeatureListProps } from "../components/blocks/FeatureList";
@@ -17,7 +18,6 @@ import type { NewArrivalsProps } from "../components/blocks/NewArrivals";
 import type { PartnerLogosProps } from "../components/blocks/PartnerLogos";
 import type { StatisticProps } from "../components/blocks/Statistics";
 import type { TestimonialsProps } from "../components/blocks/Testimonials";
-import type { TextSectionProps } from "../components/blocks/TextSection";
 import type { VideoSectionProps } from "../components/blocks/VideoSection";
 
 type WithoutLang<T> = Omit<T, "lang">;
@@ -33,14 +33,14 @@ export interface BlockContentMap {
   statistics: WithoutLang<StatisticProps>;
   testimonials: WithoutLang<TestimonialsProps>;
   faq: WithoutLang<FAQProps>;
-  textSection: WithoutLang<TextSectionProps>;
+  textSection: TextSectionContent;
   imageFull: WithoutLang<ImageFullProps>;
   inquiry: Record<string, never>;
   imageBanner: WithoutLang<ImageBannerProps>;
   imageBannerTag: ImageBannerTagContent;
   videoSection: WithoutLang<VideoSectionProps>;
   imageText: WithoutLang<ImageTextProps>;
-  ctaBanner: WithoutLang<CtaBannerProps>;
+  ctaBanner: CtaBannerContent;
   countdown: WithoutLang<CountdownProps>;
   partnerLogos: WithoutLang<PartnerLogosProps>;
   gallery: WithoutLang<GalleryProps>;

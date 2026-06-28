@@ -1,5 +1,6 @@
 import type { Language } from "@core/types";
 import type { Category, Product, SortOption } from "../types";
+import { toProductCardStaticProps } from "./productCardAdapter";
 import type {
   ProductGridItem,
   ProductGridLabels,
@@ -22,7 +23,6 @@ interface ProductGridAdapterOptions {
   selectedCategory: string;
   sortBy: ProductGridSortId;
   lang: Language;
-  getImageUrl: (src: string, width: number) => string;
   formatPriceText: (price?: number) => string;
 }
 
@@ -59,26 +59,16 @@ export function toProductGridSortOptions(
 export function toProductGridItems({
   products,
   lang,
-  getImageUrl,
   formatPriceText,
-}: Pick<ProductGridAdapterOptions, "products" | "lang" | "getImageUrl" | "formatPriceText">): ProductGridItem[] {
-  return products.map((product) => {
-    const bulkPrice = product.bulkPrices?.[0];
-    return {
+}: Pick<ProductGridAdapterOptions, "products" | "lang" | "formatPriceText">): ProductGridItem[] {
+  return products.map((product) => ({
       id: String(product.id),
       href: `/product/${product.id}`,
-      title: t(product.name, lang),
-      imageUrl: product.image ? getImageUrl(product.image, 640) : "",
-      tagText: product.tag ? t(product.tag, lang) : undefined,
-      quantityText: bulkPrice
-        ? bulkPrice.maxQty
-          ? `${bulkPrice.minQty}-${bulkPrice.maxQty} PCS`
-          : `${bulkPrice.minQty}+ PCS`
-        : undefined,
-      priceText: formatPriceText(bulkPrice?.price ?? product.price),
-      basePrice: bulkPrice?.price ?? product.price,
-    };
-  });
+      ...toProductCardStaticProps(product, {
+        lang,
+        formatPriceText,
+      }),
+    }));
 }
 
 export function toProductGridLabels(lang: Language, totalCount: number): ProductGridLabels {

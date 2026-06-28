@@ -1,5 +1,9 @@
 ---
 import type { Language, PageBlock } from "../types";
+import { toCtaBannerViewProps } from "../block-adapters/ctaBannerAdapter";
+import { toImageBannerTagViewProps } from "../block-adapters/imageBannerTagAdapter";
+import type { CtaBannerContent } from "../block-schemas/ctaBanner";
+import type { ImageBannerTagContent } from "../block-schemas/imageBannerTag";
 
 import ImageBanner from "../components/blocks/ImageBanner";
 import TextSection from "../components/blocks/TextSection";
@@ -31,11 +35,21 @@ type BlockWithData = PageBlock & {
 interface Props {
   block: BlockWithData;
   lang: Language;
+  api: {
+    getOptimizedImageUrl: (src: string, width: number) => string;
+  };
 }
 
-const { block, lang } = Astro.props;
+const { block, lang, api } = Astro.props;
 const content = block.content ?? {};
 const data = block.data ?? {};
+const getImageUrl = (src: string, width: number) => api.getOptimizedImageUrl(src, width);
+const imageBannerTagProps = block.type === "imageBannerTag"
+  ? toImageBannerTagViewProps(content as ImageBannerTagContent, { lang, getImageUrl })
+  : {};
+const ctaBannerProps = block.type === "ctaBanner"
+  ? toCtaBannerViewProps(content as CtaBannerContent, { lang, getImageUrl })
+  : {};
 const knownBlockTypes = new Set([
   "imageBanner",
   "textSection",
@@ -75,11 +89,11 @@ const knownBlockTypes = new Set([
 {block.type === "testimonials" && <Testimonials {...content} lang={lang} />}
 {block.type === "faq" && <FAQ {...content} lang={lang} client:visible />}
 {block.type === "imageText" && <ImageText {...content} lang={lang} />}
-{block.type === "ctaBanner" && <CtaBanner {...content} lang={lang} />}
+{block.type === "ctaBanner" && <CtaBanner {...ctaBannerProps} />}
 {block.type === "featureList" && <FeatureList {...content} lang={lang} />}
 {block.type === "countdown" && <Countdown {...content} lang={lang} client:load />}
 {block.type === "gallery" && <Gallery {...content} lang={lang} client:visible />}
-{block.type === "imageBannerTag" && <ImageBannerTag {...(data.viewModel || {})} />}
+{block.type === "imageBannerTag" && <ImageBannerTag {...imageBannerTagProps} />}
 {block.type === "imageFull" && <ImageFull {...content} lang={lang} client:visible />}
 {block.type === "partnerLogos" && <PartnerLogos {...content} lang={lang} />}
 {block.type === "videoSection" && <VideoSection {...content} lang={lang} />}

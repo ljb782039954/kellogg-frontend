@@ -91,7 +91,6 @@ export default function ProductGrid({
   const productsView = toProductGridItems({
     products: displayedProducts,
     lang,
-    getImageUrl: (src, width) => api.getOptimizedImageUrl(src, width),
     formatPriceText: (price) => hasMounted
       ? formatPrice(price, currency, rates)
       : formatPrice(price),

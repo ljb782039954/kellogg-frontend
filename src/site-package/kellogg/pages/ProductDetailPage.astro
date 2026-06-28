@@ -1,10 +1,12 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
-import ProductDetailView from "../components/product/ProductDetailView";
-import ProductCustomFields from "../components/product/ProductCustomFields.astro";
+import ProductDetailView from "./product/ProductDetailView";
+import ProductCustomFields from "../components/base/ProductCustomFields.astro";
 import ProductCard from "../components/base/ProductCardStatic";
 import SectionHeader from "../components/base/SectionHeader";
 import ProductVideo from "../components/base/ProductVideo";
+import { formatPrice } from "@core/lib/currency";
+import { toProductCardStaticProps } from "../block-adapters/productCardAdapter";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
 import type { Product } from "../types";
@@ -39,6 +41,14 @@ const product: Product = {
 const relatedProducts = productsRes.data
   .filter((item) => String(item.id) !== String(id))
   .slice(0, 4);
+const relatedProductCards = relatedProducts.map((item) => ({
+  id: item.id,
+  href: `/product/${item.id}`,
+  props: toProductCardStaticProps(item, {
+    lang,
+    formatPriceText: formatPrice,
+  }),
+}));
 
 const seo = {
   title: t(product.name),
@@ -74,7 +84,7 @@ const seo = {
       )}
     </div>
 
-    {relatedProducts.length > 0 && (
+    {relatedProductCards.length > 0 && (
       <section class="bg-gray-50/50 py-32 mt-20">
         <div class="container mx-auto px-4">
           <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
@@ -93,9 +103,9 @@ const seo = {
           </div>
 
           <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-            {relatedProducts.map((item) => (
-              <a href={`/product/${item.id}`} class="block h-full">
-                <ProductCard product={item} lang={lang} />
+            {relatedProductCards.map((item) => (
+              <a href={item.href} class="block h-full">
+                <ProductCard {...item.props} />
               </a>
             ))}
           </div>

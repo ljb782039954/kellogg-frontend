@@ -1,5 +1,6 @@
 import { SlidersHorizontal } from "lucide-react";
 import Pagination from "../base/Pagination";
+import ProductCardStatic, { type ProductCardStaticProps } from "../base/ProductCardStatic";
 
 export type ProductGridSortId = "newest" | "price-asc" | "price-desc" | "sales";
 
@@ -9,15 +10,9 @@ export interface ProductGridOption<TId extends string = string> {
   selected: boolean;
 }
 
-export interface ProductGridItem {
+export interface ProductGridItem extends ProductCardStaticProps {
   id: string;
   href: string;
-  title: string;
-  imageUrl?: string;
-  tagText?: string;
-  quantityText?: string;
-  priceText?: string;
-  basePrice?: number;
 }
 
 export interface ProductGridLabels {
@@ -116,42 +111,7 @@ export default function ProductGridView({
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                 {products.map((product) => (
                   <a key={product.id} href={product.href} className="block group h-full">
-                    <div className="bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1 group h-full flex flex-col">
-                      <div className="aspect-[3/4] overflow-hidden relative bg-gray-50">
-                        {product.imageUrl ? (
-                          <img
-                            src={product.imageUrl}
-                            alt={product.title}
-                            loading="lazy"
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-300">No Image</div>
-                        )}
-                        {product.tagText && (
-                          <span className="absolute top-3 left-3 px-3 py-1 bg-red-500 text-white text-xs font-semibold rounded-full shadow-sm z-10">
-                            {product.tagText}
-                          </span>
-                        )}
-                      </div>
-                      <div className="p-4 flex flex-col flex-grow">
-                        <h3 className="font-medium text-gray-800 mb-2 line-clamp-2 min-h-[3rem] group-hover:text-primary transition-colors">
-                          {product.title}
-                        </h3>
-                        <div className="flex items-center justify-between mt-auto">
-                          {product.quantityText && (
-                            <p className="text-xs md:text-sm font-semibold text-gray-400 uppercase group-hover:text-amber-600 transition-colors">
-                              {product.quantityText}
-                            </p>
-                          )}
-                          {product.priceText && (
-                            <p className="text-sm md:text-base font-bold text-gray-900" data-base-price={product.basePrice}>
-                              {product.priceText}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
+                    <ProductCardStatic {...product} />
                   </a>
                 ))}
               </div>

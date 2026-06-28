@@ -1,4 +1,4 @@
-﻿import { getSafeVideoSource } from "../../../../core/lib/video";
+﻿import { getSafeVideoSource } from "@/core/lib/video";
 import { kelloggSiteConfig } from "../../config";
 
 interface ProductVideoProps {

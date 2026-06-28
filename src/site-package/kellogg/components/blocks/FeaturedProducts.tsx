@@ -1,4 +1,6 @@
 import type { Translation, Product, Language } from "../../types";
+import { formatPrice } from "@core/lib/currency";
+import { toProductCardStaticProps } from "../../block-adapters/productCardAdapter";
 import { createTranslate } from "../../utils/i18n";
 import ProductCardStatic from "../base/ProductCardStatic";
 
@@ -23,8 +25,16 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({
   const t = createTranslate(lang);
 
   const displayLimit = maxItems || 8;
+  const cards = products.slice(0, displayLimit).map((product) => ({
+    id: product.id,
+    href: `/product/${product.id}`,
+    props: toProductCardStaticProps(product, {
+      lang,
+      formatPriceText: formatPrice,
+    }),
+  }));
 
-  if (products.length === 0) return null;
+  if (cards.length === 0) return null;
 
   return (
     <section className="py-8 w-full">
@@ -37,9 +47,9 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({
         )}
         
         <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
-          {products.slice(0, displayLimit).map((product) => (
-            <a key={product.id} href={`/product/${product.id}`} className="block group">
-              <ProductCardStatic product={product} lang={lang} />
+          {cards.map((card) => (
+            <a key={card.id} href={card.href} className="block group">
+              <ProductCardStatic {...card.props} />
             </a>
           ))}
         </div>
