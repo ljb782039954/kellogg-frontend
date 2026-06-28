@@ -150,6 +150,20 @@ test("new site-package Astro files stay under pages except current compatibility
   assert.deepEqual(offenders, []);
 });
 
+test("site pages import Astro layouts with explicit file extensions", async () => {
+  const files = await collectFiles(path.join(srcDir, "site-package", "kellogg", "pages"));
+  const offenders = [];
+
+  for (const file of files.filter((file) => file.endsWith(".astro"))) {
+    const source = await readFile(file, "utf8");
+    if (/from\s+["']\.\.\/layouts\/SiteLayout["']/.test(source)) {
+      offenders.push(path.relative(root, file));
+    }
+  }
+
+  assert.deepEqual(offenders, []);
+});
+
 test("tests do not reference retired pre-refactor source paths", async () => {
   const files = await collectFiles(path.join(root, "tests"));
   const retiredPathPattern = /src\/(?:components|functions|lib|hooks)|src\\(?:components|functions|lib|hooks)/;
