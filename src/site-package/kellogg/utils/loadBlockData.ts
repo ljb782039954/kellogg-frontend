@@ -1,15 +1,19 @@
 import type { RequestMemo } from "@core/lib/requestMemo";
-import type { PageBlock } from "@core/types";
+import type { Language, PageBlock } from "@core/types";
+import { toImageBannerTagViewProps } from "../block-adapters/imageBannerTagAdapter";
+import type { ImageBannerTagContent } from "../block-schemas/imageBannerTag";
 import type { KelloggApiClient } from "./api";
 
 interface LoadBlockDataOptions {
   block: PageBlock;
+  lang: Language;
   api: KelloggApiClient;
   requestMemo: RequestMemo;
 }
 
 export async function loadKelloggBlockData({
   block,
+  lang,
   api,
   requestMemo,
 }: LoadBlockDataOptions): Promise<Record<string, any>> {
@@ -34,6 +38,15 @@ export async function loadKelloggBlockData({
       products: productsData.data || [],
       categories: categoriesData || [],
       totalProducts: productsData.pagination?.total || 0,
+    };
+  }
+
+  if (block.type === "imageBannerTag") {
+    return {
+      viewModel: toImageBannerTagViewProps(block.content as ImageBannerTagContent, {
+        lang,
+        getImageUrl: (src, width) => api.getOptimizedImageUrl(src, width),
+      }),
     };
   }
 

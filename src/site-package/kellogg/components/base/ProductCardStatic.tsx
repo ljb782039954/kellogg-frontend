@@ -1,7 +1,7 @@
 import type { Language, Product } from "../../types";
-import { formatPrice } from "../../../../core/lib/currency";
+import { formatPrice } from "@/core/lib/currency";
 import { t } from "../../utils/i18n";
-import OptimizedImage from "../../../../core/components/OptimizedImage";
+import OptimizedImage from "@/core/components/OptimizedImage";
 
 interface ProductCardStaticProps {
   product: Product;

@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import type { Language, NavLink, Translation } from "../../types";
 import { createTranslate } from "../../utils/i18n";
-import OptimizedImage from "../../../../core/components/OptimizedImage";
+import OptimizedImage from "@core/components/OptimizedImage";
 import SectionHeader from "../base/SectionHeader";
 
 export interface CtaBannerValues {

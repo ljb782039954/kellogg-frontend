@@ -1,6 +1,6 @@
 import type { Translation, Product, Language } from "../../types";
 import { createTranslate } from "../../utils/i18n";
-import ProductCardStatic from "../product/ProductCardStatic";
+import ProductCardStatic from "../base/ProductCardStatic";
 
 export interface FeaturedProductsProps {
   title?: Translation;

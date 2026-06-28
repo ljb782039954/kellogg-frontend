@@ -1,5 +1,5 @@
 import type { Language, Product, Translation } from "../../types";
-import ProductCardStatic from "../product/ProductCardStatic";
+import ProductCardStatic from "../base/ProductCardStatic";
 import SectionHeader from "../base/SectionHeader";
 
 export interface NewArrivalsProps {

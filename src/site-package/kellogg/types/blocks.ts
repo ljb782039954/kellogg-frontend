@@ -1,4 +1,6 @@
 import type { Translation } from "./common";
+import type { ImageBannerTagContent } from "../block-schemas/imageBannerTag";
+import type { ProductGridContent } from "../block-schemas/productGrid";
 import type { BrandValuesProps } from "../components/blocks/BrandValues";
 import type { CarouselProps } from "../components/blocks/Carousel";
 import type { CategoriesProps } from "../components/blocks/Categories";
@@ -9,12 +11,10 @@ import type { FeaturedProductsProps } from "../components/blocks/FeaturedProduct
 import type { FeatureListProps } from "../components/blocks/FeatureList";
 import type { GalleryProps } from "../components/blocks/Gallery";
 import type { ImageBannerProps } from "../components/blocks/ImageBanner";
-import type { ImageBannerTagProps } from "../components/blocks/ImageBannerTag";
 import type { ImageFullProps } from "../components/blocks/ImageFull";
 import type { ImageTextProps } from "../components/blocks/ImageText";
 import type { NewArrivalsProps } from "../components/blocks/NewArrivals";
 import type { PartnerLogosProps } from "../components/blocks/PartnerLogos";
-import type { ProductGridProps } from "../components/blocks/ProductGrid";
 import type { StatisticProps } from "../components/blocks/Statistics";
 import type { TestimonialsProps } from "../components/blocks/Testimonials";
 import type { TextSectionProps } from "../components/blocks/TextSection";
@@ -28,7 +28,7 @@ export interface BlockContentMap {
   caseStudies: Record<string, never>;
   newArrivals: Omit<NewArrivalsProps, "lang" | "products">;
   featuredProducts: Omit<FeaturedProductsProps, "lang" | "products" | "initialProducts">;
-  productGrid: Omit<ProductGridProps, "lang" | "categories" | "products" | "totalProducts"> & { category?: string };
+  productGrid: ProductGridContent;
   brandValues: WithoutLang<BrandValuesProps>;
   statistics: WithoutLang<StatisticProps>;
   testimonials: WithoutLang<TestimonialsProps>;
@@ -37,7 +37,7 @@ export interface BlockContentMap {
   imageFull: WithoutLang<ImageFullProps>;
   inquiry: Record<string, never>;
   imageBanner: WithoutLang<ImageBannerProps>;
-  imageBannerTag: WithoutLang<ImageBannerTagProps>;
+  imageBannerTag: ImageBannerTagContent;
   videoSection: WithoutLang<VideoSectionProps>;
   imageText: WithoutLang<ImageTextProps>;
   ctaBanner: WithoutLang<CtaBannerProps>;

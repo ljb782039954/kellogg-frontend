@@ -1,12 +1,12 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import type { Language } from '../../types';
 
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
   totalCount?: number;
-  lang: Language;
+  totalText?: string;
+  lang?: string;
 }
 
 export default function Pagination({ 
@@ -14,7 +14,8 @@ export default function Pagination({
   totalPages, 
   onPageChange,
   totalCount,
-  lang
+  totalText,
+  lang = "en"
 }: PaginationProps) {
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
@@ -58,9 +59,9 @@ export default function Pagination({
 
       {totalCount !== undefined && (
         <div className="text-center mt-6 text-sm text-gray-500">
-          {lang === 'zh'
+          {totalText || (lang === 'zh'
             ? `共 ${totalCount} 件商品`
-            : `${totalCount} products total`}
+            : `${totalCount} products total`)}
         </div>
       )}
     </div>

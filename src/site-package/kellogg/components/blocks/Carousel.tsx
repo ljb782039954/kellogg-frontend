@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Translation, NavLink, Language } from '../../types';
-import OptimizedImage from '../../../../core/components/OptimizedImage';
+import OptimizedImage from '@core/components/OptimizedImage';
 
 export interface CarouselValues {
   id: number;

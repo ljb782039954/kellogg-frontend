@@ -79,7 +79,7 @@ const knownBlockTypes = new Set([
 {block.type === "featureList" && <FeatureList {...content} lang={lang} />}
 {block.type === "countdown" && <Countdown {...content} lang={lang} client:load />}
 {block.type === "gallery" && <Gallery {...content} lang={lang} client:visible />}
-{block.type === "imageBannerTag" && <ImageBannerTag {...content} lang={lang} />}
+{block.type === "imageBannerTag" && <ImageBannerTag {...(data.viewModel || {})} />}
 {block.type === "imageFull" && <ImageFull {...content} lang={lang} client:visible />}
 {block.type === "partnerLogos" && <PartnerLogos {...content} lang={lang} />}
 {block.type === "videoSection" && <VideoSection {...content} lang={lang} />}

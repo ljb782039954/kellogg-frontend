@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useStore } from '@nanostores/react';
-import { $currency, $rates, formatPrice } from '../../../../core/lib/currency';
+import { $currency, $rates, formatPrice } from '@/core/lib/currency';
 import type { Product, Language } from '../../types';
 import ProductCardStatic from './ProductCardStatic';
 

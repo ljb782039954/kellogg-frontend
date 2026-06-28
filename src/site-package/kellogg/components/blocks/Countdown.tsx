@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import OptimizedImage from '../../../../core/components/OptimizedImage';
+import OptimizedImage from '@core/components/OptimizedImage';
 import type { Translation, Language } from "../../types";
 
 export interface CountdownValues {

@@ -137,7 +137,7 @@ test("new site-package Astro files stay under pages except current compatibility
     path.normalize(path.join("src", "site-package", "kellogg", "components", "Footer.astro")),
     path.normalize(path.join("src", "site-package", "kellogg", "components", "SocialLinks.astro")),
     path.normalize(path.join("src", "site-package", "kellogg", "components", "TawkChat.astro")),
-    path.normalize(path.join("src", "site-package", "kellogg", "components", "product", "ProductCustomFields.astro")),
+    path.normalize(path.join("src", "site-package", "kellogg", "components", "base", "ProductCustomFields.astro")),
     path.normalize(path.join("src", "site-package", "kellogg", "layouts", "SiteLayout.astro")),
   ]);
   const files = await collectFiles(path.join(srcDir, "site-package", "kellogg"));

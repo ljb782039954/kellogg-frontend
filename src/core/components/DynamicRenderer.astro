@@ -4,6 +4,7 @@ import { createRequestMemo, type RequestMemo } from "@core/lib/requestMemo";
 
 type LoadBlockData = (options: {
   block: PageBlock;
+  lang: Language;
   api: any;
   requestMemo: RequestMemo;
 }) => Promise<Record<string, any>>;
@@ -24,7 +25,7 @@ const requestMemo = createRequestMemo();
 const blocksWithData: any[] = await Promise.all(
   enabledBlocks.map(async (block) => {
     const data = loadBlockData
-      ? await loadBlockData({ block, api, requestMemo })
+      ? await loadBlockData({ block, lang, api, requestMemo })
       : {};
     return { ...block, data };
   })
