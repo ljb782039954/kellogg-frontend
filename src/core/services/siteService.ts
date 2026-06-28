@@ -4,8 +4,8 @@ import type {
   Language,
   SiteLanguageConfig,
   SiteResource,
-} from "../types";
-import type { ExchangeRates } from "../lib/currency";
+} from "@core/types";
+import type { ExchangeRates } from "@core/lib/currency";
 
 export type SiteData = SiteContent & { exchangeRates: ExchangeRates | null };
 

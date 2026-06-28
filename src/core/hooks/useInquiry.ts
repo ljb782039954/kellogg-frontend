@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Language } from '../types';
+import type { Language } from '@core/types';
 
 export interface InquiryFormData {
   name: string;

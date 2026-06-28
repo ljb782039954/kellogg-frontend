@@ -1,8 +1,8 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
 import CustomerReviews from "../components/blocks/CustomerReviews";
-import { api } from "../../../services/api";
-import { SiteService } from "../../../services/siteService";
+import { api } from "@services/api";
+import { SiteService } from "@services/siteService";
 
 const siteData = await SiteService.getSiteData(Astro);
 const { lang } = siteData;

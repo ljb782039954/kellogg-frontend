@@ -1,9 +1,9 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
-import DynamicRenderer from "../../../core/components/DynamicRenderer";
+import DynamicRenderer from "@core/components/DynamicRenderer.astro";
 import BlockRenderer from "./BlockRenderer.astro";
-import { api } from "../../../services/api";
-import { SiteService } from "../../../services/siteService";
+import { api } from "@services/api";
+import { SiteService } from "@services/siteService";
 import { loadKelloggBlockData } from "../utils/loadBlockData";
 
 interface Props {

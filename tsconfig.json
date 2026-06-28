@@ -9,6 +9,15 @@
     "dist"
   ],
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@core": ["src/core/index.ts"],
+      "@core/*": ["src/core/*"],
+      "@services": ["src/services/index.ts"],
+      "@services/*": ["src/services/*"],
+      "@site-package": ["src/site-package/index.ts"],
+      "@site-package/*": ["src/site-package/*"]
+    },
     "jsx": "react-jsx",
     "jsxImportSource": "react"
   }

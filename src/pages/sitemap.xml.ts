@@ -1,11 +1,11 @@
-import { api } from "../services/api";
-import { SiteService, siteConfig } from "../services/siteService";
+import { api } from "@services/api";
+import { SiteService, siteConfig } from "@services/siteService";
 import {
   getCmsPageSitemapPath,
   joinSiteUrl,
   renderSitemapXml,
   type SitemapUrl,
-} from "../core/lib/sitemap";
+} from "@core/lib/sitemap";
 
 export const prerender = false;
 

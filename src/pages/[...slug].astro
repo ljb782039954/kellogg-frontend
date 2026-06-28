@@ -1,8 +1,8 @@
 ---
 export const prerender = true;
 
-import { SiteService } from "../services/siteService";
-import { currentSite } from "../site-package";
+import { SiteService } from "@services/siteService";
+import { currentSite } from "@site-package";
 
 export async function getStaticPaths() {
   // 在构建时获取所有站点数据

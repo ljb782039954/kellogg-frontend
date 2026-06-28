@@ -1,4 +1,4 @@
-import type { Translation, Language } from "../types";
+import type { Translation, Language } from "@core/types";
 
 export function createTranslate(
   language: Language,

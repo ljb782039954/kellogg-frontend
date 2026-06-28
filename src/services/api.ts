@@ -1,5 +1,5 @@
-import { configureMedia } from "../core/lib/media";
-import { currentSite } from "../site-package";
+import { configureMedia } from "@core/lib/media";
+import { currentSite } from "@site-package";
 
 const apiConfig = {
   ...currentSite.api,

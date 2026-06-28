@@ -1,4 +1,4 @@
-import type { Language, Translation } from '../types';
+import type { Language, Translation } from '@core/types';
 
 export function t(
   obj: string | Translation | null | undefined,

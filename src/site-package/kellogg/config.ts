@@ -1,4 +1,4 @@
-import type { SiteConfig } from "../../core/types";
+import type { SiteConfig } from "@core/types";
 import CmsPage from "./pages/CmsPage.astro";
 import ProductsPage from "./pages/ProductsPage.astro";
 import InquiryPage from "./pages/InquiryPage.astro";

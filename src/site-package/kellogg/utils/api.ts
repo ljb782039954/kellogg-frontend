@@ -1,7 +1,7 @@
 import {
   createApiRequester,
   type ApiClientConfig,
-} from "../../../core/lib/api";
+} from "@core/lib/api";
 import type {
   Blog,
   BlogSummary,

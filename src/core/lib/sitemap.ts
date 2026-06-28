@@ -1,4 +1,4 @@
-import type { CustomPage } from "../types";
+import type { CustomPage } from "@core/types";
 
 export interface SitemapUrl {
   loc: string;

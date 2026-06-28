@@ -1,22 +1,29 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import cloudflare from '@astrojs/cloudflare';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
   output: 'static',
   integrations: [react()],
 
-  // vite: {
-  //   plugins: [tailwindcss()]
-  // },
   vite: {
     plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        '@core': path.resolve(__dirname, 'src/core'),
+        '@services': path.resolve(__dirname, 'src/services'),
+        '@site-package': path.resolve(__dirname, 'src/site-package'),
+      },
+    },
     ssr: {
-      // Force Vite to bundle react-icons on SSR
       noExternal: ['react-icons']
     }
   },

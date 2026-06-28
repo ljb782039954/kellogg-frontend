@@ -1,8 +1,8 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
-import OptimizedImage from "../../../core/components/OptimizedImage";
-import { api } from "../../../services/api";
-import { SiteService } from "../../../services/siteService";
+import OptimizedImage from "@core/components/OptimizedImage";
+import { api } from "@services/api";
+import { SiteService } from "@services/siteService";
 import type { BlogSummary, Language } from "../types";
 
 const siteData = await SiteService.getSiteData(Astro);

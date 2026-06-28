@@ -1,7 +1,7 @@
 ---
 import "../styles/global.css";
-import CoreLayout from "../../../core/layouts/CoreLayout.astro";
-import { SiteService } from "../../../services/siteService";
+import CoreLayout from "@core/layouts/CoreLayout.astro";
+import { SiteService } from "@services/siteService";
 import Header from "../components/Header";
 import Footer from "../components/Footer.astro";
 import TawkChat from "../components/TawkChat.astro";
@@ -85,7 +85,7 @@ const displayKeywords = seo?.keywords ? t(seo.keywords) : "";
   <Footer footer={footer} companyInfo={companyInfo} lang={lang} />
 
   <script>
-    import { initPriceTracker } from "../../../core/lib/priceTracker";
+    import { initPriceTracker } from "@core/lib/priceTracker";
     initPriceTracker();
   </script>
 </CoreLayout>

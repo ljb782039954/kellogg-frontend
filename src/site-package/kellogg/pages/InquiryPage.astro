@@ -1,8 +1,8 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
 import InquiryView from "../components/pages/InquiryView";
-import { api } from "../../../services/api";
-import { SiteService } from "../../../services/siteService";
+import { api } from "@services/api";
+import { SiteService } from "@services/siteService";
 import type { CompanyInfo } from "../types";
 
 const siteData = await SiteService.getSiteData(Astro);
