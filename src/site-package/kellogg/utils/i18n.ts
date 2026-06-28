@@ -3,12 +3,12 @@ import { createTranslate as createCoreTranslate } from "@core/lib/i18n";
 import type { Language, Translation } from "../types";
 import { kelloggSiteConfig } from "../config";
 
-const fallbackLanguages = kelloggSiteConfig.fallbackLanguages ?? [
-  kelloggSiteConfig.defaultLanguage,
-];
+function getFallbackLanguages(): readonly Language[] {
+  return kelloggSiteConfig.fallbackLanguages ?? [kelloggSiteConfig.defaultLanguage];
+}
 
 export function createTranslate(language: Language) {
-  return createCoreTranslate(language, fallbackLanguages);
+  return createCoreTranslate(language, getFallbackLanguages());
 }
 
 export function t(
@@ -16,5 +16,5 @@ export function t(
   language: Language,
   fallback?: string
 ) {
-  return coreTranslate(value, language, fallbackLanguages) || fallback || "";
+  return coreTranslate(value, language, getFallbackLanguages()) || fallback || "";
 }
