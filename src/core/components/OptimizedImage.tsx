@@ -1,5 +1,5 @@
 import type { ImgHTMLAttributes } from 'react';
-import { api } from '../lib/api';
+import { getOptimizedImageUrl } from '../lib/media';
 import { cn } from '../lib/utils';
 
 interface OptimizedImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> {
@@ -25,9 +25,9 @@ export default function OptimizedImage({
     );
   }
 
-  const imageUrl = api.getOptimizedImageUrl(src, width);
+  const imageUrl = getOptimizedImageUrl(src, width);
   const srcSet = [200, 320, 480, 640, 800, 960, 1080, 1280, 1440, 1600, 1920]
-    .map((candidateWidth) => `${api.getOptimizedImageUrl(src, candidateWidth)} ${candidateWidth}w`)
+    .map((candidateWidth) => `${getOptimizedImageUrl(src, candidateWidth)} ${candidateWidth}w`)
     .join(', ');
   const sizes = propSizes || '(max-width: 768px) 100vw, 33vw';
 

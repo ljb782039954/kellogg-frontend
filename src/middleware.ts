@@ -1,19 +1,8 @@
 import { defineMiddleware } from "astro:middleware";
+import { buildContentSecurityPolicy } from "./core/lib/csp";
+import { currentSite } from "./site-package";
 
-const contentSecurityPolicy = [
-  "default-src 'self'",
-  "base-uri 'self'",
-  "object-src 'none'",
-  "frame-ancestors 'self'",
-  "form-action 'self'",
-  "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://*.tawk.to",
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src 'self' data: https://fonts.gstatic.com",
-  "img-src 'self' data: blob: https:",
-  "media-src 'self' blob: https:",
-  "frame-src 'self' https://challenges.cloudflare.com https://www.youtube-nocookie.com https://player.vimeo.com https://www.facebook.com https://www.tiktok.com https://*.tawk.to",
-  "connect-src 'self' https: wss:",
-].join("; ");
+const contentSecurityPolicy = buildContentSecurityPolicy(currentSite);
 
 export const onRequest = defineMiddleware(async (_context, next) => {
   const response = await next();

@@ -6,6 +6,7 @@ import CustomerReviewsPage from "./pages/CustomerReviewsPage.astro";
 import BlogIndexPage from "./pages/BlogIndexPage.astro";
 import BlogDetailPage from "./pages/BlogDetailPage.astro";
 import ProductDetailPage from "./pages/ProductDetailPage.astro";
+import { createKelloggApiClient } from "./utils/api";
 import type { BlogSummary } from "./types";
 
 export const kelloggSiteConfig = {
@@ -21,11 +22,13 @@ export const kelloggSiteConfig = {
     assetsBaseUrl: import.meta.env.PUBLIC_API_ASSETS,
     assetHostnames: ["kelloggfashion.com", "kellogg-fashion.com"],
   },
+  createApiClient: createKelloggApiClient,
   currency: {
     defaultCurrency: "USD",
   },
   turnstile: {
     siteKey: import.meta.env.PUBLIC_TURNSTILE_SITE_KEY,
+    useTestSiteKey: import.meta.env.DEV,
   },
   tawk: {
     scriptUrl: "https://embed.tawk.to/69f7493d0b9cc71c320940a8/1jnmvc6gf",
@@ -68,7 +71,7 @@ export const kelloggSiteConfig = {
       ],
       connectSrc: ["https:", "wss:"],
     },
-    videoProviders: ["youtube", "vimeo", "facebook", "tiktok"],
+    videoProviders: ["youtube", "vimeo", "facebook", "tiktok", "direct"],
   },
   pages: {
     cms: CmsPage,

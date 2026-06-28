@@ -1,4 +1,9 @@
-const API_BASE = 'https://kellogg-api.aimeexiang239.workers.dev';
+const API_BASE = process.env.API_BASE_URL || process.env.PUBLIC_API_BASE_URL;
+
+if (!API_BASE) {
+  console.error('Missing API_BASE_URL or PUBLIC_API_BASE_URL');
+  process.exit(1);
+}
 
 async function test() {
   try {

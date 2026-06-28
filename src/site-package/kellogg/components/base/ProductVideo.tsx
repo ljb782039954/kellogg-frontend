@@ -1,11 +1,15 @@
 ﻿import { getSafeVideoSource } from "../../../../core/lib/video";
+import { kelloggSiteConfig } from "../../config";
 
 interface ProductVideoProps {
   url: string;
 }
 
 export default function ProductVideo({ url }: ProductVideoProps) {
-  const source = getSafeVideoSource(url, import.meta.env.PUBLIC_API_ASSETS);
+  const source = getSafeVideoSource(url, {
+    assetsBase: kelloggSiteConfig.api.assetsBaseUrl,
+    providers: kelloggSiteConfig.security?.videoProviders,
+  });
   if (!source) return null;
 
   if (source.kind === "embed") {

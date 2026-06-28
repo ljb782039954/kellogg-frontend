@@ -1,0 +1,54 @@
+---
+import type { ExchangeRates } from "../lib/currency";
+import type { Language } from "../types";
+
+interface Props {
+  lang: Language;
+  title?: string;
+  description?: string;
+  keywords?: string;
+  alternates?: readonly {
+    href: string;
+    hreflang: string;
+  }[];
+  exchangeRates?: ExchangeRates | null;
+  faviconHref?: string;
+  bodyClass?: string;
+}
+
+const {
+  lang,
+  title = "",
+  description = "",
+  keywords = "",
+  alternates = [],
+  exchangeRates = null,
+  faviconHref,
+  bodyClass = "",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    {faviconHref && <link rel="icon" type="image/svg+xml" href={faviconHref} />}
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {keywords && <meta name="keywords" content={keywords} />}
+
+    {alternates.map((alternate) => (
+      <link rel="alternate" href={alternate.href} hreflang={alternate.hreflang} />
+    ))}
+
+    <script is:inline define:vars={{ initialRates: exchangeRates?.rates }}>
+      window.__EXCHANGE_RATES__ = initialRates;
+    </script>
+  </head>
+  <body class={bodyClass}>
+    <slot />
+  </body>
+</html>

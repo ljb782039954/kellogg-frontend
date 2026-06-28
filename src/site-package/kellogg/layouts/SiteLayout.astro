@@ -1,12 +1,19 @@
 ---
 import "../styles/global.css";
+import CoreLayout from "../../../core/layouts/CoreLayout.astro";
 import { SiteService } from "../../../services/siteService";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import TawkChat from "../components/TawkChat";
 import { createTranslate } from "../utils/i18n";
 import { kelloggSiteConfig } from "../config";
-import type { Translation, Language } from "../types";
+import type {
+  CompanyInfo,
+  FooterContent,
+  HeaderContent,
+  Language,
+  Translation,
+} from "../types";
 import InquirySection from "../components/blocks/InquirySection";
 
 interface Props {
@@ -23,13 +30,10 @@ interface Props {
 
 const { lang = kelloggSiteConfig.defaultLanguage, seo, hideInquiry = false } = Astro.props;
 const siteData = await SiteService.getSiteData(Astro);
-const {
-  companyInfo,
-  header,
-  footer,
-  lang: detectedLang,
-  exchangeRates,
-} = siteData;
+const { exchangeRates } = siteData;
+const companyInfo = siteData.companyInfo as CompanyInfo;
+const header = siteData.header as HeaderContent;
+const footer = siteData.footer as FooterContent;
 
 const t = createTranslate(lang);
 
@@ -37,7 +41,6 @@ const t = createTranslate(lang);
 const isInquiryPage = Astro.url.pathname.includes('/inquiry') || hideInquiry;
 
 const displayTitle = seo?.title
-// ... (lines 34-47 remain the same)
   ? t(seo.title)
   : typeof Astro.props.title === "string"
     ? Astro.props.title
@@ -54,46 +57,38 @@ const displayDescription = seo?.description
 const displayKeywords = seo?.keywords ? t(seo.keywords) : "";
 ---
 
-<!doctype html>
-<html lang={lang}>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <link rel="icon" type="image/svg+xml" href="/logo/logo.jpg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{displayTitle}</title>
-    <meta name="description" content={displayDescription} />
-    {displayKeywords && <meta name="keywords" content={displayKeywords} />}
+<CoreLayout
+  lang={lang}
+  title={displayTitle}
+  description={displayDescription}
+  keywords={displayKeywords}
+  alternates={kelloggSiteConfig.seo?.alternates}
+  exchangeRates={exchangeRates}
+  faviconHref="/logo/logo.jpg"
+  bodyClass="bg-background text-foreground selection:bg-primary/10"
+>
+  <Header
+    client:idle
+    header={header}
+    companyInfo={companyInfo}
+    lang={lang}
+    pathname={Astro.url.pathname}
+    initialRates={exchangeRates?.rates}
+  />
+  <TawkChat lang={lang} />
 
-    {kelloggSiteConfig.seo?.alternates?.map((alternate) => (
-      <link rel="alternate" href={alternate.href} hreflang={alternate.hreflang} />
-    ))}
+  <main class="mt-16 md:mt-20">
+    <slot />
+    {!isInquiryPage && <InquirySection lang={lang} client:visible />}
+  </main>
 
-    <!-- Google Fonts or other assets can be added here -->
-    <script is:inline define:vars={{ initialRates: exchangeRates?.rates }}>
-      window.__EXCHANGE_RATES__ = initialRates;
-    </script>
-  </head>
-  <body class="bg-background text-foreground selection:bg-primary/10">
-    <Header
-      client:idle
-      header={header}
-      companyInfo={companyInfo}
-      lang={lang}
-      pathname={Astro.url.pathname}
-      initialRates={exchangeRates?.rates}
-    />
-    <TawkChat lang={lang} />
+  <Footer footer={footer} companyInfo={companyInfo} lang={lang} />
 
-    <main class="mt-16 md:mt-20">
-      <slot />
-      {!isInquiryPage && <InquirySection lang={lang} client:visible />}
-    </main>
-
-    <Footer footer={footer} companyInfo={companyInfo} lang={lang} />
-  </body>
-</html>
+  <script>
+    import { initPriceTracker } from "../../../core/lib/priceTracker";
+    initPriceTracker();
+  </script>
+</CoreLayout>
 
 <style is:global>
   /* Custom global styles can go here */
@@ -106,8 +101,3 @@ const displayKeywords = seo?.keywords ? t(seo.keywords) : "";
     }
   }
 </style>
-
-<script>
-  import { initPriceTracker } from "../../../core/lib/priceTracker";
-  initPriceTracker();
-</script>

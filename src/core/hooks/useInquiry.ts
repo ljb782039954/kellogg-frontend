@@ -57,46 +57,31 @@ const emptyForm: InquiryFormData = {
   message: '',
 };
 
-const defaultTranslations: Record<Language, InquiryTranslations> = {
-  zh: {
-    form: {
-      name: '姓名',
-      email: '邮箱',
-      phone: '电话',
-      country: '国家/地区',
-      company: '公司名称',
-      productType: '产品类型',
-      quantity: '需求数量',
-      message: '消息详情',
-      submit: '提交询盘',
-      success: '提交成功！',
-      successMsg: '感谢您的咨询，我们会尽快与您联系。',
-      back: '返回',
-    },
-    alerts: {
-      turnstileRequired: '请先完成人机验证',
-      submitFailed: '提交失败，请重试',
-    },
+const defaultPageContent: InquiryPageContent = {
+  title: { en: 'Contact Us' },
+  description: {
+    en: 'Send your inquiry and we will get back to you soon.',
   },
-  en: {
-    form: {
-      name: 'First Name',
-      email: 'Email',
-      phone: 'Phone Number',
-      country: 'Country/Region',
-      company: 'Company Name',
-      productType: 'Product Type',
-      quantity: 'Order Quantity',
-      message: 'Message details',
-      submit: 'Submit Inquiry',
-      success: 'Success!',
-      successMsg: 'Thank you for your inquiry, we will contact you soon.',
-      back: 'Go Back',
-    },
-    alerts: {
-      turnstileRequired: 'Please complete the human verification',
-      submitFailed: 'Submission failed, please try again',
-    },
+};
+
+const fallbackTranslations: InquiryTranslations = {
+  form: {
+    name: 'Name',
+    email: 'Email',
+    phone: 'Phone',
+    country: 'Country/Region',
+    company: 'Company',
+    productType: 'Product Type',
+    quantity: 'Quantity',
+    message: 'Message',
+    submit: 'Submit',
+    success: 'Success!',
+    successMsg: 'Thank you for your inquiry.',
+    back: 'Back',
+  },
+  alerts: {
+    turnstileRequired: 'Please complete the human verification',
+    submitFailed: 'Submission failed, please try again',
   },
 };
 
@@ -112,15 +97,9 @@ export function useInquiry(
   const [turnstileToken, setTurnstileToken] = useState('');
   const [turnstileResetKey, setTurnstileResetKey] = useState(0);
 
-  const config = pageContent || {
-    title: { zh: '联系我们获取样品', en: 'Contact Us For Samples' },
-    description: {
-      zh: '如果您有任何产品咨询，请填写下方表格，我们的团队会尽快与您联系。',
-      en: 'If you have any inquiries about our products, please fill out the form below and our team will get back to you as soon as possible.',
-    },
-  };
+  const config = pageContent || defaultPageContent;
 
-  const t = translations || defaultTranslations[lang] || defaultTranslations['en'];
+  const t = translations || fallbackTranslations;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();

@@ -1,9 +1,10 @@
 ---
 import Layout from "../layouts/SiteLayout";
 import DynamicRenderer from "../../../core/components/DynamicRenderer";
-import BlockRenderer from "../components/BlockRenderer";
+import BlockRenderer from "./BlockRenderer.astro";
 import { api } from "../../../services/api";
 import { SiteService } from "../../../services/siteService";
+import { loadKelloggBlockData } from "../utils/loadBlockData";
 
 interface Props {
   pageId: string;
@@ -21,5 +22,11 @@ if (!fullPage) {
 ---
 
 <Layout title={fullPage.title} lang={lang} seo={fullPage.seo}>
-  <DynamicRenderer schema={fullPage} lang={lang} api={api} blockRenderer={BlockRenderer} />
+  <DynamicRenderer
+    schema={fullPage}
+    lang={lang}
+    api={api}
+    blockRenderer={BlockRenderer}
+    loadBlockData={loadKelloggBlockData}
+  />
 </Layout>

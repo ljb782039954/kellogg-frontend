@@ -6,9 +6,9 @@ const root = new URL("../", import.meta.url);
 
 test("interactive media blocks expose dialog and keyboard semantics", async () => {
   const [gallery, imageFull, carousel] = await Promise.all([
-    readFile(new URL("src/components/blocks/Gallery.tsx", root), "utf8"),
-    readFile(new URL("src/components/blocks/ImageFull.tsx", root), "utf8"),
-    readFile(new URL("src/components/blocks/Carousel.tsx", root), "utf8"),
+    readFile(new URL("src/site-package/kellogg/components/blocks/Gallery.tsx", root), "utf8"),
+    readFile(new URL("src/site-package/kellogg/components/blocks/ImageFull.tsx", root), "utf8"),
+    readFile(new URL("src/site-package/kellogg/components/blocks/Carousel.tsx", root), "utf8"),
   ]);
 
   for (const source of [gallery, imageFull]) {
@@ -21,6 +21,6 @@ test("interactive media blocks expose dialog and keyboard semantics", async () =
 });
 
 test("unknown blocks do not expose raw CMS data in production", async () => {
-  const renderer = await readFile(new URL("src/functions/DynamicRenderer.astro", root), "utf8");
+  const renderer = await readFile(new URL("src/site-package/kellogg/pages/BlockRenderer.astro", root), "utf8");
   assert.match(renderer, /import\.meta\.env\.DEV/);
 });

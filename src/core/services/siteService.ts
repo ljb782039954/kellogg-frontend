@@ -1,12 +1,9 @@
-import type { api } from "../lib/api";
 import type {
   SiteContent,
-  CompanyInfo,
-  HeaderContent,
-  FooterContent,
   CustomPage,
   Language,
   SiteLanguageConfig,
+  SiteResource,
 } from "../types";
 import type { ExchangeRates } from "../lib/currency";
 
@@ -19,7 +16,7 @@ interface SiteRequestContext {
 }
 
 interface SiteDataApi {
-  getConfig: typeof api.getConfig;
+  getConfig: <T = unknown>(key: string) => Promise<T | null>;
 }
 
 interface CreateSiteServiceOptions {
@@ -49,9 +46,9 @@ export function createSiteService({ site, api }: CreateSiteServiceOptions) {
 
     private static async loadSiteData(Astro?: SiteRequestContext): Promise<SiteData> {
       const [siteSettings, headerConfig, footerConfig, pagesData, exchangeRates] = await Promise.all([
-        api.getConfig<CompanyInfo>("site_settings"),
-        api.getConfig<HeaderContent>("header_config"),
-        api.getConfig<FooterContent>("footer_config"),
+        api.getConfig<SiteResource>("site_settings"),
+        api.getConfig<SiteResource>("header_config"),
+        api.getConfig<SiteResource>("footer_config"),
         api.getConfig<CustomPage[]>("pages"),
         api.getConfig<ExchangeRates>("exchangeRates"),
       ]);

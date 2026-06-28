@@ -1,5 +1,5 @@
 ---
-import { api } from "../lib/api";
+import { getOptimizedImageUrl } from "../lib/media";
 import { cn } from "../lib/utils";
 
 interface Props extends astroHTML.JSX.ImgHTMLAttributes {
@@ -22,14 +22,14 @@ const {
 } = Astro.props;
 
 // 1. 计算主 src
-const imageUrl = src ? api.getOptimizedImageUrl(src, width) : "";
+const imageUrl = src ? getOptimizedImageUrl(src, width) : "";
 
 // 2. 计算 srcSet
 let srcSet = undefined;
 if (src) {
   const defaultWidths = [200, 320, 480, 640, 800, 960, 1080, 1280, 1440, 1600, 1920];
   srcSet = defaultWidths
-    .map((w) => `${api.getOptimizedImageUrl(src, w)} ${w}w`)
+    .map((w) => `${getOptimizedImageUrl(src, w)} ${w}w`)
     .join(", ");
 }
 

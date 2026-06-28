@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
-import { getHydrationSafeRates } from "../src/lib/hydrationState.ts";
+import { getHydrationSafeRates } from "../src/core/lib/hydrationState.ts";
 
 const root = new URL("../", import.meta.url);
 
@@ -15,7 +15,7 @@ test("Header uses server rates until the client store is initialized", async () 
     { EUR: 0.12 },
   );
 
-  const header = await readFile(new URL("src/components/Header/index.tsx", root), "utf8");
+  const header = await readFile(new URL("src/site-package/kellogg/components/Header/index.tsx", root), "utf8");
   assert.match(header, /getHydrationSafeRates\(rates, initialRates\)/);
   assert.match(header, /rates=\{effectiveRates\}/);
   assert.match(header, /effectiveRates \? Object\.keys\(effectiveRates\)/);
@@ -23,10 +23,10 @@ test("Header uses server rates until the client store is initialized", async () 
 
 test("inquiry and Header Chinese copy is readable", async () => {
   const files = await Promise.all([
-    readFile(new URL("src/hooks/useInquiry.ts", root), "utf8"),
-    readFile(new URL("src/components/pages/InquiryView.tsx", root), "utf8"),
-    readFile(new URL("src/components/blocks/InquirySection.tsx", root), "utf8"),
-    readFile(new URL("src/components/Header/HeaderActions.tsx", root), "utf8"),
+    readFile(new URL("src/site-package/kellogg/utils/inquiry.ts", root), "utf8"),
+    readFile(new URL("src/site-package/kellogg/components/pages/InquiryView.tsx", root), "utf8"),
+    readFile(new URL("src/site-package/kellogg/components/blocks/InquirySection.tsx", root), "utf8"),
+    readFile(new URL("src/site-package/kellogg/components/Header/HeaderActions.tsx", root), "utf8"),
   ]);
   const source = files.join("\n");
 

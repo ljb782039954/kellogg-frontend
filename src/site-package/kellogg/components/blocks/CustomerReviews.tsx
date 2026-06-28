@@ -2,6 +2,7 @@ import type { Language } from "../../types";
 import OptimizedImage from "../../../../core/components/OptimizedImage";
 import { sanitizeCmsHtml } from "../../../../core/lib/contentSecurity";
 import { getSafeVideoSource } from "../../../../core/lib/video";
+import { kelloggSiteConfig } from "../../config";
 
 export interface CustomerReview {
   id?: number | string;
@@ -33,7 +34,10 @@ export default function CustomerReviews({ lang, reviews = [] }: CustomerReviewsP
     <section className="max-w-5xl mx-auto px-6 py-12 space-y-14">
       {reviews.map((review, index) => {
         const videoSource = review.media_type === "video" && review.media_url
-          ? getSafeVideoSource(review.media_url, import.meta.env.PUBLIC_API_ASSETS)
+          ? getSafeVideoSource(review.media_url, {
+              assetsBase: kelloggSiteConfig.api.assetsBaseUrl,
+              providers: kelloggSiteConfig.security?.videoProviders,
+            })
           : null;
         const reviewText = lang === "zh" ? review.review_text_zh : review.review_text_en;
         const rating = Math.max(0, Math.min(5, Number(review.rating) || 0));

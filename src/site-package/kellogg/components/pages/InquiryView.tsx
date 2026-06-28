@@ -6,6 +6,10 @@ import type { Language, CompanyInfo } from '../../types';
 import TurnstileWidget from '../../../../core/components/TurnstileWidget';
 import { kelloggSiteConfig } from '../../config';
 import { api } from '../../../../services/api';
+import {
+  getKelloggInquiryTranslations,
+  kelloggInquiryContent,
+} from '../../utils/inquiry';
 
 interface Props {
   lang: Language;
@@ -26,7 +30,7 @@ export default function InquiryView({ lang, companyInfo, pageContent }: Props) {
     config,
     t,
     language
-  } = useInquiry(lang, pageContent, undefined, {
+  } = useInquiry(lang, pageContent || kelloggInquiryContent, getKelloggInquiryTranslations(lang), {
     submitInquiry: api.submitInquiry,
   });
 
@@ -246,6 +250,7 @@ export default function InquiryView({ lang, companyInfo, pageContent }: Props) {
                   <TurnstileWidget
                     lang={lang}
                     siteKey={kelloggSiteConfig.turnstile?.siteKey}
+                    useTestSiteKey={kelloggSiteConfig.turnstile?.useTestSiteKey}
                     onTokenChange={setTurnstileToken}
                     resetKey={turnstileResetKey}
                   />

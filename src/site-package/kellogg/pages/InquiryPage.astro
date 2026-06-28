@@ -3,9 +3,11 @@ import Layout from "../layouts/SiteLayout";
 import InquiryView from "../components/pages/InquiryView";
 import { api } from "../../../services/api";
 import { SiteService } from "../../../services/siteService";
+import type { CompanyInfo } from "../types";
 
 const siteData = await SiteService.getSiteData(Astro);
-const { lang, companyInfo } = siteData;
+const { lang } = siteData;
+const companyInfo = siteData.companyInfo as CompanyInfo;
 
 let fullPage: any = null;
 try {

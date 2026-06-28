@@ -1,76 +1,31 @@
 ---
 import type { CustomPage, Language, PageBlock } from "../types";
-import type { ApiClient } from "../lib/api";
-import { createRequestMemo } from "../lib/requestMemo";
+import { createRequestMemo, type RequestMemo } from "../lib/requestMemo";
+
+type LoadBlockData = (options: {
+  block: PageBlock;
+  api: any;
+  requestMemo: RequestMemo;
+}) => Promise<Record<string, any>>;
 
 interface Props {
   schema: CustomPage;
   lang: Language;
-  api: ApiClient;
+  api: any;
   blockRenderer: any;
+  loadBlockData?: LoadBlockData;
 }
 
-const { schema, lang, api, blockRenderer: BlockRenderer } = Astro.props;
+const { schema, lang, api, blockRenderer: BlockRenderer, loadBlockData } = Astro.props;
 const enabledBlocks = schema.blocks.filter((block) => block.isVisible);
 const requestMemo = createRequestMemo();
-const getCategories = () => requestMemo.get('categories', () => api.getCategories());
-const getProducts = (params: Parameters<typeof api.getProducts>[0]) =>
-  requestMemo.get(`products:${JSON.stringify(params)}`, () => api.getProducts(params));
-
-// 数据注入逻辑 (在服务端预先获取数据)
-const getBlockData = async (block: PageBlock): Promise<Record<string, any>> => {
-  if (block.type === 'productGrid') {
-    const pageSize = block.content.itemsPerPage || 12;
-    const params: NonNullable<Parameters<typeof api.getProducts>[0]> = { pageSize, page: 1 };
-    if (block.content.category && block.content.category !== 'all') {
-      params.category = block.content.category;
-    }
-    
-    const [productsData, categoriesData] = await Promise.all([
-      getProducts(params),
-      getCategories()
-    ]);
-    
-    return {
-      products: productsData.data || [],
-      categories: categoriesData || [],
-      totalProducts: productsData.pagination?.total || 0
-    };
-  }
-
-  if (block.type === 'featuredProducts' || block.type === 'newArrivals') {
-    const params: NonNullable<Parameters<typeof api.getProducts>[0]> = { pageSize: 200 };
-    if (block.type === 'featuredProducts') params.featured = true;
-    if (block.type === 'newArrivals') params.sort = 'newest';
-    
-    const [productsData, categoriesData] = await Promise.all([
-      getProducts(params),
-      getCategories()
-    ]);
-    
-    return {
-      products: productsData.data || [],
-      categories: categoriesData || []
-    };
-  }
-  
-  if (block.type === 'categories') {
-    const categoriesData = await getCategories();
-    return { categories: categoriesData };
-  }
-
-  if (block.type === 'caseStudies') {
-    const reviews = await requestMemo.get('reviews', () => api.getReviews());
-    return { reviews: reviews || [] };
-  }
-  
-  return {};
-};
 
 // 预取所有需要数据的区块
 const blocksWithData: any[] = await Promise.all(
   enabledBlocks.map(async (block) => {
-    const data = await getBlockData(block);
+    const data = loadBlockData
+      ? await loadBlockData({ block, api, requestMemo })
+      : {};
     return { ...block, data };
   })
 );

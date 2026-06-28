@@ -17,14 +17,17 @@ export interface SiteConfig extends SiteLanguageConfig {
   api: {
     baseUrl?: string;
     localBaseUrl?: string;
+    useLocalBaseUrl?: boolean;
     assetsBaseUrl?: string;
     assetHostnames?: readonly string[];
   };
+  createApiClient?: (config: SiteConfig["api"]) => any;
   currency?: {
     defaultCurrency?: string;
   };
   turnstile?: {
     siteKey?: string;
+    useTestSiteKey?: boolean;
   };
   tawk?: {
     scriptUrl?: string;
@@ -42,106 +45,12 @@ export interface SiteConfig extends SiteLanguageConfig {
       frameSrc?: readonly string[];
       connectSrc?: readonly string[];
     };
-    videoProviders?: readonly string[];
+    videoProviders?: readonly ("youtube" | "vimeo" | "facebook" | "tiktok" | "direct")[];
   };
   pages?: Record<string, any>;
 }
 
-export type LinkType = 'internal' | 'external';
-
-export interface NavLink {
-  id: string;
-  name: Translation;
-  linkType: LinkType;
-  href: string;
-  pageDeleted?: boolean;
-  children?: NavLink[];
-}
-
-export interface SocialMediaType {
-  wechat?: string;
-  weibo?: string;
-  facebook?: string;
-  instagram?: string;
-  twitter?: string;
-  youtube?: string;
-  linkedin?: string;
-  tiktok?: string;
-  whatsapp?: string;
-}
-
-export interface CompanyInfo {
-  name: Translation;
-  logo: string;
-  description: Translation;
-  contact: {
-    phone: string;
-    email: string;
-    address: Translation;
-  };
-  socialMedia: SocialMediaType;
-}
-
-export interface HeaderContent {
-  logoText: Translation;
-  navItems: NavLink[];
-}
-
-export interface FooterLink {
-  id: string;
-  name: Translation;
-  linkType: LinkType;
-  href: string;
-  pageDeleted?: boolean;
-}
-
-export interface FooterLinkGroup {
-  id: string;
-  title: Translation;
-  links: FooterLink[];
-}
-
-export interface FooterContent {
-  linkGroups: FooterLinkGroup[];
-  newsletterPlaceholder: Translation;
-  newsletterButton: Translation;
-}
-
-export interface Category {
-  id: string;
-  name: Translation;
-  image?: string;
-}
-
-export interface BulkPrice {
-  minQty: number;
-  maxQty: number | null;
-  price: number;
-}
-
-export interface Product {
-  id: number;
-  name: Translation;
-  price: number;
-  originalPrice?: number;
-  bulkPrices?: BulkPrice[];
-  image: string;
-  images: string[];
-  videos: string[];
-  rating: number;
-  sales: number;
-  tag?: Translation;
-  category?: string;
-  releaseDate?: string;
-  description?: Translation;
-  isFeatured: boolean;
-  fabric?: Translation;
-  notes?: Translation;
-  isActive: boolean;
-  sizes?: { name: string; image?: string }[];
-  colors?: { name: Translation; image?: string }[];
-  customFields?: { name: Translation; value: Translation }[];
-}
+export type SiteResource = Record<string, unknown>;
 
 export interface PageBlock {
   id: string;
@@ -167,9 +76,9 @@ export interface CustomPage {
 }
 
 export interface SiteContent {
-  companyInfo: CompanyInfo;
-  header: HeaderContent;
-  footer: FooterContent;
+  companyInfo: SiteResource;
+  header: SiteResource;
+  footer: SiteResource;
   pages: CustomPage[];
   lang: Language;
 }
@@ -193,31 +102,4 @@ export interface ExchangeRates {
   base: string;
   rates: Record<string, number>;
   last_updated: string;
-}
-
-export interface BlogSummary {
-  id: number;
-  slug: string;
-  title_zh: string;
-  title_en: string;
-  summary_zh: string | null;
-  summary_en: string | null;
-  cover_image: string | null;
-  category: string | null;
-  tags: string[];
-  author: string;
-  status: string;
-  publish_date: string | null;
-  view_count: number;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface Blog extends BlogSummary {
-  content_zh: string;
-  content_en: string;
-  seo_title_zh: string | null;
-  seo_title_en: string | null;
-  seo_desc_zh: string | null;
-  seo_desc_en: string | null;
 }

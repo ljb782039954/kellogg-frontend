@@ -6,6 +6,7 @@ interface TurnstileWidgetProps {
   resetKey?: number;
   lang?: Language;
   siteKey?: string;
+  useTestSiteKey?: boolean;
 }
 
 declare global {
@@ -32,10 +33,11 @@ export default function TurnstileWidget({
   resetKey = 0,
   lang = "en",
   siteKey: configuredSiteKey,
+  useTestSiteKey = false,
 }: TurnstileWidgetProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | undefined>(undefined);
-  const siteKey = configuredSiteKey || (import.meta.env.DEV ? TEST_SITE_KEY : "");
+  const siteKey = configuredSiteKey || (useTestSiteKey ? TEST_SITE_KEY : "");
 
   useEffect(() => {
     if (!siteKey || !containerRef.current) return;
