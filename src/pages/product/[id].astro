@@ -1,9 +1,9 @@
 ---
 export const prerender = false;
 
-import { currentSite } from "@site-package";
+import { currentSite, loadSitePage } from "@site-package";
 
-const ProductDetailPage = currentSite.pages?.productDetail;
+const ProductDetailPage = await loadSitePage(currentSite.pages?.productDetail);
 const { id } = Astro.params;
 
 if (!ProductDetailPage || !id) return Astro.redirect("/404");

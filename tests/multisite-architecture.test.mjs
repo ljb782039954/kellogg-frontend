@@ -164,6 +164,15 @@ test("site pages import Astro layouts with explicit file extensions", async () =
   assert.deepEqual(offenders, []);
 });
 
+test("site config registers pages through lazy Astro imports", async () => {
+  const kelloggConfig = await readProjectFile("src/site-package/kellogg/config.ts");
+
+  assert.doesNotMatch(kelloggConfig, /import\s+\w+\s+from\s+["']\.\/pages\/[^"']+\.astro["']/);
+  assert.match(kelloggConfig, /cms:\s*\(\)\s*=>\s*import\(["']\.\/pages\/CmsPage\.astro["']\)/);
+  assert.match(kelloggConfig, /products:\s*\(\)\s*=>\s*import\(["']\.\/pages\/ProductsPage\.astro["']\)/);
+  assert.match(kelloggConfig, /blogDetail:\s*\(\)\s*=>\s*import\(["']\.\/pages\/BlogDetailPage\.astro["']\)/);
+});
+
 test("tests do not reference retired pre-refactor source paths", async () => {
   const files = await collectFiles(path.join(root, "tests"));
   const retiredPathPattern = /src\/(?:components|functions|lib|hooks)|src\\(?:components|functions|lib|hooks)/;

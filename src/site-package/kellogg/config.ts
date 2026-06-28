@@ -1,11 +1,4 @@
 import type { SiteConfig } from "@core/types";
-import CmsPage from "./pages/CmsPage.astro";
-import ProductsPage from "./pages/ProductsPage.astro";
-import InquiryPage from "./pages/InquiryPage.astro";
-import CustomerReviewsPage from "./pages/CustomerReviewsPage.astro";
-import BlogIndexPage from "./pages/BlogIndexPage.astro";
-import BlogDetailPage from "./pages/BlogDetailPage.astro";
-import ProductDetailPage from "./pages/ProductDetailPage.astro";
 import { createKelloggApiClient } from "./utils/api";
 import type { BlogSummary } from "./types";
 
@@ -74,13 +67,13 @@ export const kelloggSiteConfig = {
     videoProviders: ["youtube", "vimeo", "facebook", "tiktok", "direct"],
   },
   pages: {
-    cms: CmsPage,
-    products: ProductsPage,
-    inquiry: InquiryPage,
-    customerReviews: CustomerReviewsPage,
-    blogIndex: BlogIndexPage,
-    blogDetail: BlogDetailPage,
-    productDetail: ProductDetailPage,
+    cms: () => import("./pages/CmsPage.astro"),
+    products: () => import("./pages/ProductsPage.astro"),
+    inquiry: () => import("./pages/InquiryPage.astro"),
+    customerReviews: () => import("./pages/CustomerReviewsPage.astro"),
+    blogIndex: () => import("./pages/BlogIndexPage.astro"),
+    blogDetail: () => import("./pages/BlogDetailPage.astro"),
+    productDetail: () => import("./pages/ProductDetailPage.astro"),
     getBlogStaticPaths: async (api: any) => {
       try {
         const resp = await api.getBlogs({ pageSize: 1000, sort: "newest" });

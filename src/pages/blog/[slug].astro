@@ -2,13 +2,13 @@
 export const prerender = true;
 
 import { api } from "@services/api";
-import { currentSite } from "@site-package";
+import { currentSite, loadSitePage } from "@site-package";
 
 export async function getStaticPaths() {
   return currentSite.pages?.getBlogStaticPaths?.(api) ?? [];
 }
 
-const BlogDetailPage = currentSite.pages?.blogDetail;
+const BlogDetailPage = await loadSitePage(currentSite.pages?.blogDetail);
 const blogSlug = Astro.props.blogSlug || Astro.params.slug;
 
 if (!BlogDetailPage || !blogSlug) return Astro.redirect("/404");

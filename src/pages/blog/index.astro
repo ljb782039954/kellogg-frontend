@@ -1,9 +1,9 @@
 ---
 export const prerender = true;
 
-import { currentSite } from "@site-package";
+import { currentSite, loadSitePage } from "@site-package";
 
-const BlogIndexPage = currentSite.pages?.blogIndex;
+const BlogIndexPage = await loadSitePage(currentSite.pages?.blogIndex);
 
 if (!BlogIndexPage) return Astro.redirect("/404");
 ---

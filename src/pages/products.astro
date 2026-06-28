@@ -1,7 +1,7 @@
 ---
-import { currentSite } from "@site-package";
+import { currentSite, loadSitePage } from "@site-package";
 
-const ProductsPage = currentSite.pages?.products;
+const ProductsPage = await loadSitePage(currentSite.pages?.products);
 
 if (!ProductsPage) return Astro.redirect("/404");
 ---

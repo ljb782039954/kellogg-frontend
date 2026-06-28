@@ -19,3 +19,9 @@ export function getCurrentSiteName(): SiteName {
 
 export const currentSite = siteConfigs[getCurrentSiteName()];
 export { siteConfigs };
+
+export async function loadSitePage(pageLoader: (() => Promise<{ default: any }>) | undefined) {
+  if (!pageLoader) return undefined;
+  const pageModule = await pageLoader();
+  return pageModule.default;
+}

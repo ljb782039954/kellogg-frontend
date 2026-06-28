@@ -1,9 +1,9 @@
 ---
 export const prerender = true;
 
-import { currentSite } from "@site-package";
+import { currentSite, loadSitePage } from "@site-package";
 
-const CustomerReviewsPage = currentSite.pages?.customerReviews;
+const CustomerReviewsPage = await loadSitePage(currentSite.pages?.customerReviews);
 
 if (!CustomerReviewsPage) return Astro.redirect("/404");
 ---
