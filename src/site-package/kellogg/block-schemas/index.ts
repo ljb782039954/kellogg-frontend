@@ -1,7 +1,6 @@
 export * from "./brandValues";
 export * from "./categories";
 export * from "./carousel";
-export * from "./caseStudies";
 export * from "./countdown";
 export * from "./ctaBanner";
 export * from "./faq";

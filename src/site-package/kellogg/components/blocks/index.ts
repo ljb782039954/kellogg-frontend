@@ -8,8 +8,6 @@ export { default as Countdown } from "./Countdown";
 export type { CountdownProps } from "./Countdown";
 export { default as CtaBanner } from "./CtaBanner";
 export type { CtaBannerProps } from "./CtaBanner";
-export { default as CustomerReviews } from "./CustomerReviews";
-export type { CustomerReviewsProps } from "./CustomerReviews";
 export { default as FAQ } from "./FAQ";
 export type { FAQProps } from "./FAQ";
 export { default as FeaturedProducts } from "./FeaturedProducts";

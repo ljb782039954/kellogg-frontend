@@ -3,7 +3,6 @@ import type {
   BrandValuesContent,
   CategoriesContent,
   CarouselContent,
-  CaseStudiesContent,
   CountdownContent,
   CtaBannerContent,
   FAQContent,
@@ -26,7 +25,6 @@ import type {
 export interface BlockContentMap {
   carousel: CarouselContent;
   categories: CategoriesContent;
-  caseStudies: CaseStudiesContent;
   newArrivals: NewArrivalsContent;
   featuredProducts: FeaturedProductsContent;
   productGrid: ProductGridContent;

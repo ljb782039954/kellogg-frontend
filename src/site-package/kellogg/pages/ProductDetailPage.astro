@@ -1,12 +1,13 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
 import ProductDetailView from "./product/ProductDetailView";
-import ProductCustomFields from "../components/base/ProductCustomFields.astro";
-import ProductCard from "../components/base/ProductCardStatic";
-import SectionHeader from "../components/base/SectionHeader";
-import ProductVideo from "../components/base/ProductVideo";
+import { ProductCardStatic as ProductCard, ProductCustomFields, ProductVideo, SectionHeader } from "../components/base";
 import { formatPrice } from "@core/lib/currency";
-import { toProductCardStaticProps } from "../block-adapters";
+import {
+  toProductCardStaticProps,
+  toProductCustomFieldItems,
+  toProductVideoSources,
+} from "../block-adapters";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
 import type { Product } from "../types";
@@ -49,6 +50,8 @@ const relatedProductCards = relatedProducts.map((item) => ({
     formatPriceText: formatPrice,
   }),
 }));
+const customFieldItems = toProductCustomFieldItems(product.customFields, lang);
+const productVideoSources = toProductVideoSources(product.videos);
 
 const seo = {
   title: t(product.name),
@@ -70,14 +73,14 @@ const seo = {
 
       <ProductDetailView product={product} lang={lang} client:load />
 
-      <ProductCustomFields customFields={product.customFields} lang={lang} />
+      <ProductCustomFields fields={customFieldItems} />
 
-      {product.videos && product.videos.length > 0 && (
+      {productVideoSources.length > 0 && (
         <section class="py-24 border-t border-gray-100">
           <div class="max-w-4xl mx-auto">
-            <SectionHeader lang={lang} title={{ zh: "视频展示", en: "Video Showcase" }} theme="light" />
+            <SectionHeader titleText={t({ zh: "视频展示", en: "Video Showcase" })} theme="light" />
             <div class="grid grid-cols-1 gap-12 mt-12">
-              {product.videos.map((video) => <ProductVideo url={video} />)}
+              {productVideoSources.map((source) => <ProductVideo source={source} />)}
             </div>
           </div>
         </section>

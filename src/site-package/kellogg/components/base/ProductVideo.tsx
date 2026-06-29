@@ -1,15 +1,15 @@
-﻿import { getSafeVideoSource } from "@/core/lib/video";
-import { kelloggSiteConfig } from "../../config";
-
-interface ProductVideoProps {
+﻿export interface ProductVideoSource {
+  kind: "embed" | "video";
   url: string;
+  vertical?: boolean;
+  title?: string;
 }
 
-export default function ProductVideo({ url }: ProductVideoProps) {
-  const source = getSafeVideoSource(url, {
-    assetsBase: kelloggSiteConfig.api.assetsBaseUrl,
-    providers: kelloggSiteConfig.security?.videoProviders,
-  });
+interface ProductVideoProps {
+  source?: ProductVideoSource | null;
+}
+
+export default function ProductVideo({ source }: ProductVideoProps) {
   if (!source) return null;
 
   if (source.kind === "embed") {
@@ -20,7 +20,7 @@ export default function ProductVideo({ url }: ProductVideoProps) {
           className="w-full h-full border-0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
-          title="Product Video"
+          title={source.title || "Product Video"}
           loading="lazy"
           referrerPolicy="strict-origin-when-cross-origin"
         />

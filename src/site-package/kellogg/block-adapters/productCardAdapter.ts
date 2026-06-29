@@ -1,6 +1,6 @@
 import type { Language } from "@core/types";
 import type { Product, Translation } from "../types";
-import type { ProductCardStaticProps } from "../components/base/ProductCardStatic";
+import type { ProductCardStaticProps } from "../components/base";
 import { t } from "../utils/i18n";
 
 interface ProductCardAdapterOptions {

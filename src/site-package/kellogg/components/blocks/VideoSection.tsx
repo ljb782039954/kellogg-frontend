@@ -1,13 +1,13 @@
-import ProductVideo from "../base/ProductVideo";
+import { ProductVideo, type ProductVideoSource } from "../base";
 
 export interface VideoSectionProps {
   titleText?: string;
   subtitleText?: string;
-  videoUrl?: string;
+  videoSource?: ProductVideoSource | null;
 }
 
-export default function VideoSection({ titleText = "", subtitleText = "", videoUrl = "" }: VideoSectionProps) {
-  if (!videoUrl) return null;
+export default function VideoSection({ titleText = "", subtitleText = "", videoSource = null }: VideoSectionProps) {
+  if (!videoSource) return null;
 
   return (
     <section className="py-20 bg-white">
@@ -21,7 +21,7 @@ export default function VideoSection({ titleText = "", subtitleText = "", videoU
             </div>
           )}
           <div className="shadow-2xl rounded-[40px] overflow-hidden">
-            <ProductVideo url={videoUrl} />
+            <ProductVideo source={videoSource} />
           </div>
         </div>
       </div>

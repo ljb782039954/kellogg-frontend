@@ -1,9 +1,19 @@
 import type { Language } from "@core/types";
 import { sanitizeCmsHtml } from "@core/lib/contentSecurity";
 import { getSafeVideoSource } from "@core/lib/video";
-import type { CustomerReviewRecord } from "../block-schemas";
-import type { CustomerReviewsProps } from "../components/blocks";
-import { kelloggSiteConfig } from "../config";
+import { kelloggSiteConfig } from "../../config";
+import type { CustomerReviewsProps } from "./CustomerReviews";
+
+export interface CustomerReviewRecord {
+  id?: number | string;
+  client_name: string;
+  country?: string;
+  rating: number;
+  media_type?: string;
+  media_url?: string;
+  review_text_zh?: string;
+  review_text_en?: string;
+}
 
 export function toCustomerReviewsViewProps(
   reviews: CustomerReviewRecord[] = [],

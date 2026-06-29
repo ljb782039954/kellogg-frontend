@@ -58,10 +58,5 @@ export async function loadKelloggBlockData({
     return { categories: categoriesData };
   }
 
-  if (block.type === "caseStudies") {
-    const reviews = await requestMemo.get("reviews", () => api.getReviews());
-    return { reviews: reviews || [] };
-  }
-
   return {};
 }

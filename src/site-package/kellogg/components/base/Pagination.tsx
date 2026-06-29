@@ -6,7 +6,6 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
   totalCount?: number;
   totalText?: string;
-  lang?: string;
 }
 
 export default function Pagination({ 
@@ -15,7 +14,6 @@ export default function Pagination({
   onPageChange,
   totalCount,
   totalText,
-  lang = "en"
 }: PaginationProps) {
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
@@ -59,9 +57,7 @@ export default function Pagination({
 
       {totalCount !== undefined && (
         <div className="text-center mt-6 text-sm text-gray-500">
-          {totalText || (lang === 'zh'
-            ? `共 ${totalCount} 件商品`
-            : `${totalCount} products total`)}
+          {totalText || `${totalCount}`}
         </div>
       )}
     </div>

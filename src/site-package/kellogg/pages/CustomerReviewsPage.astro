@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
-import { CustomerReviews } from "../components/blocks";
-import { toCustomerReviewsViewProps } from "../block-adapters";
+import CustomerReviews from "./customerReviews/CustomerReviews";
+import { toCustomerReviewsViewProps } from "./customerReviews/adapter";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
 

@@ -1,4 +1,4 @@
-import ProductCardStatic, { type ProductCardStaticProps } from "../base/ProductCardStatic";
+import { ProductCardStatic, type ProductCardStaticProps } from "../base";
 
 export interface NewArrivalCard {
   id: string;
