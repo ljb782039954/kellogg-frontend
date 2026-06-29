@@ -1,7 +1,7 @@
 import { formatPrice } from "@core/lib/currency";
 import { toFeaturedProductsViewProps } from "../../block-adapters";
 import type { FeaturedProductsContent } from "../../block-schemas";
-import type { Language, Product } from "../../types";
+import type { Language, Product } from "@core/types";
 import FeaturedProducts from "../blocks/FeaturedProducts";
 
 export interface FeaturedProductsContainerProps extends FeaturedProductsContent {

@@ -1,4 +1,4 @@
-import type { Translation } from "../types";
+import type { Translation } from "@core/types";
 
 export interface ImageBannerContent {
   image?: string;

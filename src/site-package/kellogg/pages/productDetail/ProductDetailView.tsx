@@ -5,7 +5,7 @@ import { useStore } from '@nanostores/react';
 import { $currency, $rates, formatPrice } from '@/core/lib/currency';
 import { t } from '../../utils/i18n';
 import OptimizedImage from '@/core/components/OptimizedImage';
-import type { Product, Language } from '../../types';
+import type { Product, Language } from '@core/types';
 
 interface Props {
   product: Product;

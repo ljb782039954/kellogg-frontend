@@ -1,6 +1,6 @@
 import type { SiteConfig } from "@core/types";
 import { createKelloggApiClient } from "./utils/api";
-import type { BlogSummary } from "./types";
+import type { BlogSummary } from "@core/types";
 
 export const kelloggSiteConfig = {
   name: "kellogg",

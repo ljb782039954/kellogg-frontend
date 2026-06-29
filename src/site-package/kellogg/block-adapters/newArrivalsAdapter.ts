@@ -1,7 +1,7 @@
 import type { Language } from "@core/types";
 import type { NewArrivalsContent } from "../block-schemas";
 import type { NewArrivalsProps } from "../components/blocks";
-import type { Product } from "../types";
+import type { Product } from "@core/types";
 import { createTranslate } from "../utils/i18n";
 import { toProductCardStaticProps } from "./productCardAdapter";
 

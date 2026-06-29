@@ -8,7 +8,7 @@ import type {
   Category,
   CustomPage,
   Product,
-} from "../types";
+} from "@core/types";
 
 interface PaginatedResponse<T> {
   data: T[];

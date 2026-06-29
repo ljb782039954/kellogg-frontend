@@ -2,7 +2,7 @@ import { useInquiry } from '@core/hooks/useInquiry';
 import { api } from '@services/api';
 import InquirySection from '../blocks-fixed/InquirySection';
 import { kelloggSiteConfig } from '../../config';
-import type { Language } from '../../types';
+import type { Language } from '@core/types';
 import {
   getKelloggInquiryFormText,
   getKelloggInquiryTranslations,

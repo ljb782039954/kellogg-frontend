@@ -2,7 +2,7 @@ import { Globe, Share2, Menu, X, Coins } from 'lucide-react';
 import { CurrencyService } from '@/core/services/currencyService';
 import { t } from '../../utils/i18n';
 import { kelloggSiteConfig } from '../../config';
-import type { CompanyInfo, Language } from '../../types';
+import type { CompanyInfo, Language } from '@core/types';
 
 interface HeaderActionsProps {
   currency: string;

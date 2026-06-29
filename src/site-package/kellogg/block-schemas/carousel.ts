@@ -1,4 +1,4 @@
-import type { NavLink, Translation } from "../types";
+import type { NavLink, Translation } from "@core/types";
 
 export interface CarouselItemContent {
   id: number;

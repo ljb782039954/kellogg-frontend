@@ -1,7 +1,7 @@
 import type { Language } from "@core/types";
 import type { CategoriesContent } from "../block-schemas";
 import type { CategoriesProps } from "../components/blocks";
-import type { Category } from "../types";
+import type { Category } from "@core/types";
 import { createTranslate } from "../utils/i18n";
 
 interface CategoriesAdapterOptions {

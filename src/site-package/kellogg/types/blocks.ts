@@ -1,4 +1,4 @@
-import type { Translation } from "./common";
+import type { Translation } from "@core/types";
 import type {
   BrandValuesContent,
   CategoriesContent,

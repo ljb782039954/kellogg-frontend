@@ -1,5 +1,4 @@
-import type { Language } from "@core/types";
-import type { Product } from "../types";
+import type { Language, Product } from "@core/types";
 import type { ProductCustomFieldItem } from "../components/base";
 import { createTranslate } from "../utils/i18n";
 

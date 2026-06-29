@@ -1,5 +1,5 @@
 import type { Language } from "@core/types";
-import type { Category, Product, SortOption } from "../types";
+import type { Category, Product, SortOption } from "@core/types";
 import { toProductCardStaticProps } from "./productCardAdapter";
 import type {
   ProductGridItem,

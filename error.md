@@ -1,80 +1,35 @@
-GET /_astro/SiteLayout.B907fhHW.css 304 Not Modified (3ms)
-GET /_astro/SiteLayout.astro_astro_type_script_index_0_lang.JQWLDajw.js 304 Not Modified (3ms)
-GET /_astro/currency.DHAxzb2p.js 304 Not Modified (5ms)
-GET /_astro/FAQ.C2_HkOVS.js 200 OK (4ms)
-GET /_astro/index.6E5chsY6.js 304 Not Modified (5ms)
-GET /_astro/client.DqygQINC.js 304 Not Modified (5ms)
-GET /_astro/jsx-runtime.DXco-PnT.js 304 Not Modified (4ms)
-GET /_astro/index.DLvZLnsH.js 304 Not Modified (6ms)
-GET /_astro/i18n.CXnbKuW1.js 304 Not Modified (6ms)
-GET /_astro/OptimizedImage.D9wbetMq.js 304 Not Modified (4ms)
-GET /_astro/index.CHDuK0g_.js 304 Not Modified (7ms)
-GET /_astro/chevron-down.V-aADkzS.js 304 Not Modified (5ms)
-GET /_astro/proxy.CW7CaUO3.js 304 Not Modified (3ms)
-GET /_astro/config.Bc4U1eNv.js 304 Not Modified (3ms)
-GET /_astro/createLucideIcon.BFwZ1Tgj.js 304 Not Modified (4ms)
-GET /_astro/globe.Cw_uEakS.js 304 Not Modified (4ms)
-GET /_astro/share-2.CwPxwX7B.js 304 Not Modified (5ms)
-GET /_astro/media.B35PXuaA.js 304 Not Modified (3ms)
-GET /_astro/x.BQB5MVXd.js 304 Not Modified (3ms)
-GET /_astro/InquirySection.aAYgf69L.js 200 OK (2ms)
-GET /_astro/api.DMNdf4cR.js 200 OK (2ms)
-GET /_astro/inquiry.DEJFy9lq.js 200 OK (2ms)
-GET /australia-heavyweight-tshirt-supplier 307 Temporary Redirect (4ms)
-GET /australia-heavyweight-tshirt-supplier/ 200 OK (2ms)
-GET /_astro/SiteLayout.B907fhHW.css 304 Not Modified (3ms)
-GET /_astro/SiteLayout.astro_astro_type_script_index_0_lang.JQWLDajw.js 304 Not Modified (3ms)
-GET /_astro/client.DqygQINC.js 304 Not Modified (2ms)
-GET /_astro/Carousel.BnNkK9sK.js 304 Not Modified (2ms)
-GET /_astro/currency.DHAxzb2p.js 304 Not Modified (2ms)
-GET /_astro/jsx-runtime.DXco-PnT.js 304 Not Modified (3ms)
-GET /_astro/OptimizedImage.D9wbetMq.js 304 Not Modified (3ms)
-GET /_astro/index.CHDuK0g_.js 304 Not Modified (2ms)
-GET /_astro/index.DLvZLnsH.js 304 Not Modified (5ms)
-GET /_astro/proxy.CW7CaUO3.js 304 Not Modified (3ms)
-GET /_astro/chevron-right.CH8aeMOa.js 304 Not Modified (5ms)
-GET /_astro/index.6E5chsY6.js 304 Not Modified (2ms)
-GET /_astro/media.B35PXuaA.js 304 Not Modified (4ms)
-GET /_astro/createLucideIcon.BFwZ1Tgj.js 304 Not Modified (4ms)
-GET /_astro/share-2.CwPxwX7B.js 304 Not Modified (11ms)
-GET /_astro/i18n.CXnbKuW1.js 304 Not Modified (2ms)
-GET /_astro/x.BQB5MVXd.js 304 Not Modified (12ms)
-GET /_astro/chevron-down.V-aADkzS.js 304 Not Modified (12ms)
-GET /_astro/config.Bc4U1eNv.js 304 Not Modified (12ms)
-GET /_astro/globe.Cw_uEakS.js 304 Not Modified (12ms)
-GET /_astro/Gallery.QcW2cZjY.js 304 Not Modified (9ms)
-GET /_astro/FAQ.C2_HkOVS.js 304 Not Modified (8ms)
-GET /_astro/InquirySection.aAYgf69L.js 304 Not Modified (3ms)
-GET /_astro/inquiry.DEJFy9lq.js 304 Not Modified (2ms)
-GET /_astro/api.DMNdf4cR.js 304 Not Modified (3ms)
-GET /usa-heavyweight-hoodie-manufacturer 307 Temporary Redirect (5ms)
-GET /usa-heavyweight-hoodie-manufacturer/ 200 OK (2ms)
-GET /_astro/SiteLayout.B907fhHW.css 304 Not Modified (3ms)
-GET /_astro/SiteLayout.astro_astro_type_script_index_0_lang.JQWLDajw.js 304 Not Modified (3ms)
-GET /_astro/Carousel.BnNkK9sK.js 304 Not Modified (2ms)
-GET /_astro/client.DqygQINC.js 304 Not Modified (3ms)
-GET /_astro/currency.DHAxzb2p.js 304 Not Modified (3ms)
-GET /_astro/jsx-runtime.DXco-PnT.js 304 Not Modified (2ms)
-GET /_astro/proxy.CW7CaUO3.js 304 Not Modified (11ms)
-GET /_astro/OptimizedImage.D9wbetMq.js 304 Not Modified (11ms)
-GET /_astro/index.DLvZLnsH.js 304 Not Modified (11ms)
-GET /_astro/index.CHDuK0g_.js 304 Not Modified (6ms)
-GET /_astro/chevron-right.CH8aeMOa.js 304 Not Modified (5ms)
-GET /_astro/index.6E5chsY6.js 304 Not Modified (3ms)
-GET /_astro/media.B35PXuaA.js 304 Not Modified (3ms)
-GET /_astro/createLucideIcon.BFwZ1Tgj.js 304 Not Modified (4ms)
-GET /_astro/i18n.CXnbKuW1.js 304 Not Modified (5ms)
-GET /_astro/chevron-down.V-aADkzS.js 304 Not Modified (4ms)
-GET /_astro/config.Bc4U1eNv.js 304 Not Modified (5ms)
-GET /_astro/globe.Cw_uEakS.js 304 Not Modified (3ms)
-GET /_astro/share-2.CwPxwX7B.js 304 Not Modified (2ms)
-GET /_astro/x.BQB5MVXd.js 304 Not Modified (3ms)
-GET /@vite/client 404 Not Found (10ms)
-GET /@id/astro/runtime/client/dev-toolbar/entrypoint.js 404 Not Found (4ms)
-GET /src/site-package/kellogg/layouts/SiteLayout.astro 404 Not Found (3ms)
-GET /src/site-package/kellogg/styles/global.css 404 Not Found (3ms)
-GET /src/site-package/kellogg/pages/BlogIndexPage.astro 404 Not Found (3ms)
-GET /src/site-package/kellogg/styles/blog-prose.css 404 Not Found (3ms)
-GET /src/site-package/kellogg/pages/BlogDetailPage.astro 404 Not Found (4ms)
-GET /@id/H:/Kellogg/webApp-astro/src/site-package/kellogg/layouts/SiteLayout.astro 404 Not Found (5ms)
-GET /@id/astro:scripts/before-hydration.js 404 Not Found (11ms)
+11:23:08 [build] directory: H:\Kellogg\webApp-astro\dist\
+11:23:08 [build] adapter: @astrojs/cloudflare
+11:23:08 [build] Collecting build info...
+11:23:08 [build] ✓ Completed in 10.54s.
+11:23:08 [build] Building server entrypoints...
+Using secrets defined in .env
+Using secrets defined in .env.local
+11:23:15 [vite] ✓ built in 7.55s
+Using secrets defined in .env
+Using secrets defined in .env.local
+11:23:22 [vite] ✓ built in 6.32s
+11:23:26 [WARN] [vite] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+11:23:26 [vite] ✓ built in 4.68s
+Default inspector port 9229 not available, using 9230 instead
+
+Using secrets defined in dist\server\.prerender\.dev.vars
+Using secrets defined in dist\server\.dev.vars
+
+ prerendering static routes 
+Failed to get static paths from the Cloudflare prerender server (500: Internal Server Error).
+Error: Network connection lost.
+    at async Object.fetch (file:///H:/Kellogg/webApp-astro/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22)
+  Location:
+    H:\Kellogg\webApp-astro\node_modules\miniflare\dist\src\workers\core\entry.worker.js:4672:22
+  Stack trace:
+    at async Object.fetch (file:///H:/Kellogg/webApp-astro/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async BasicMinimalPluginContext.handler (file:///H:/Kellogg/webApp-astro/node_modules/astro/dist/core/build/static-build.js:132:11)
+    at async buildEnvironments (file:///H:/Kellogg/webApp-astro/node_modules/astro/dist/core/build/static-build.js:332:3)
+    at async AstroBuilder.build (file:///H:/Kellogg/webApp-astro/node_modules/astro/dist/core/build/index.js:158:5)
+    at async build (file:///H:/Kellogg/webApp-astro/node_modules/astro/dist/core/build/index.js:48:3)

@@ -7,7 +7,7 @@ import { CurrencyService } from '@/core/services/currencyService';
 import { getHydrationSafeRates } from '@/core/lib/hydrationState';
 import OptimizedImage from '@/core/components/OptimizedImage';
 import { t } from '../../utils/i18n';
-import type { CompanyInfo, HeaderContent, Language } from '../../types';
+import type { CompanyInfo, HeaderContent, Language } from '@core/types';
 
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';

@@ -1,7 +1,7 @@
 import { formatPrice } from "@core/lib/currency";
 import { toNewArrivalsViewProps } from "../../block-adapters";
 import type { NewArrivalsContent } from "../../block-schemas";
-import type { Language, Product } from "../../types";
+import type { Language, Product } from "@core/types";
 import NewArrivals from "../blocks/NewArrivals";
 
 export interface NewArrivalsContainerProps extends NewArrivalsContent {
