@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Phone, MapPin } from 'lucide-react';
 import { useInquiry } from '@core/hooks/useInquiry';
 import { api } from '@services/api';
-import InquiryForm from '../../components/base/InquiryForm';
+import InquiryForm from '../../components/base-2/InquiryForm';
 import { kelloggSiteConfig } from '../../config';
 import type { Language, CompanyInfo } from '../../types';
 import {

@@ -140,7 +140,6 @@ const knownBlockTypes = new Set([
   "productGrid",
   "featuredProducts",
   "newArrivals",
-  "inquiry",
   "brandValues",
   "statistics",
   "testimonials",
@@ -154,6 +153,8 @@ const knownBlockTypes = new Set([
   "imageFull",
   "partnerLogos",
   "videoSection",
+  // fixed
+  "inquiry",
 ]);
 ---
 
@@ -164,7 +165,6 @@ const knownBlockTypes = new Set([
 {block.type === "productGrid" && <ProductGridContainer {...content} {...data} lang={lang} client:load />}
 {block.type === "featuredProducts" && <FeaturedProducts {...content} {...data} lang={lang} />}
 {block.type === "newArrivals" && <NewArrivals {...content} {...data} lang={lang} />}
-{block.type === "inquiry" && <InquirySection lang={lang} client:visible />}
 {block.type === "brandValues" && <BrandValues {...brandValuesProps} />}
 {block.type === "statistics" && <Statistics {...statisticsProps} client:visible />}
 {block.type === "testimonials" && <Testimonials {...testimonialsProps} />}
@@ -178,6 +178,7 @@ const knownBlockTypes = new Set([
 {block.type === "imageFull" && <ImageFull {...imageFullProps} client:visible />}
 {block.type === "partnerLogos" && <PartnerLogos {...partnerLogosProps} />}
 {block.type === "videoSection" && <VideoSection {...videoSectionProps} />}
+{block.type === "inquiry" && <InquirySection lang={lang} client:visible />}
 
 {!knownBlockTypes.has(block.type) && import.meta.env.DEV && (
   <div class="py-10 border-b border-dashed border-gray-200">

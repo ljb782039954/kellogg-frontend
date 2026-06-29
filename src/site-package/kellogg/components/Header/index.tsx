@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Coins } from 'lucide-react';
 import { useStore } from '@nanostores/react';
-import { $currency, $rates } from '../../../../core/lib/currency';
-import { CurrencyService } from '../../../../core/services/currencyService';
-import { getHydrationSafeRates } from '../../../../core/lib/hydrationState';
-import OptimizedImage from '../../../../core/components/OptimizedImage';
+import { $currency, $rates } from '@/core/lib/currency';
+import { CurrencyService } from '@/core/services/currencyService';
+import { getHydrationSafeRates } from '@/core/lib/hydrationState';
+import OptimizedImage from '@/core/components/OptimizedImage';
 import { t } from '../../utils/i18n';
 import type { CompanyInfo, HeaderContent, Language } from '../../types';
 

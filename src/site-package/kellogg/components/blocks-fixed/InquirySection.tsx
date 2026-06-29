@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import InquiryForm, { type InquiryFormProps } from '../base/InquiryForm';
+import InquiryForm, { type InquiryFormProps } from '../base-2/InquiryForm';
 
 export interface InquirySectionProps extends InquiryFormProps {
   titleText: string;

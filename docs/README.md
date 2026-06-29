@@ -109,6 +109,8 @@ Kellogg 的 block 渲染和水合策略集中在：
 
 因为 Astro 的 `client:*` 指令需要编译期可见，带水合策略的 block 由站点包 Astro wrapper 显式渲染。
 
+- `{站点包}\components\blocks-fixed` 中的积木块是固定的积木块，在CMS页面中固定存在，所以单独管理。
+
 ## API 与数据
 
 - `src/core/lib/api.ts` 只提供通用 `createApiRequester(config)`，不包含 Kellogg endpoint。
@@ -132,11 +134,6 @@ Kellogg 的 block 渲染和水合策略集中在：
 
 当前保留的非 `pages/` `.astro` 是兼容债务，不继续扩大：
 
-- `src/site-package/kellogg/components/Footer.astro`
-- `src/site-package/kellogg/components/SocialLinks.astro`
-- `src/site-package/kellogg/components/TawkChat.astro`
-- `src/site-package/kellogg/components/product/ProductCustomFields.astro`
-- `src/site-package/kellogg/layouts/SiteLayout.astro`
 
 ## 常用命令
 
