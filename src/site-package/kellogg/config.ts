@@ -1,6 +1,5 @@
 import type { SiteConfig } from "@core/types";
 import { createKelloggApiClient } from "./utils/api";
-import type { BlogSummary } from "@core/types";
 
 export const kelloggSiteConfig = {
   name: "kellogg",
@@ -68,23 +67,11 @@ export const kelloggSiteConfig = {
   },
   pages: {
     cms: () => import("./pages/CmsPage.astro"),
-    products: () => import("./pages/ProductsPage.astro"),
+    products: () => import("./pages/CmsPage.astro"),
     inquiry: () => import("./pages/InquiryPage.astro"),
     customerReviews: () => import("./pages/CustomerReviewsPage.astro"),
     blogIndex: () => import("./pages/BlogIndexPage.astro"),
     blogDetail: () => import("./pages/BlogDetailPage.astro"),
     productDetail: () => import("./pages/ProductDetailPage.astro"),
-    getBlogStaticPaths: async (api: any) => {
-      try {
-        const resp = await api.getBlogs({ pageSize: 1000, sort: "newest" });
-        return (resp.data || []).map((blog: BlogSummary) => ({
-          params: { slug: blog.slug },
-          props: { blogSlug: blog.slug },
-        }));
-      } catch (error) {
-        console.error("[Blog Slug] getStaticPaths failed:", error);
-        return [];
-      }
-    },
   },
 } satisfies SiteConfig;

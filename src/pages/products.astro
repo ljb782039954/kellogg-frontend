@@ -1,9 +1,11 @@
 ---
+export const prerender = false;
+
 import { currentSite, loadSitePage } from "@site-package";
 
-const ProductsPage = await loadSitePage(currentSite.pages?.products);
+const CmsPage = await loadSitePage(currentSite.pages?.products);
 
-if (!ProductsPage) return Astro.redirect("/404");
+if (!CmsPage) return Astro.redirect("/404");
 ---
 
-<ProductsPage />
+<CmsPage pageId="products" />

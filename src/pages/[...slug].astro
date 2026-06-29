@@ -1,29 +1,18 @@
 ---
-export const prerender = true;
+export const prerender = false;
 
 import { SiteService } from "@services/siteService";
 import { currentSite, loadSitePage } from "@site-package";
 
-export async function getStaticPaths() {
-  // 在构建时获取所有站点数据
-  const { pages } = await SiteService.getSiteData(); 
-  
-  return pages
-    .filter(page => page.id !== 'products' && page.type !== 'fixed-layout') // 排除商品页以及所有固定布局系统页面（如博客、询盘、客户案例，已由各自的物理页面承载）
-    .map(page => {
-      // 处理路径，去掉前缀斜杠并处理空路径（首页）
-      const slug = page.path === '/' ? undefined : page.path.replace(/^\//, '');
-      return {
-        params: { slug },
-        props: { pageId: page.id } // 传给页面，避免重复查找
-      };
-    });
-}
-
-const { pageId } = Astro.props;
 const CmsPage = await loadSitePage(currentSite.pages?.cms);
+const slug = Array.isArray(Astro.params.slug)
+  ? Astro.params.slug.join("/")
+  : Astro.params.slug;
+const requestPath = slug ? `/${slug}` : "/";
+const { pages } = await SiteService.getSiteData(Astro);
+const page = pages.find((item) => item.path === requestPath && item.id !== "products" && item.type !== "fixed-layout");
 
-if (!CmsPage) return Astro.redirect("/404");
+if (!CmsPage || !page) return Astro.redirect("/404");
 ---
 
-<CmsPage pageId={pageId} />
+<CmsPage pageId={page.id} />
