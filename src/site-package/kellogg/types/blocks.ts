@@ -20,7 +20,7 @@ import type {
   TestimonialsContent,
   TextSectionContent,
   VideoSectionContent,
-} from "../block-schemas";
+} from "../types/block-schemas";
 
 export interface BlockContentMap {
   carousel: CarouselContent;

@@ -1,6 +1,6 @@
 import { formatPrice } from "@core/lib/currency";
 import { toNewArrivalsViewProps } from "../../block-adapters";
-import type { NewArrivalsContent } from "../../block-schemas";
+import type { NewArrivalsContent } from "../../types/block-schemas";
 import type { Language, Product } from "@core/types";
 import NewArrivals from "../blocks/NewArrivals";
 

@@ -1,6 +1,6 @@
 import { formatPrice } from "@core/lib/currency";
 import { toFeaturedProductsViewProps } from "../../block-adapters";
-import type { FeaturedProductsContent } from "../../block-schemas";
+import type { FeaturedProductsContent } from "../../types/block-schemas";
 import type { Language, Product } from "@core/types";
 import FeaturedProducts from "../blocks/FeaturedProducts";
 

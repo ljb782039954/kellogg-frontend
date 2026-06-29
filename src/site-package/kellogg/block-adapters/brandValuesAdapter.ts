@@ -1,5 +1,5 @@
 import type { Language } from "@core/types";
-import type { BrandValuesContent } from "../block-schemas";
+import type { BrandValuesContent } from "../types/block-schemas";
 import type { BrandValuesProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

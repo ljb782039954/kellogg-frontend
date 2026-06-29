@@ -1,5 +1,5 @@
 import type { Language } from "@core/types";
-import type { FeatureListContent } from "../block-schemas";
+import type { FeatureListContent } from "../types/block-schemas";
 import type { FeatureListProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

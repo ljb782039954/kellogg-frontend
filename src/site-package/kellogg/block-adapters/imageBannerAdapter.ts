@@ -1,5 +1,5 @@
 import type { Language } from "@core/types";
-import type { ImageBannerContent } from "../block-schemas";
+import type { ImageBannerContent } from "../types/block-schemas";
 import type { ImageBannerProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

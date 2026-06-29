@@ -1,5 +1,5 @@
 import type { Language } from "@core/types";
-import type { VideoSectionContent } from "../block-schemas";
+import type { VideoSectionContent } from "../types/block-schemas";
 import type { VideoSectionProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 import { toProductVideoSource } from "./productMediaAdapter";

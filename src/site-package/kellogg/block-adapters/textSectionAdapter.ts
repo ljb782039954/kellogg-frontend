@@ -1,5 +1,5 @@
 import type { Language } from "@core/types";
-import type { TextSectionContent } from "../block-schemas";
+import type { TextSectionContent } from "../types/block-schemas";
 import type { TextSectionProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

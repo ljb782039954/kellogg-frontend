@@ -1,5 +1,5 @@
 import type { Language } from "@core/types";
-import type { GalleryContent } from "../block-schemas";
+import type { GalleryContent } from "../types/block-schemas";
 import type { GalleryProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

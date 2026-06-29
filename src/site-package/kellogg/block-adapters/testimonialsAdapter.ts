@@ -1,5 +1,5 @@
 import type { Language } from "@core/types";
-import type { TestimonialsContent } from "../block-schemas";
+import type { TestimonialsContent } from "../types/block-schemas";
 import type { TestimonialsProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

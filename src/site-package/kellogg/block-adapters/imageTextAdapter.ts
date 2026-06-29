@@ -1,5 +1,5 @@
 import type { Language } from "@core/types";
-import type { ImageTextContent } from "../block-schemas";
+import type { ImageTextContent } from "../types/block-schemas";
 import type { ImageTextProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

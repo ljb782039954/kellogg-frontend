@@ -1,5 +1,5 @@
 import type { Language } from "@core/types";
-import type { CountdownContent } from "../block-schemas";
+import type { CountdownContent } from "../types/block-schemas";
 import type { CountdownProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

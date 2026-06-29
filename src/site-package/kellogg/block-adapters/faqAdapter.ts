@@ -1,5 +1,5 @@
 import type { Language } from "@core/types";
-import type { FAQContent } from "../block-schemas";
+import type { FAQContent } from "../types/block-schemas";
 import type { FAQProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

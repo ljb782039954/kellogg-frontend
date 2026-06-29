@@ -1,5 +1,5 @@
 import type { Language } from "@core/types";
-import type { CarouselContent } from "../block-schemas";
+import type { CarouselContent } from "../types/block-schemas";
 import type { CarouselProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

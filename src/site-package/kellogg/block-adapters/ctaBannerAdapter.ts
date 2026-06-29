@@ -1,5 +1,5 @@
 import type { Language } from "@core/types";
-import type { CtaBannerContent } from "../block-schemas";
+import type { CtaBannerContent } from "../types/block-schemas";
 import type { CtaBannerProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 
