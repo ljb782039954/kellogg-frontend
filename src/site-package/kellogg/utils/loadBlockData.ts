@@ -1,10 +1,10 @@
 import type { RequestMemo } from "@core/lib/requestMemo";
+import type { SiteApiClient } from "@core/services/apiClient";
 import type { PageBlock } from "@core/types";
-import type { KelloggApiClient } from "./api";
 
 interface LoadBlockDataOptions {
   block: PageBlock;
-  api: KelloggApiClient;
+  api: SiteApiClient;
   requestMemo: RequestMemo;
 }
 

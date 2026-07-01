@@ -1,20 +1,26 @@
 import type { SiteConfig } from "@core/types";
-import { createKelloggApiClient } from "./utils/api";
+import { createDefaultSiteRuntimeConfig } from "@core/config/siteRuntime";
+
+const runtimeConfig = createDefaultSiteRuntimeConfig({
+  fallbackSiteUrl: "https://kelloggfashion.com",
+  api: {
+    assetHostnames: ["kelloggfashion.com", "kellogg-fashion.com"],
+  },
+  security: {
+    csp: {
+      scriptSrc: ["https://tawk.to", "https://*.tawk.to"],
+      frameSrc: ["https://tawk.to", "https://*.tawk.to"],
+    },
+  },
+});
 
 export const kelloggSiteConfig = {
+  ...runtimeConfig,
   name: "kellogg",
   displayName: "Kellogg Fashion",
   languages: ["zh", "en"],
   defaultLanguage: "en",
   fallbackLanguages: ["en", "zh"],
-  siteUrl: import.meta.env.PUBLIC_SITE_URL || "https://kelloggfashion.com",
-  api: {
-    baseUrl: import.meta.env.PUBLIC_API_BASE_URL,
-    localBaseUrl: import.meta.env.PUBLIC_API_BASE_URL_LOCAL,
-    assetsBaseUrl: import.meta.env.PUBLIC_API_ASSETS,
-    assetHostnames: ["kelloggfashion.com", "kellogg-fashion.com"],
-  },
-  createApiClient: createKelloggApiClient,
   currency: {
     defaultCurrency: "USD",
   },
@@ -49,21 +55,6 @@ export const kelloggSiteConfig = {
         hreflang: "en-AU",
       },
     ],
-  },
-  security: {
-    csp: {
-      scriptSrc: ["https://challenges.cloudflare.com", "https://*.tawk.to"],
-      frameSrc: [
-        "https://challenges.cloudflare.com",
-        "https://www.youtube-nocookie.com",
-        "https://player.vimeo.com",
-        "https://www.facebook.com",
-        "https://www.tiktok.com",
-        "https://*.tawk.to",
-      ],
-      connectSrc: ["https:", "wss:"],
-    },
-    videoProviders: ["youtube", "vimeo", "facebook", "tiktok", "direct"],
   },
   pages: {
     cms: () => import("./pages/CmsPage.astro"),

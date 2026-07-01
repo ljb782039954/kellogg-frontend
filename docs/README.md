@@ -8,6 +8,7 @@ Astro 6 + React 19 + TypeScript，部署目标为 Cloudflare Workers。项目已
 src/
 ├─ core/                  跨站点通用能力，不依赖任何 site-package
 │  ├─ components/          通用组件，如 DynamicRenderer、OptimizedImage、RichText、TurnstileWidget
+│  ├─ config/              默认站点运行时配置，如 siteUrl/API/security 默认值与合并工具
 │  ├─ hooks/               通用 React hooks
 │  ├─ layouts/             CoreLayout，负责 HTML/head/body 与通用 SEO 骨架
 │  ├─ lib/                 API requester、媒体 URL、CSP、i18n、sitemap、请求去重等
@@ -48,17 +49,24 @@ core -> 不允许引用 site-package
 
 当前站点由构建时环境变量 `PUBLIC_SITE_NAME` 决定，默认值为 `kellogg`。新增站点时，增加 `src/site-package/{siteName}/config.ts`，再在 `src/site-package/index.ts` 的 `siteConfigs` 中注册。
 
-站点配置集中管理：
+core 提供默认运行时配置：
+
+- `siteUrl` 默认从 `PUBLIC_SITE_URL` 读取
+- API base、local API base、assets base 默认从 `PUBLIC_API_*` 读取
+- 默认 API client factory
+- 默认 CSP 补充域名，如 Turnstile 与通用视频 provider
+- 默认视频 provider 白名单
+
+站点配置只声明站点身份和差异：
 
 - 站点名、默认语言、fallback 语言
-- `siteUrl`
-- API base、local API base、assets base、asset hostnames
-- API client factory
+- `siteUrl` fallback 值
+- asset hostnames
 - 默认货币
 - Turnstile site key 与测试 key 开关
 - Tawk script URL
 - 默认 SEO 与 alternate links
-- CSP 补充域名与视频 provider 白名单
+- CSP 额外第三方域名
 - 页面能力注册
 
 页面能力使用 lazy import 注册，避免构建期循环依赖：
@@ -114,14 +122,16 @@ Kellogg 的 block 渲染和水合策略集中在：
 ## API 与数据
 
 - `src/core/lib/api.ts` 只提供通用 `createApiRequester(config)`，不包含 Kellogg endpoint。
-- Kellogg endpoint 集中在 `src/site-package/kellogg/utils/api.ts`。
+- 通用站点 API client 集中在 `src/core/services/apiClient.ts`，基于 `src/core/lib/api.ts` 的 requester 提供商品、分类、配置、博客、评价和询盘等统一方法。
+- `src/core/config/siteRuntime.ts` 提供 `createDefaultSiteRuntimeConfig()`，统一读取 `PUBLIC_SITE_URL` 与 `PUBLIC_API_*` 环境变量，并提供默认 `createApiClient`。
+- 站点包通过 `config.ts` 调用默认运行时配置；如果未来某个站点 API 协议不同，可以在站点配置中替换为专属 client factory。
 - `src/services/api.ts` 根据 `currentSite.api` 创建运行时 API client，并配置媒体 URL 解析。
 - `SiteService.getSiteData(Astro)` 继续使用请求内缓存，优先保存到 `Astro.locals`，避免同一次渲染重复请求。
 - 不使用模块级 API 响应缓存，避免 Cloudflare isolate 跨请求共享旧数据。
 
 ## 安全边界
 
-- CSP 字符串由 `src/core/lib/csp.ts` 生成，站点配置只补充第三方域名。
+- CSP 字符串由 `src/core/lib/csp.ts` 生成，默认 security 配置由 `src/core/config/siteRuntime.ts` 提供，站点配置只补充第三方域名。
 - `middleware.ts` 使用 `buildContentSecurityPolicy(currentSite)` 设置安全响应头。
 - CMS Markdown/HTML 必须经过 `sanitizeCmsHtml()`。
 - 视频 URL 通过 core 视频解析能力处理，允许的 provider 由站点配置决定。

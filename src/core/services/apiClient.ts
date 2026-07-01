@@ -1,26 +1,17 @@
 import {
   createApiRequester,
   type ApiClientConfig,
-} from "@core/lib/api";
+} from "../lib/api";
 import type {
   Blog,
   BlogSummary,
   Category,
   CustomPage,
+  PaginatedResponse,
   Product,
-} from "@core/types";
+} from "../types";
 
-interface PaginatedResponse<T> {
-  data: T[];
-  pagination: {
-    page: number;
-    pageSize: number;
-    total: number;
-    totalPages: number;
-  };
-}
-
-interface ProductsQuery {
+export interface ProductsQuery {
   page?: number;
   pageSize?: number;
   category?: string;
@@ -29,7 +20,7 @@ interface ProductsQuery {
   search?: string;
 }
 
-interface BlogsQuery {
+export interface BlogsQuery {
   page?: number;
   pageSize?: number;
   category?: string;
@@ -37,7 +28,7 @@ interface BlogsQuery {
   sort?: string;
 }
 
-interface SubmitInquiryInput {
+export interface SubmitInquiryInput {
   name: string;
   email: string;
   phone: string;
@@ -51,15 +42,17 @@ interface SubmitInquiryInput {
 
 function buildQuery(params?: object): string {
   const query = new URLSearchParams();
+
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined) query.set(key, String(value));
     });
   }
+
   return query.toString();
 }
 
-export function createKelloggApiClient(config: ApiClientConfig) {
+export function createSiteApiClient(config: ApiClientConfig) {
   const requester = createApiRequester(config);
   const { request } = requester;
 
@@ -106,4 +99,4 @@ export function createKelloggApiClient(config: ApiClientConfig) {
   };
 }
 
-export type KelloggApiClient = ReturnType<typeof createKelloggApiClient>;
+export type SiteApiClient = ReturnType<typeof createSiteApiClient>;

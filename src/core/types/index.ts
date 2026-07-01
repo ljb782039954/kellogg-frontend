@@ -6,6 +6,7 @@ export * from "./baseEditor";
 import type { CompanyInfo, HeaderContent, FooterContent } from "./baseEditor";
 import type { CustomPage } from "./blocks";
 import type { Language } from "./common";
+import type { SiteApiClient } from "../services/apiClient";
 
 // ============================================
 // 核心聚合与 API 响应类型
@@ -28,7 +29,7 @@ export interface SiteConfig extends SiteLanguageConfig {
     assetsBaseUrl?: string;
     assetHostnames?: readonly string[];
   };
-  createApiClient?: (config: SiteConfig["api"]) => any;
+  createApiClient?: (config: SiteConfig["api"]) => SiteApiClient;
   currency?: {
     defaultCurrency?: string;
   };
