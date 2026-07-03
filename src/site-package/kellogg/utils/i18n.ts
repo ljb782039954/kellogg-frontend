@@ -1,5 +1,5 @@
-import { t as coreTranslate } from "@core-webApp/lib/common";
-import { createTranslate as createCoreTranslate } from "@core-webApp/lib/i18n";
+import { t as coreTranslate } from "@/cms/lib/common";
+import { createTranslate as createCoreTranslate } from "@/cms/lib/i18n";
 import type { Language, Translation } from "@/cms/types";
 import { kelloggSiteConfig } from "../config";
 

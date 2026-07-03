@@ -1,4 +1,4 @@
-import type { RequestMemo } from "@core-webApp/lib/requestMemo";
+import type { RequestMemo } from "@/cms/lib/requestMemo";
 import type { SiteApiClient } from "@core-webApp/services/apiClient";
 import type { PageBlock } from "@/cms/types";
 

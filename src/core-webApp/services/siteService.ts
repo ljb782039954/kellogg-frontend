@@ -11,7 +11,7 @@ import type {
   CustomPage,
 } from "@/cms/types";
 
-import type { ExchangeRates } from "@core-webApp/lib/currency";
+import type { ExchangeRates } from "@/cms/lib/currency";
 
 export type SiteData = SiteContent & { exchangeRates: ExchangeRates | null };
 

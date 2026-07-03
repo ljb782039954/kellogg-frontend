@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@services/api";
 import { useStore } from "@nanostores/react";
-import { $currency, $rates, formatPrice } from "@core-webApp/lib/currency";
+import { $currency, $rates, formatPrice } from "@/cms/lib/currency";
 import {
   toProductGridInitialCategory,
   toProductGridQuery,

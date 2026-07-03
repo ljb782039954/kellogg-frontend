@@ -1,4 +1,4 @@
-﻿import { $currency, $rates, setGlobalCurrency, getCurrencyConfig } from '@core-webApp/lib/currency';
+﻿import { $currency, $rates, setGlobalCurrency, getCurrencyConfig } from '@/cms/lib/currency';
 
 export class CurrencyService {
   /**

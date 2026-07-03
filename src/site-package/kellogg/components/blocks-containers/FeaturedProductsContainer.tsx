@@ -1,4 +1,4 @@
-import { formatPrice } from "@core-webApp/lib/currency";
+import { formatPrice } from "@/cms/lib/currency";
 import { toFeaturedProductsViewProps } from "../../block-adapters";
 import type { FeaturedProductsContent } from "../../block-adapters";
 import type { Language, Product } from "@/cms/types";

@@ -1,7 +1,7 @@
 import {
   createApiRequester,
   type ApiClientConfig,
-} from "../lib/api";
+} from "@/cms/lib/api";
 import type {
   PaginatedResponse,
 } from "../types";

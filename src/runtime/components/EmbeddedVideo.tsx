@@ -1,4 +1,4 @@
-import type { SafeVideoSource } from "@/core-webApp/lib/video";
+import type { SafeVideoSource } from "@/cms/lib/video";
 import { cn } from "@/lib/utils";
 
 export type EmbeddedVideoAspect = "auto" | "landscape" | "portrait" | "square";
