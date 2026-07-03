@@ -1,5 +1,20 @@
 import type { Language } from "@core/types";
-import type { CtaBannerContent } from "../types/block-schemas";
+
+// 迁移类型
+import type { NavLink, Translation } from "@core/types";
+export interface CtaBannerValues {
+  primaryButton?: NavLink;
+  secondaryButton?: NavLink;
+  backgroundImage?: string;
+  backgroundColor?: string;
+  alignment?: "left" | "center" | "right";
+}
+
+export interface CtaBannerContent {
+  title?: Translation;
+  subtitle?: Translation;
+  values?: CtaBannerValues;
+}
 import type { CtaBannerProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

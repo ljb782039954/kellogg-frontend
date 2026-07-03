@@ -1,5 +1,15 @@
 import type { Language } from "@core/types";
-import type { ImageFullContent } from "../types/block-schemas";
+
+// 迁移类型
+import type { Translation } from "@core/types";
+export interface ImageFullContent {
+  image?: string;
+  description?: Translation;
+  alt?: Translation;
+  width?: "small" | "medium" | "large" | "full";
+  height?: "small" | "medium" | "large" | "full";
+  overlay?: boolean;
+}
 import type { ImageFullProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

@@ -1,7 +1,23 @@
 import type { Language } from "@core/types";
-import type { BrandValuesContent } from "../types/block-schemas";
 import type { BrandValuesProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
+
+// 迁移类型
+import type { Translation } from "@core/types";
+
+export interface BrandValueContent {
+  id: number;
+  icon: string;
+  title: Translation;
+  description: Translation;
+}
+
+export interface BrandValuesContent {
+  title?: Translation;
+  subtitle?: Translation;
+  items?: BrandValueContent[];
+}
+
 
 export function toBrandValuesViewProps(
   content: BrandValuesContent,
@@ -20,3 +36,4 @@ export function toBrandValuesViewProps(
     })),
   };
 }
+

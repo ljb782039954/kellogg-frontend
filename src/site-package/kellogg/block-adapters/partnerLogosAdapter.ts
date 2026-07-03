@@ -1,5 +1,20 @@
 import type { Language } from "@core/types";
-import type { PartnerLogosContent } from "../types/block-schemas";
+
+// 迁移类型
+import type { Translation } from "@core/types";
+export interface PartnerLogoContent {
+  id?: string;
+  logo: string;
+  name: string;
+  color?: string;
+  link?: string;
+}
+
+export interface PartnerLogosContent {
+  title?: Translation;
+  subtitle?: Translation;
+  items?: PartnerLogoContent[];
+}
 import type { PartnerLogosProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

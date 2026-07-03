@@ -1,5 +1,20 @@
 import type { Language } from "@core/types";
-import type { VideoSectionContent } from "../types/block-schemas";
+
+// 迁移类型
+import type { Translation } from "@core/types";
+export interface VideoSectionValues {
+  videoUrl?: string;
+  posterImage?: string;
+  autoPlay?: boolean;
+  loop?: boolean;
+}
+
+export interface VideoSectionContent {
+  title?: Translation;
+  subtitle?: Translation;
+  videoUrl?: string;
+  values?: VideoSectionValues;
+}
 import type { VideoSectionProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 import { toProductVideoSource } from "./productMediaAdapter";

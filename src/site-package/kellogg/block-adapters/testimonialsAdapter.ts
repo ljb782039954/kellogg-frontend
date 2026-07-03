@@ -1,5 +1,20 @@
 import type { Language } from "@core/types";
-import type { TestimonialsContent } from "../types/block-schemas";
+
+// 迁移类型
+import type { Translation } from "@core/types";
+export interface TestimonialContent {
+  id: number;
+  name: Translation;
+  role?: Translation;
+  content: Translation;
+  avatar?: string;
+}
+
+export interface TestimonialsContent {
+  title?: Translation;
+  subtitle?: Translation;
+  items?: TestimonialContent[];
+}
 import type { TestimonialsProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

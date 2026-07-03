@@ -1,5 +1,17 @@
 import type { Language } from "@core/types";
-import type { GalleryContent } from "../types/block-schemas";
+
+// 迁移类型
+import type { Translation } from "@core/types";
+export interface GalleryItemContent {
+  src: string;
+  caption?: Translation;
+}
+
+export interface GalleryContent {
+  title?: Translation;
+  subtitle?: Translation;
+  items?: GalleryItemContent[];
+}
 import type { GalleryProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

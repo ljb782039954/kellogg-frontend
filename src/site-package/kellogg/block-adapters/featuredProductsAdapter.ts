@@ -1,5 +1,12 @@
 import type { Language } from "@core/types";
-import type { FeaturedProductsContent } from "../types/block-schemas";
+
+// 迁移类型
+import type { Translation } from "@core/types";
+export interface FeaturedProductsContent {
+  title?: Translation;
+  subtitle?: Translation;
+  maxItems?: number;
+}
 import type { FeaturedProductsProps } from "../components/blocks";
 import type { Product } from "@core/types";
 import { createTranslate } from "../utils/i18n";

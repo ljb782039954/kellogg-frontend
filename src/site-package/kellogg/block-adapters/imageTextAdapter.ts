@@ -1,5 +1,15 @@
 import type { Language } from "@core/types";
-import type { ImageTextContent } from "../types/block-schemas";
+
+// 迁移类型
+import type { Translation } from "@core/types";
+export interface ImageTextContent {
+  title?: Translation;
+  content?: Translation;
+  image?: string;
+  imagePosition?: "left" | "right";
+  buttonText?: Translation;
+  buttonLink?: string;
+}
 import type { ImageTextProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

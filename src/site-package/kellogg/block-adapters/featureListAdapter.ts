@@ -1,5 +1,18 @@
 import type { Language } from "@core/types";
-import type { FeatureListContent } from "../types/block-schemas";
+
+// 迁移类型
+import type { Translation } from "@core/types";
+export interface FeatureListItemContent {
+  icon: string;
+  title: Translation;
+  description: Translation;
+}
+
+export interface FeatureListContent {
+  title?: Translation;
+  subtitle?: Translation;
+  items?: FeatureListItemContent[];
+}
 import type { FeatureListProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

@@ -1,5 +1,18 @@
 import type { Language } from "@core/types";
-import type { FAQContent } from "../types/block-schemas";
+
+// 迁移类型
+import type { Translation } from "@core/types";
+export interface FAQItemContent {
+  id: number;
+  question: Translation;
+  answer: Translation;
+}
+
+export interface FAQContent {
+  title?: Translation;
+  subtitle?: Translation;
+  items?: FAQItemContent[];
+}
 import type { FAQProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

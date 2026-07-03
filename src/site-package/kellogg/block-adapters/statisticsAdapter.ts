@@ -1,5 +1,18 @@
 import type { Language } from "@core/types";
-import type { StatisticsContent } from "../types/block-schemas";
+
+// 迁移类型
+import type { Translation } from "@core/types";
+export interface StatisticContent {
+  id: number;
+  value: string;
+  label: Translation;
+}
+
+export interface StatisticsContent {
+  title?: Translation;
+  subtitle?: Translation;
+  items?: StatisticContent[];
+}
 import type { StatisticsProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

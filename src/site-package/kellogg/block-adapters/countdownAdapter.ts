@@ -1,5 +1,17 @@
 import type { Language } from "@core/types";
-import type { CountdownContent } from "../types/block-schemas";
+
+// 迁移类型
+import type { Translation } from "@core/types";
+export interface CountdownValuesContent {
+  endTime?: string;
+  backgroundImage?: string;
+}
+
+export interface CountdownContent {
+  title?: Translation;
+  subtitle?: Translation;
+  values?: CountdownValuesContent;
+}
 import type { CountdownProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

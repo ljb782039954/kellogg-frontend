@@ -1,5 +1,13 @@
 import type { Language } from "@core/types";
-import type { ImageBannerTagContent } from "../types/block-schemas";
+
+// 迁移类型
+import type { Translation } from "@core/types";
+export interface ImageBannerTagContent {
+  image?: string;
+  tag?: Translation;
+  title?: Translation;
+  subtitle?: Translation;
+}
 import type { ImageBannerTagProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 

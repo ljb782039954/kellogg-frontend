@@ -1,5 +1,10 @@
 import type { Language } from "@core/types";
-import type { CategoriesContent } from "../types/block-schemas";
+
+// 迁移类型
+export interface CategoriesContent {
+  showAll?: boolean;
+  maxItems?: number;
+}
 import type { CategoriesProps } from "../components/blocks";
 import type { Category } from "@core/types";
 import { createTranslate } from "../utils/i18n";

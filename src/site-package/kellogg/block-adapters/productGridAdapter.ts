@@ -1,4 +1,11 @@
 import type { Language } from "@core/types";
+
+// 迁移类型
+export interface ProductGridContent {
+  itemsPerPage?: number;
+  category?: string;
+}
+
 import type { Category, Product, SortOption } from "@core/types";
 import { toProductCardStaticProps } from "./productCardAdapter";
 import type {

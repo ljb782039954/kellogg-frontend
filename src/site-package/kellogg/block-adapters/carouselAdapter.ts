@@ -1,5 +1,21 @@
 import type { Language } from "@core/types";
-import type { CarouselContent } from "../types/block-schemas";
+
+// 迁移类型
+import type { NavLink, Translation } from "@core/types";
+export interface CarouselItemContent {
+  id: number;
+  image: string;
+  title: Translation;
+  subtitle?: Translation;
+  cta?: Translation;
+  link: NavLink;
+}
+
+export interface CarouselContent {
+  autoPlay?: boolean;
+  interval?: number;
+  items?: CarouselItemContent[];
+}
 import type { CarouselProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 
