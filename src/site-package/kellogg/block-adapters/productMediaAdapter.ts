@@ -1,4 +1,4 @@
-import { getSafeVideoSource } from "@core-webApp/lib/video";
+import { getSafeVideoSource } from "@/cms/lib/video";
 import type { ProductVideoSource } from "../components/base";
 import { kelloggSiteConfig } from "../config";
 

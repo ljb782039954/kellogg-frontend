@@ -1,5 +1,5 @@
-import type { BulkPrice, Language, Product } from "@core-webApp/types";
-import { toProductCardData } from "@core-webApp/lib/productCard";
+import type { BulkPrice, Language, Product } from "@/cms/types";
+import { toProductCardData } from "@/core-webApp/lib/productCard";
 import type { ProductCardStaticProps } from "../components/base";
 
 interface ProductCardAdapterOptions {

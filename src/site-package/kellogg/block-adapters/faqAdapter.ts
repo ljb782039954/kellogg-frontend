@@ -1,7 +1,7 @@
-import type { Language } from "@core-webApp/types";
+import type { Language } from "@/cms/types";
 
 // 迁移类型
-import type { Translation } from "@core-webApp/types";
+import type { Translation } from "@/cms/types";
 export interface FAQItemContent {
   id: number;
   question: Translation;

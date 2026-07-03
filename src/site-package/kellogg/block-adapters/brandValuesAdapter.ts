@@ -1,9 +1,9 @@
-import type { Language } from "@core-webApp/types";
+import type { Language } from "@/cms/types";
 import type { BrandValuesProps } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
 
 // 迁移类型
-import type { Translation } from "@core-webApp/types";
+import type { Translation } from "@/cms/types";
 
 export interface BrandValueContent {
   id: number;

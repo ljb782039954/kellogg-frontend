@@ -1,14 +1,14 @@
-import type { Language } from "@core-webApp/types";
+import type { Language } from "@/cms/types";
 
 // 迁移类型
-import type { Translation } from "@core-webApp/types";
+import type { Translation } from "@/cms/types";
 export interface NewArrivalsContent {
   title?: Translation;
   subtitle?: Translation;
   maxItems?: number;
 }
 import type { NewArrivalsProps } from "../components/blocks";
-import type { Product } from "@core-webApp/types";
+import type { Product } from "@/cms/types";
 import { createTranslate } from "../utils/i18n";
 import { toProductCardStaticProps } from "./productCardAdapter";
 
