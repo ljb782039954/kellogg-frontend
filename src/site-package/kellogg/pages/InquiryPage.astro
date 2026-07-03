@@ -3,7 +3,7 @@ import Layout from "../layouts/SiteLayout.astro";
 import InquiryPageView from "./inquiry/InquiryPageView";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
-import type { CompanyInfo } from "@core-webApp/types";
+import type { CompanyInfo } from "@/cms/types";
 
 const siteData = await SiteService.getSiteData(Astro);
 const { lang } = siteData;

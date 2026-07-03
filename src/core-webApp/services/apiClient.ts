@@ -3,13 +3,16 @@ import {
   type ApiClientConfig,
 } from "../lib/api";
 import type {
+  PaginatedResponse,
+} from "../types";
+
+import type {
   Blog,
   BlogSummary,
   Category,
   CustomPage,
-  PaginatedResponse,
   Product,
-} from "../types";
+} from "@/cms/types";
 
 export interface ProductsQuery {
   page?: number;

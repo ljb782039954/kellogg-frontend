@@ -1,6 +1,6 @@
 import type { ImgHTMLAttributes } from 'react';
-import { getOptimizedImageUrl } from '../lib/media';
-import { cn } from '../lib/utils';
+import { getOptimizedImageUrl } from '@/core-webApp/lib/media';
+import { cn } from '@/lib/utils';
 
 interface OptimizedImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> {
   src: string | null | undefined;

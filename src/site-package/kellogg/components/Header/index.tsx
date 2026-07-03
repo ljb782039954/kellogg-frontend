@@ -5,9 +5,9 @@ import { useStore } from '@nanostores/react';
 import { $currency, $rates } from '@/core-webApp/lib/currency';
 import { CurrencyService } from '@/core-webApp/services/currencyService';
 import { getHydrationSafeRates } from '@/core-webApp/lib/hydrationState';
-import OptimizedImage from '@/core-webApp/components/OptimizedImage';
+import OptimizedImage from '@/runtime/components/OptimizedImage';
 import { t } from '../../utils/i18n';
-import type { CompanyInfo, HeaderContent, Language } from '@core-webApp/types';
+import type { CompanyInfo, HeaderContent, Language } from '@/cms/types';
 
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';

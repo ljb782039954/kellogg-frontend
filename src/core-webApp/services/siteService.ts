@@ -1,12 +1,16 @@
 import type {
   SiteContent,
-  CustomPage,
+  SiteLanguageConfig,
+} from "@core-webApp/types";
+
+import type {
+  Language,
   CompanyInfo,
   FooterContent,
   HeaderContent,
-  Language,
-  SiteLanguageConfig,
-} from "@core-webApp/types";
+  CustomPage,
+} from "@/cms/types";
+
 import type { ExchangeRates } from "@core-webApp/lib/currency";
 
 export type SiteData = SiteContent & { exchangeRates: ExchangeRates | null };

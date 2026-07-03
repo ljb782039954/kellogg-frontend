@@ -1,6 +1,6 @@
 import type { RequestMemo } from "@core-webApp/lib/requestMemo";
 import type { SiteApiClient } from "@core-webApp/services/apiClient";
-import type { PageBlock } from "@core-webApp/types";
+import type { PageBlock } from "@/cms/types";
 
 interface LoadBlockDataOptions {
   block: PageBlock;

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { Language } from "../types";
+import type { Language } from "@/cms/types";
 
 interface TurnstileWidgetProps {
   onTokenChange: (token: string) => void;

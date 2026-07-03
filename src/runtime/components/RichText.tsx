@@ -1,5 +1,5 @@
 import { marked } from "marked";
-import { sanitizeCmsHtml } from "../lib/contentSecurity";
+import { sanitizeCmsHtml } from "@/core-webApp/lib/contentSecurity";
 
 interface RichTextProps {
   value?: string;

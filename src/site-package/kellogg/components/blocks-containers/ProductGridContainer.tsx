@@ -7,8 +7,8 @@ import {
   toProductGridQuery,
   toProductGridViewProps,
 } from "../../block-adapters";
-import type { ProductGridContent } from "../../types/block-schemas";
-import type { Category, Language, Product } from "@core-webApp/types";
+import type { ProductGridContent } from "../../block-adapters";
+import type { Category, Language, Product } from "@/cms/types";
 import { ProductGrid as ProductGridView, type ProductGridSortId } from "../blocks";
 
 export interface ProductGridContainerProps extends ProductGridContent {

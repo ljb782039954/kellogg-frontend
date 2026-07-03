@@ -4,7 +4,7 @@ import { useInquiry } from '@core-webApp/hooks/useInquiry';
 import { api } from '@services/api';
 import InquiryForm from '../../components/base-2/InquiryForm';
 import { kelloggSiteConfig } from '../../config';
-import type { Language, CompanyInfo } from '@core-webApp/types';
+import type { Language, CompanyInfo } from '@/cms/types';
 import {
   getKelloggInquiryFormText,
   getKelloggInquiryTranslations,

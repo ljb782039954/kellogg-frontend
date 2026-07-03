@@ -1,4 +1,4 @@
-import type { Language } from "@core-webApp/types";
+import type { Language } from "@/cms/types";
 import { sanitizeCmsHtml } from "@core-webApp/lib/contentSecurity";
 import { getSafeVideoSource } from "@core-webApp/lib/video";
 import { kelloggSiteConfig } from "../../config";

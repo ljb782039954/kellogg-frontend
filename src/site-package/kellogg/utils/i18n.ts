@@ -1,6 +1,6 @@
 import { t as coreTranslate } from "@core-webApp/lib/common";
 import { createTranslate as createCoreTranslate } from "@core-webApp/lib/i18n";
-import type { Language, Translation } from "@core-webApp/types";
+import type { Language, Translation } from "@/cms/types";
 import { kelloggSiteConfig } from "../config";
 
 function getFallbackLanguages(): readonly Language[] {

@@ -1,4 +1,4 @@
-import type { CustomPage } from "@core-webApp/types";
+import type { CustomPage } from "@/cms/types";
 
 export interface SitemapUrl {
   loc: string;

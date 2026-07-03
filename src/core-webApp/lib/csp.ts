@@ -1,4 +1,4 @@
-import type { SiteConfig } from "@core-webApp/types";
+import type { SiteConfig } from "../types";
 
 type CspDirectives = Record<string, string[]>;
 

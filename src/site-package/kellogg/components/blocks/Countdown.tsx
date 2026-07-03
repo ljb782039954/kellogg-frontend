@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import OptimizedImage from '@core-webApp/components/OptimizedImage';
+import OptimizedImage from '@/runtime/components/OptimizedImage';
 
 export interface CountdownProps {
   titleText?: string;

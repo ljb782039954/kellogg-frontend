@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import OptimizedImage from '@core-webApp/components/OptimizedImage';
+import OptimizedImage from '@/runtime/components/OptimizedImage';
 
 export interface CarouselItemView {
   id: number;

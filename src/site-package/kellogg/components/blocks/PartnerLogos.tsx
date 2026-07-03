@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import OptimizedImage from "@core-webApp/components/OptimizedImage";
+import OptimizedImage from "@/runtime/components/OptimizedImage";
 
 export interface Partner {
   id?: string;

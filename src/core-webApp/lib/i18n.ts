@@ -1,4 +1,4 @@
-import type { Translation, Language } from "@core-webApp/types";
+import type { Translation, Language } from "@/cms/types";
 
 export function createTranslate(
   language: Language,

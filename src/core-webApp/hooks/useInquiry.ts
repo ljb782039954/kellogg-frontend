@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Language } from '@core-webApp/types';
+import type { Language } from '@/cms/types';
 
 export interface InquiryFormData {
   name: string;

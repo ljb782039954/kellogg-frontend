@@ -1,4 +1,4 @@
-import type { Translation } from "@core-webApp/types";
+import type { Translation } from "@/cms/types";
 import type {
   BrandValuesContent,
   CategoriesContent,
@@ -20,7 +20,7 @@ import type {
   TestimonialsContent,
   TextSectionContent,
   VideoSectionContent,
-} from "../types/block-schemas";
+} from "../block-adapters";
 
 export interface BlockContentMap {
   carousel: CarouselContent;

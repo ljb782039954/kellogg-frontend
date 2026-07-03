@@ -1,9 +1,9 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
-import OptimizedImage from "@core-webApp/components/OptimizedImage";
+import OptimizedImage from "@/core-webApp/components/OptimizedImage.astro";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
-import type { Blog, BlogSummary } from "@core-webApp/types";
+import type { Blog, BlogSummary } from "@/cms/types";
 import "../styles/blog-prose.css";
 import { sanitizeCmsHtml } from "@core-webApp/lib/contentSecurity";
 

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react';
 import { motion } from 'framer-motion';
-import OptimizedImage from '@core-webApp/components/OptimizedImage';
+import OptimizedImage from '@/runtime/components/OptimizedImage';
 
 export interface GalleryValues {
   src: string;
