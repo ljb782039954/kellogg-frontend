@@ -1,8 +1,8 @@
 import type { FormEventHandler } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Loader2, CheckCircle2, Phone, Globe, Building2, Package } from 'lucide-react';
-import TurnstileWidget from '@core/components/TurnstileWidget';
-import type { Language } from '@core/types';
+import TurnstileWidget from '@core-webApp/components/TurnstileWidget';
+import type { Language } from '@core-webApp/types';
 
 export interface InquiryFormValues {
   name: string;

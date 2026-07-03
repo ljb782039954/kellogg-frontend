@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Maximize2, X } from 'lucide-react';
-import OptimizedImage from '@core/components/OptimizedImage';
+import OptimizedImage from '@core-webApp/components/OptimizedImage';
 
 export interface ImageFullLabels {
   noImage: string;

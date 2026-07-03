@@ -1,4 +1,4 @@
-import type { Translation } from "@core/types";
+import type { Translation } from "@core-webApp/types";
 import type {
   BrandValuesContent,
   CategoriesContent,

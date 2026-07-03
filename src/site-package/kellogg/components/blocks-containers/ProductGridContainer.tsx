@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { api } from "@services/api";
 import { useStore } from "@nanostores/react";
-import { $currency, $rates, formatPrice } from "@core/lib/currency";
+import { $currency, $rates, formatPrice } from "@core-webApp/lib/currency";
 import {
   toProductGridInitialCategory,
   toProductGridQuery,
   toProductGridViewProps,
 } from "../../block-adapters";
 import type { ProductGridContent } from "../../types/block-schemas";
-import type { Category, Language, Product } from "@core/types";
+import type { Category, Language, Product } from "@core-webApp/types";
 import { ProductGrid as ProductGridView, type ProductGridSortId } from "../blocks";
 
 export interface ProductGridContainerProps extends ProductGridContent {

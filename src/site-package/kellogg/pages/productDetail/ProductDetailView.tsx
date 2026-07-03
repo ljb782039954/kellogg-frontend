@@ -2,10 +2,10 @@ import React, { useState ,useEffect} from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Share2, Layers, Calendar } from 'lucide-react';
 import { useStore } from '@nanostores/react';
-import { $currency, $rates, formatPrice } from '@/core/lib/currency';
+import { $currency, $rates, formatPrice } from '@/core-webApp/lib/currency';
 import { t } from '../../utils/i18n';
-import OptimizedImage from '@/core/components/OptimizedImage';
-import type { Product, Language } from '@core/types';
+import OptimizedImage from '@/core-webApp/components/OptimizedImage';
+import type { Product, Language } from '@core-webApp/types';
 
 interface Props {
   product: Product;

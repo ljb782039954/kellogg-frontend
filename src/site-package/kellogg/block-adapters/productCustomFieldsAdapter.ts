@@ -1,4 +1,4 @@
-import type { Language, Product } from "@core/types";
+import type { Language, Product } from "@core-webApp/types";
 import type { ProductCustomFieldItem } from "../components/base";
 import { createTranslate } from "../utils/i18n";
 

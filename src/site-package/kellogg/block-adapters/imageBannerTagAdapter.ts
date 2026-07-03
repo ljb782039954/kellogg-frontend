@@ -1,7 +1,7 @@
-import type { Language } from "@core/types";
+import type { Language } from "@core-webApp/types";
 
 // 迁移类型
-import type { Translation } from "@core/types";
+import type { Translation } from "@core-webApp/types";
 export interface ImageBannerTagContent {
   image?: string;
   tag?: Translation;

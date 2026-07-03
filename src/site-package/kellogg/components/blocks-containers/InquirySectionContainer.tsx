@@ -1,8 +1,8 @@
-import { useInquiry } from '@core/hooks/useInquiry';
+import { useInquiry } from '@core-webApp/hooks/useInquiry';
 import { api } from '@services/api';
 import InquirySection from '../blocks-fixed/InquirySection';
 import { kelloggSiteConfig } from '../../config';
-import type { Language } from '@core/types';
+import type { Language } from '@core-webApp/types';
 import {
   getKelloggInquiryFormText,
   getKelloggInquiryTranslations,

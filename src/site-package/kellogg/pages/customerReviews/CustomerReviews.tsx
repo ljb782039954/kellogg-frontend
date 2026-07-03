@@ -1,4 +1,4 @@
-import OptimizedImage from "@/core/components/OptimizedImage";
+import OptimizedImage from "@/core-webApp/components/OptimizedImage";
 
 export type CustomerReviewMedia =
   | { kind: "embed"; url: string; title: string }

@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import RichText from "@core/components/RichText";
+import RichText from "@core-webApp/components/RichText";
 
 export interface TextSectionProps {
   titleText?: string;

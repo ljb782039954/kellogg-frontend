@@ -1,4 +1,4 @@
-import type { Language, Translation } from '@core/types';
+import type { Language, Translation } from '@core-webApp/types';
 
 export function t(
   obj: string | Translation | null | undefined,

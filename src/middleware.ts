@@ -1,5 +1,5 @@
 import { defineMiddleware } from "astro:middleware";
-import { buildContentSecurityPolicy } from "@core/lib/csp";
+import { buildContentSecurityPolicy } from "@core-webApp/lib/csp";
 import { currentSite } from "@site-package";
 
 const contentSecurityPolicy = buildContentSecurityPolicy(currentSite);

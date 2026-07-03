@@ -6,8 +6,8 @@ import type {
   HeaderContent,
   Language,
   SiteLanguageConfig,
-} from "@core/types";
-import type { ExchangeRates } from "@core/lib/currency";
+} from "@core-webApp/types";
+import type { ExchangeRates } from "@core-webApp/lib/currency";
 
 export type SiteData = SiteContent & { exchangeRates: ExchangeRates | null };
 

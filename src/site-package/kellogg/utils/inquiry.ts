@@ -1,8 +1,8 @@
 import type {
   InquiryPageContent,
   InquiryTranslations,
-} from "@core/hooks/useInquiry";
-import type { Language } from "@core/types";
+} from "@core-webApp/hooks/useInquiry";
+import type { Language } from "@core-webApp/types";
 
 export const kelloggInquiryContent: InquiryPageContent = {
   title: {

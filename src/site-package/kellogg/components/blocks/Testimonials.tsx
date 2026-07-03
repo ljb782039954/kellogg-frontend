@@ -1,5 +1,5 @@
 import { Star } from "lucide-react";
-import OptimizedImage from "@core/components/OptimizedImage";
+import OptimizedImage from "@core-webApp/components/OptimizedImage";
 
 export interface Testimonial {
   id: number;

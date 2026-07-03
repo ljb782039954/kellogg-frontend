@@ -19,7 +19,7 @@ export default defineConfig({
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),
-        '@core': path.resolve(__dirname, 'src/core'),
+        '@core-webApp': path.resolve(__dirname, 'src/core-webApp'),
         '@services': path.resolve(__dirname, 'src/services'),
         '@site-package': path.resolve(__dirname, 'src/site-package'),
       },

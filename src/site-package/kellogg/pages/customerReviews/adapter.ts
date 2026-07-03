@@ -1,6 +1,6 @@
-import type { Language } from "@core/types";
-import { sanitizeCmsHtml } from "@core/lib/contentSecurity";
-import { getSafeVideoSource } from "@core/lib/video";
+import type { Language } from "@core-webApp/types";
+import { sanitizeCmsHtml } from "@core-webApp/lib/contentSecurity";
+import { getSafeVideoSource } from "@core-webApp/lib/video";
 import { kelloggSiteConfig } from "../../config";
 import type { CustomerReviewsProps } from "./CustomerReviews";
 

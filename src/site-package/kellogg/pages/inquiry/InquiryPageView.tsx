@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 import { Phone, MapPin } from 'lucide-react';
-import { useInquiry } from '@core/hooks/useInquiry';
+import { useInquiry } from '@core-webApp/hooks/useInquiry';
 import { api } from '@services/api';
 import InquiryForm from '../../components/base-2/InquiryForm';
 import { kelloggSiteConfig } from '../../config';
-import type { Language, CompanyInfo } from '@core/types';
+import type { Language, CompanyInfo } from '@core-webApp/types';
 import {
   getKelloggInquiryFormText,
   getKelloggInquiryTranslations,

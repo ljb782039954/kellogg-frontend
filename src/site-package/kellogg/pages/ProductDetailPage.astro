@@ -2,7 +2,7 @@
 import Layout from "../layouts/SiteLayout.astro";
 import ProductDetailView from "./productDetail/ProductDetailView";
 import { ProductCardStatic as ProductCard, ProductCustomFields, ProductVideo, SectionHeader } from "../components/base";
-import { formatPrice } from "@core/lib/currency";
+import { formatPrice } from "@core-webApp/lib/currency";
 import {
   toProductCardStaticProps,
   toProductCustomFieldItems,
@@ -10,7 +10,7 @@ import {
 } from "../block-adapters";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
-import type { Product } from "@core/types";
+import type { Product } from "@core-webApp/types";
 import { createTranslate } from "../utils/i18n";
 
 interface Props {

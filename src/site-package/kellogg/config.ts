@@ -1,5 +1,5 @@
-import type { SiteConfig } from "@core/types";
-import { createDefaultSiteRuntimeConfig } from "@core/config/siteRuntime";
+import type { SiteConfig } from "@core-webApp/types";
+import { createDefaultSiteRuntimeConfig } from "@core-webApp/config/siteRuntime";
 
 const runtimeConfig = createDefaultSiteRuntimeConfig({
   fallbackSiteUrl: "https://kelloggfashion.com",

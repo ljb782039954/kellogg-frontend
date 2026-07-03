@@ -1,7 +1,7 @@
-import type { Language } from "@core/types";
+import type { Language } from "@core-webApp/types";
 
 // 迁移类型
-import type { NavLink, Translation } from "@core/types";
+import type { NavLink, Translation } from "@core-webApp/types";
 export interface CtaBannerValues {
   primaryButton?: NavLink;
   secondaryButton?: NavLink;

@@ -1,5 +1,5 @@
-import OptimizedImage from "@core/components/OptimizedImage";
-import RichText from "@core/components/RichText";
+import OptimizedImage from "@core-webApp/components/OptimizedImage";
+import RichText from "@core-webApp/components/RichText";
 
 export interface ImageTextProps {
   titleText?: string;

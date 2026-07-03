@@ -1,4 +1,4 @@
-import type { Language } from "@core/types";
+import type { Language } from "@core-webApp/types";
 
 // 迁移类型
 export interface ProductGridContent {
@@ -6,7 +6,7 @@ export interface ProductGridContent {
   category?: string;
 }
 
-import type { Category, Product, SortOption } from "@core/types";
+import type { Category, Product, SortOption } from "@core-webApp/types";
 import { toProductCardStaticProps } from "./productCardAdapter";
 import type {
   ProductGridItem,

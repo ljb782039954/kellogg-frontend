@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { t } from '../../utils/i18n';
-import type { NavLink, Language } from '@core/types';
+import type { NavLink, Language } from '@core-webApp/types';
 
 interface MobileNavProps {
   navItems: NavLink[];

@@ -1,6 +1,6 @@
 import * as LucideIcons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import RichText from "@core/components/RichText";
+import RichText from "@core-webApp/components/RichText";
 
 export interface FeatureListItem {
   icon: string;
