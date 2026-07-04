@@ -5,7 +5,7 @@ import {
   joinSiteUrl,
   renderSitemapXml,
   type SitemapUrl,
-} from "@core-webApp/lib/sitemap";
+} from "@/cms/lib/sitemap";
 
 export const prerender = false;
 

@@ -1,6 +1,6 @@
 import { Globe, Share2, Menu, X, Coins } from 'lucide-react';
 import { CurrencyService } from '@/core-webApp/services/currencyService';
-import { t } from '../../utils/i18n';
+import { createTranslate } from '../../utils/i18n';
 import { kelloggSiteConfig } from '../../config';
 import type { CompanyInfo, Language } from '@/cms/types';
 
@@ -35,6 +35,7 @@ export default function HeaderActions({
       copyToClipboard(url);
     }
   };
+const t = createTranslate(lang);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {

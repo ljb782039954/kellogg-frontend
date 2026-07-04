@@ -6,14 +6,24 @@ Astro 6 + React 19 + TypeScript，部署目标为 Cloudflare Workers。项目已
 
 ```text
 src/
-├─ core/                  跨站点通用能力，不依赖任何 site-package
-│  ├─ components/          通用组件，如 DynamicRenderer、OptimizedImage、RichText、TurnstileWidget
+├─ cms/                    跨项目通用资源，不依赖任何外部组件，
+│  ├─ adapters/            适配器处理函数
+│  ├─ hooks/               通用 React hooks
+│  ├─ lib/                 API requester、媒体 URL、i18n、sitemap、请求去重等
+│  └─ types.ts             跨站点最小协议类型
+│
+├─ core-webApp/            跨站点通用能力，不依赖任何 site-package
+│  ├─ components/          通用组件，如 DynamicRenderer、OptimizedImage
 │  ├─ config/              默认站点运行时配置，如 siteUrl/API/security 默认值与合并工具
 │  ├─ hooks/               通用 React hooks
 │  ├─ layouts/             CoreLayout，负责 HTML/head/body 与通用 SEO 骨架
-│  ├─ lib/                 API requester、媒体 URL、CSP、i18n、sitemap、请求去重等
+│  ├─ lib/                 媒体 CSP、sitemap、请求去重等
 │  ├─ services/            可注入的 core service factory
 │  └─ types.ts             跨站点最小协议类型
+│
+├─ runtime/                解决跨项目，组件的宿主依赖问题
+│  ├─ components/          OptimizedImage、RichText、TurnstileWidget
+│  ├─ hooks/               
 │
 ├─ services/               应用层连接器，连接 currentSite 与 core
 │  ├─ api.ts               基于当前站点配置创建站点 API client
@@ -37,10 +47,10 @@ src/
 依赖方向必须保持为：
 
 ```text
-site-package/{siteName} -> core
-services -> site-package + core
+site-package/{siteName} -> core-webApp
+services -> site-package + core-webApp
 pages -> site-package/index
-core -> 不允许引用 site-package
+core-webApp -> 不允许引用 site-package
 ```
 
 `src/pages` 不直接引用 `src/site-package/kellogg/**`，只通过 `@site-package` 获取当前站点与页面 loader。
@@ -102,7 +112,7 @@ if (!ProductsPage) return Astro.redirect("/404");
 
 ## Block 渲染
 
-`src/core/components/DynamicRenderer.astro` 只负责通用流程：
+`src/core-webApp/components/DynamicRenderer.astro` 只负责通用流程：
 
 - 过滤可见 block
 - 创建请求内 `requestMemo`
@@ -121,9 +131,9 @@ Kellogg 的 block 渲染和水合策略集中在：
 
 ## API 与数据
 
-- `src/core/lib/api.ts` 只提供通用 `createApiRequester(config)`，不包含 Kellogg endpoint。
-- 通用站点 API client 集中在 `src/core/services/apiClient.ts`，基于 `src/core/lib/api.ts` 的 requester 提供商品、分类、配置、博客、评价和询盘等统一方法。
-- `src/core/config/siteRuntime.ts` 提供 `createDefaultSiteRuntimeConfig()`，统一读取 `PUBLIC_SITE_URL` 与 `PUBLIC_API_*` 环境变量，并提供默认 `createApiClient`。
+- `src/cms/lib/api.ts` 只提供通用 `createApiRequester(config)`，不包含 Kellogg endpoint。
+- 通用站点 API client 集中在 `src/core-webApp/services/apiClient.ts`，提供商品、分类、配置、博客、评价和询盘等统一方法。
+- `src/core-webApp/config/siteRuntime.ts` 提供 `createDefaultSiteRuntimeConfig()`，统一读取 `PUBLIC_SITE_URL` 与 `PUBLIC_API_*` 环境变量，并提供默认 `createApiClient`。
 - 站点包通过 `config.ts` 调用默认运行时配置；如果未来某个站点 API 协议不同，可以在站点配置中替换为专属 client factory。
 - `src/services/api.ts` 根据 `currentSite.api` 创建运行时 API client，并配置媒体 URL 解析。
 - `SiteService.getSiteData(Astro)` 继续使用请求内缓存，优先保存到 `Astro.locals`，避免同一次渲染重复请求。
@@ -131,11 +141,11 @@ Kellogg 的 block 渲染和水合策略集中在：
 
 ## 安全边界
 
-- CSP 字符串由 `src/core/lib/csp.ts` 生成，默认 security 配置由 `src/core/config/siteRuntime.ts` 提供，站点配置只补充第三方域名。
+- CSP 字符串由 `src/core-webApp/lib/csp.ts` 生成，默认 security 配置
 - `middleware.ts` 使用 `buildContentSecurityPolicy(currentSite)` 设置安全响应头。
 - CMS Markdown/HTML 必须经过 `sanitizeCmsHtml()`。
-- 视频 URL 通过 core 视频解析能力处理，允许的 provider 由站点配置决定。
-- Turnstile widget 是 core 通用组件，site key 从当前站点配置传入；生产 key 不写死在 core。
+- 视频 URL 通过 cms 视频解析能力处理，允许的 provider 由站点配置决定。
+- Turnstile widget 是 runtime 组件，site key 从当前站点配置传入；生产 key 不写死。
 - Tawk script URL 从 Kellogg config 传入。
 
 ## Astro 文件约束

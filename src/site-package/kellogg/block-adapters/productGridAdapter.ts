@@ -15,7 +15,7 @@ import type {
   ProductGridProps,
   ProductGridSortId,
 } from "../components/blocks";
-import { t } from "../utils/i18n";
+import { createTranslate } from "../utils/i18n";
 
 export const PRODUCT_GRID_SORT_OPTIONS: SortOption[] = [
   { id: "newest", name: { zh: "最新上架", en: "Newest" } },
@@ -76,6 +76,8 @@ export function toProductGridCategoryOptions({
   selectedCategory,
   lang,
 }: Pick<ProductGridAdapterOptions, "categories" | "selectedCategory" | "lang">): ProductGridOption[] {
+  const translate = createTranslate(lang);
+
   return [
     {
       id: "all",
@@ -84,7 +86,7 @@ export function toProductGridCategoryOptions({
     },
     ...categories.map((category) => ({
       id: category.id,
-      label: t(category.name, lang),
+      label: translate(category.name),
       selected: selectedCategory === category.id,
     })),
   ];
@@ -94,9 +96,11 @@ export function toProductGridSortOptions(
   sortBy: ProductGridSortId,
   lang: Language,
 ): ProductGridOption<ProductGridSortId>[] {
+  const translate = createTranslate(lang);
+
   return PRODUCT_GRID_SORT_OPTIONS.map((option) => ({
     id: option.id as ProductGridSortId,
-    label: t(option.name, lang),
+    label: translate(option.name),
     selected: sortBy === option.id,
   }));
 }

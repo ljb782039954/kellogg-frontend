@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Share2, Layers, Calendar } from 'lucide-react';
 import { useStore } from '@nanostores/react';
 import { $currency, $rates, formatPrice } from '@/cms/lib/currency';
-import { t } from '../../utils/i18n';
+import { createTranslate } from '../../utils/i18n';
 import OptimizedImage from '@/runtime/components/OptimizedImage';
 import type { Product, Language } from '@/cms/types';
 
@@ -22,6 +22,9 @@ export default function ProductDetailView({ product, lang }: Props) {
   const currency = useStore($currency);
   const rates = useStore($rates);
 
+const translate = createTranslate(lang);
+
+
   useEffect(() => {
     setHasMounted(true);
   }, []);
@@ -34,7 +37,7 @@ export default function ProductDetailView({ product, lang }: Props) {
 
   const handleShare = () => {
     const url = window.location.href;
-    const title = t(product.name, lang);
+    const title = translate(product.name);
     if (navigator.share) {
       navigator.share({ title, url }).catch(() => copyToClipboard(url));
     } else {
@@ -66,7 +69,7 @@ export default function ProductDetailView({ product, lang }: Props) {
             >
               <OptimizedImage
                 src={variantPreviewImage || gallery[activeImageIndex]}
-                alt={t(product.name, lang)}
+                alt={translate(product.name)}
                 className="w-full h-full object-cover"
                 priority={true}
               />
@@ -75,7 +78,7 @@ export default function ProductDetailView({ product, lang }: Props) {
 
           {product.tag && (
             <span className="absolute top-8 left-8 px-5 py-2 bg-gray-900 text-white text-xs font-bold rounded-full tracking-widest uppercase z-10 shadow-lg">
-              {t(product.tag, lang)}
+              {translate(product.tag)}
             </span>
           )}
         </div>
@@ -103,7 +106,7 @@ export default function ProductDetailView({ product, lang }: Props) {
         <div>
           <div className="flex items-center gap-3 mb-6">
             <span className="text-xs font-bold text-amber-600 bg-amber-50 px-4 py-1.5 rounded-full uppercase tracking-wider">
-              {t(product.category, lang)}
+              {translate(product.category)}
             </span>
             <div className="flex items-center gap-1.5 text-amber-400 bg-gray-50 px-3 py-1 rounded-full">
               <Star className="w-4 h-4 fill-current" />
@@ -113,7 +116,7 @@ export default function ProductDetailView({ product, lang }: Props) {
           
           <div className="flex justify-between items-start gap-4">
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
-              {t(product.name, lang)}
+              {translate(product.name)}
             </h1>
             <button
               onClick={handleShare}
@@ -165,7 +168,7 @@ export default function ProductDetailView({ product, lang }: Props) {
               <div className="flex gap-2 md:gap-4 items-center">
                 <span className="text-xs font-bold uppercase tracking-widest text-gray-400">{lang === 'zh' ? '颜色' : 'Color'}</span>
                 <span className="text-sm font-bold text-gray-900">
-                  {selectedColorIndex !== null ? t(product.colors[selectedColorIndex].name, lang) : (lang === 'zh' ? '请选择' : 'Select')}
+                  {selectedColorIndex !== null ? translate(product.colors[selectedColorIndex].name) : (lang === 'zh' ? '请选择' : 'Select')}
                 </span>
               </div>
               <div className="flex flex-wrap gap-4">
@@ -184,7 +187,7 @@ export default function ProductDetailView({ product, lang }: Props) {
                       <OptimizedImage src={color.image} alt="" width={80} className="w-full h-full object-cover rounded-full" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-full text-[10px] font-bold uppercase">
-                        {t(color.name, lang).slice(0, 2)}
+                        {translate(color.name).slice(0, 2)}
                       </div>
                     )}
                   </button>
@@ -224,7 +227,7 @@ export default function ProductDetailView({ product, lang }: Props) {
         {/* Extra Info */}
         <div className="space-y-8">
           <p className="text-gray-500 leading-relaxed text-lg italic font-light">
-            {t(product.description, lang)}
+            {translate(product.description)}
           </p>
           
           <div className="grid grid-cols-2 gap-8">
@@ -232,7 +235,7 @@ export default function ProductDetailView({ product, lang }: Props) {
               <div className="p-3 bg-gray-50 rounded-2xl text-gray-400"><Layers size={20} /></div>
               <div>
                 <p className="text-[10px] text-gray-400 uppercase font-black">{lang === 'zh' ? '分类' : 'Category'}</p>
-                <p className="font-bold text-gray-900">{t(product.category, lang)}</p>
+                <p className="font-bold text-gray-900">{translate(product.category)}</p>
               </div>
             </div>
             <div className="flex items-center gap-4">

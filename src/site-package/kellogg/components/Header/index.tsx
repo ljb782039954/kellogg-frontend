@@ -6,7 +6,7 @@ import { $currency, $rates } from '@/cms/lib/currency';
 import { CurrencyService } from '@/core-webApp/services/currencyService';
 import { getHydrationSafeRates } from '@/cms/lib/hydrationState';
 import OptimizedImage from '@/runtime/components/OptimizedImage';
-import { t } from '../../utils/i18n';
+import { createTranslate } from '../../utils/i18n';
 import type { CompanyInfo, HeaderContent, Language } from '@/cms/types';
 
 import DesktopNav from './DesktopNav';
@@ -32,6 +32,7 @@ export default function Header({
   const currency = useStore($currency);
   const rates = useStore($rates);
   const effectiveRates = getHydrationSafeRates(rates, initialRates);
+const t = createTranslate(lang);
 
   // 初始化逻辑转移到 Service
   useEffect(() => {

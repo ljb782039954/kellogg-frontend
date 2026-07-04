@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import { t } from '../../utils/i18n';
+import { createTranslate } from '../../utils/i18n';
 import type { NavLink, Language } from '@/cms/types';
 
 interface DesktopNavProps {
@@ -15,6 +15,7 @@ export default function DesktopNav({ navItems, lang, pathname, textStyle }: Desk
   // 控制哪个导航项的下拉菜单处于激活状态
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
+const t = createTranslate(lang);
 
   // 点击外部时关闭下拉菜单
   useEffect(() => {

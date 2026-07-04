@@ -1,4 +1,4 @@
-import { configureMedia } from "@core-webApp/lib/media";
+import { configureMedia } from "@/cms/lib/media";
 import { currentSite } from "@site-package";
 
 const apiConfig = {

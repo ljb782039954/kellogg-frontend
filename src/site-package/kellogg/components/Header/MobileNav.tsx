@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import { t } from '../../utils/i18n';
+import { createTranslate } from '../../utils/i18n';
 import type { NavLink, Language } from '@/cms/types';
 
 interface MobileNavProps {
@@ -15,6 +15,7 @@ interface MobileNavProps {
 export default function MobileNav({ navItems, lang, pathname, onNavigate, textStyle }: MobileNavProps) {
   // 记录哪些带有子菜单的项被展开了
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
+const t = createTranslate(lang);
 
   const toggleExpand = (id: string) => {
     setExpandedItems(prev => ({ ...prev, [id]: !prev[id] }));

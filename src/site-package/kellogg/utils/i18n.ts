@@ -1,20 +1,8 @@
-import { t as coreTranslate } from "@/cms/lib/common";
 import { createTranslate as createCoreTranslate } from "@/cms/lib/i18n";
-import type { Language, Translation } from "@/cms/types";
-import { kelloggSiteConfig } from "../config";
+import type { Language } from "@/cms/types";
 
-function getFallbackLanguages(): readonly Language[] {
-  return kelloggSiteConfig.fallbackLanguages ?? [kelloggSiteConfig.defaultLanguage];
-}
+const fallbackLanguages = ["en", "zh"] satisfies readonly Language[];
 
 export function createTranslate(language: Language) {
-  return createCoreTranslate(language, getFallbackLanguages());
-}
-
-export function t(
-  value: string | Translation | null | undefined,
-  language: Language,
-  fallback?: string
-) {
-  return coreTranslate(value, language, getFallbackLanguages()) || fallback || "";
+  return createCoreTranslate(language, fallbackLanguages);
 }

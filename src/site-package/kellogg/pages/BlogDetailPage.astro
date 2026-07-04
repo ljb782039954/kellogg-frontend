@@ -5,7 +5,7 @@ import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
 import type { Blog, BlogSummary } from "@/cms/types";
 import "../styles/blog-prose.css";
-import { sanitizeCmsHtml } from "@core-webApp/lib/contentSecurity";
+import { sanitizeCmsHtml } from "@/cms/lib/contentSecurity";
 
 interface Props {
   blogSlug: string;
