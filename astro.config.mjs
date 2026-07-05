@@ -22,6 +22,7 @@ export default defineConfig({
         '@core-webApp': path.resolve(__dirname, 'src/core-webApp'),
         '@services': path.resolve(__dirname, 'src/services'),
         '@site-package': path.resolve(__dirname, 'src/site-package'),
+        '@site': path.resolve(__dirname, 'src/site-package/kellogg'),
       },
     },
     ssr: {

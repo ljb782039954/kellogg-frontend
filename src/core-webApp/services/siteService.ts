@@ -8,7 +8,7 @@ import type {
   CompanyInfo,
   FooterContent,
   HeaderContent,
-  CustomPage,
+  CmsCustomPage,
 } from "@/cms/types";
 
 import type { ExchangeRates } from "@/cms/lib/currency";
@@ -55,7 +55,7 @@ export function createSiteService({ site, api }: CreateSiteServiceOptions) {
         api.getConfig<CompanyInfo>("site_settings"),
         api.getConfig<HeaderContent>("header_config"),
         api.getConfig<FooterContent>("footer_config"),
-        api.getConfig<CustomPage[]>("pages"),
+        api.getConfig<CmsCustomPage[]>("pages"),
         api.getConfig<ExchangeRates>("exchangeRates"),
       ]);
 

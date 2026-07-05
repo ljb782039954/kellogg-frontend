@@ -8,7 +8,6 @@ Astro 6 + React 19 + TypeScript，部署目标为 Cloudflare Workers。项目已
 src/
 ├─ cms/                    跨项目通用资源，不依赖任何外部组件，
 │  ├─ adapters/            适配器处理函数
-│  ├─ hooks/               通用 React hooks
 │  ├─ lib/                 API requester、媒体 URL、i18n、sitemap、请求去重等
 │  └─ types.ts             跨站点最小协议类型
 │
@@ -55,11 +54,17 @@ core-webApp -> 不允许引用 site-package
 
 `src/pages` 不直接引用 `src/site-package/kellogg/**`，只通过 `@site-package` 获取当前站点与页面 loader。
 
+## 依赖约束
+
+1. cms/作为跨项目契约资源，不应该依赖其它的组件和内容，只能在cms内部依赖。
+2. 站点资源的blocks和adapters 也需要跨项目使用，所以不应依赖`core-{name}`项目的核心业务逻辑，以免出现复杂依赖问题，但是可以依赖runtime/ 中的组件，以适配项目宿主。
+
+
 ## 站点切换
 
 当前站点由构建时环境变量 `PUBLIC_SITE_NAME` 决定，默认值为 `kellogg`。新增站点时，增加 `src/site-package/{siteName}/config.ts`，再在 `src/site-package/index.ts` 的 `siteConfigs` 中注册。
 
-core 提供默认运行时配置：
+core-webApp 提供默认运行时配置：
 
 - `siteUrl` 默认从 `PUBLIC_SITE_URL` 读取
 - API base、local API base、assets base 默认从 `PUBLIC_API_*` 读取

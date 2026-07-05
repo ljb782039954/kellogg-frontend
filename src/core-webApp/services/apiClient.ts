@@ -10,7 +10,7 @@ import type {
   Blog,
   BlogSummary,
   Category,
-  CustomPage,
+  CmsCustomPage,
   Product,
 } from "@/cms/types";
 
@@ -78,7 +78,7 @@ export function createSiteApiClient(config: ApiClientConfig) {
         throw err;
       }),
 
-    getPageById: (id: string) => request<CustomPage>(`/api/config/pages/${id}`),
+    getPageById: (id: string) => request<CmsCustomPage>(`/api/config/pages/${id}`),
 
     resolveMediaUrl: requester.resolveMediaUrl,
 

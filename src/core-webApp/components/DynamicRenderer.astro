@@ -1,15 +1,15 @@
 ---
-import type { CustomPage, Language, PageBlock } from "@/cms/types";
+import type { CmsCustomPage, Language, CmsPageBlock } from "@/cms/types";
 import { createRequestMemo, type RequestMemo } from "@/cms/lib/requestMemo";
 
 type LoadBlockData = (options: {
-  block: PageBlock;
+  block: CmsPageBlock;
   api: any;
   requestMemo: RequestMemo;
 }) => Promise<Record<string, any>>;
 
 interface Props {
-  schema: CustomPage;
+  schema: CmsCustomPage;
   lang: Language;
   api: any;
   blockRenderer: any;

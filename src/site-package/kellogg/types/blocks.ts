@@ -1,4 +1,3 @@
-import type { Translation } from "@/cms/types";
 import type {
   BrandValuesContent,
   CategoriesContent,
@@ -47,40 +46,3 @@ export interface BlockContentMap {
 }
 
 export type BlockType = keyof BlockContentMap;
-export type ComponentCategory = "product" | "marketing" | "content" | "media";
-
-export interface ComponentMeta<T extends BlockType = BlockType> {
-  type: T;
-  name: Translation;
-  description: Translation;
-  icon: string;
-  category: ComponentCategory;
-  hasGlobalData: boolean;
-  singleton?: boolean;
-  defaultProps: Partial<BlockContentMap[T]>;
-}
-
-export type PageBlock = {
-  [T in BlockType]: {
-    id: string;
-    type: T;
-    content: BlockContentMap[T];
-    isVisible: boolean;
-  };
-}[BlockType];
-
-export interface CustomPage {
-  id: string;
-  path: string;
-  title: Translation;
-  isFixed: boolean;
-  type?: "fixed-block" | "dynamic-block" | "fixed-layout";
-  content?: unknown;
-  blocks: PageBlock[];
-  seo?: {
-    title: Translation;
-    description: Translation;
-    keywords?: Translation;
-    targetCountry?: string;
-  };
-}

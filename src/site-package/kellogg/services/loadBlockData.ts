@@ -1,9 +1,9 @@
 import type { RequestMemo } from "@/cms/lib/requestMemo";
 import type { SiteApiClient } from "@core-webApp/services/apiClient";
-import type { PageBlock } from "@/cms/types";
+import type { CmsPageBlock } from "@/cms/types";
 
 interface LoadBlockDataOptions {
-  block: PageBlock;
+  block: CmsPageBlock;
   api: SiteApiClient;
   requestMemo: RequestMemo;
 }
@@ -17,6 +17,7 @@ export async function loadKelloggBlockData({
   const getProducts = (params: Parameters<typeof api.getProducts>[0]) =>
     requestMemo.get(`products:${JSON.stringify(params)}`, () => api.getProducts(params));
 
+  // itemsPerPage 提示错误可以忽略，因为这是productGrid积木块独有的属性
   if (block.type === "productGrid") {
     const pageSize = block.content.itemsPerPage || 12;
     const params: NonNullable<Parameters<typeof api.getProducts>[0]> = { pageSize, page: 1 };
