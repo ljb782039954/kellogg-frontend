@@ -1,6 +1,6 @@
 
 import type { CompanyInfo, HeaderContent, FooterContent } from "@/cms/types";
-import type { CustomPage } from "@/cms/types";
+import type { CmsCustomPage } from "@/cms/types";
 import type { Language } from "@/cms/types";
 import type { SiteApiClient } from "../services/apiClient";
 
@@ -58,7 +58,7 @@ export interface SiteContent {
   companyInfo: CompanyInfo;
   header: HeaderContent;
   footer: FooterContent;
-  pages: CustomPage[];
+  pages: CmsCustomPage[];
   lang: Language;
 }
 

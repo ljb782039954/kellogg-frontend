@@ -56,7 +56,7 @@ export function createSiteService({ site, api }: CreateSiteServiceOptions) {
         api.getConfig<HeaderContent>("header_config"),
         api.getConfig<FooterContent>("footer_config"),
         api.getConfig<CmsCustomPage[]>("pages"),
-        api.getConfig<ExchangeRates>("exchangeRates"),
+        api.getConfig<ExchangeRates>("exchange_rates"),
       ]);
 
       if (!siteSettings || !headerConfig || !footerConfig || !pagesData) {
