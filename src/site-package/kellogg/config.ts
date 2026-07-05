@@ -1,6 +1,6 @@
 import type { SiteConfig } from "@core-webApp/types";
 import { createDefaultSiteRuntimeConfig } from "@core-webApp/config/siteRuntime";
-
+// 修复变量名的错误
 const runtimeConfig = createDefaultSiteRuntimeConfig({
   fallbackSiteUrl: "https://kelloggfashion.com",
   api: {
