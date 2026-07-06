@@ -26,6 +26,10 @@ export function buildContentSecurityPolicy(site?: Pick<SiteConfig, "security">) 
   const directives: CspDirectives = {
     ...baseDirectives,
     "script-src": mergeValues(baseDirectives["script-src"], csp.scriptSrc),
+    "style-src": mergeValues(baseDirectives["style-src"], csp.styleSrc),
+    "font-src": mergeValues(baseDirectives["font-src"], csp.fontSrc),
+    "img-src": mergeValues(baseDirectives["img-src"], csp.imgSrc),
+    "media-src": mergeValues(baseDirectives["media-src"], csp.mediaSrc),
     "frame-src": mergeValues(baseDirectives["frame-src"], csp.frameSrc),
     "connect-src": mergeValues(baseDirectives["connect-src"], csp.connectSrc),
   };

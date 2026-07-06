@@ -12,6 +12,10 @@ interface Props {
     hreflang: string;
   }[];
   exchangeRates?: ExchangeRates | null;
+  mediaConfig?: {
+    assetsBaseUrl?: string;
+    assetHostnames?: readonly string[];
+  };
   faviconHref?: string;
   bodyClass?: string;
 }
@@ -23,6 +27,7 @@ const {
   keywords = "",
   alternates = [],
   exchangeRates = null,
+  mediaConfig = {},
   faviconHref,
   bodyClass = "",
 } = Astro.props;
@@ -46,6 +51,9 @@ const {
 
     <script is:inline define:vars={{ initialRates: exchangeRates?.rates }}>
       window.__EXCHANGE_RATES__ = initialRates;
+    </script>
+    <script is:inline define:vars={{ siteMediaConfig: mediaConfig }}>
+      window.__SITE_MEDIA_CONFIG__ = siteMediaConfig;
     </script>
   </head>
   <body class={bodyClass}>
