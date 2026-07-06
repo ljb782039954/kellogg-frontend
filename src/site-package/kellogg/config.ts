@@ -1,6 +1,13 @@
 import type { SiteConfig } from "@core-webApp/types";
 import { createDefaultSiteRuntimeConfig } from "@core-webApp/config/siteRuntime";
 
+const tawkOrigins = [
+  "https://tawk.to",
+  "https://*.tawk.to",
+  "https://tawk.link",
+  "https://*.tawk.link",
+] as const;
+
 const runtimeConfig = createDefaultSiteRuntimeConfig({
   fallbackSiteUrl: "https://kelloggfashion.com",
   api: {
@@ -8,8 +15,20 @@ const runtimeConfig = createDefaultSiteRuntimeConfig({
   },
   security: {
     csp: {
-      scriptSrc: ["https://tawk.to", "https://*.tawk.to"],
-      frameSrc: ["https://tawk.to", "https://*.tawk.to"],
+      scriptSrc: [
+        ...tawkOrigins,
+        "https://static.cloudflareinsights.com",
+      ],
+      styleSrc: tawkOrigins,
+      fontSrc: tawkOrigins,
+      imgSrc: tawkOrigins,
+      mediaSrc: tawkOrigins,
+      frameSrc: tawkOrigins,
+      connectSrc: [
+        ...tawkOrigins,
+        "wss://*.tawk.to",
+        "wss://*.tawk.link",
+      ],
     },
   },
 });
@@ -33,28 +52,6 @@ export const kelloggSiteConfig = {
   },
   seo: {
     defaultTitle: "Kellogg Fashion",
-    alternates: [
-      {
-        href: "https://kellogg-fashion.com/",
-        hreflang: "x-default",
-      },
-      {
-        href: "https://kelloggfashion.com/usa-heavyweight-hoodie-manufacturer",
-        hreflang: "en-US",
-      },
-      {
-        href: "https://kelloggfashion.com/uk-streetwear-clothing-manufacturer",
-        hreflang: "en-UK",
-      },
-      {
-        href: "https://kelloggfashion.com/canada-blank-apparel-supplier",
-        hreflang: "en-CA",
-      },
-      {
-        href: "https://kelloggfashion.com/australia-heavyweight-tshirt-supplier",
-        hreflang: "en-AU",
-      },
-    ],
   },
   pages: {
     cms: () => import("./pages/CmsPage.astro"),

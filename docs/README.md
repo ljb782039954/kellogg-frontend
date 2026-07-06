@@ -80,7 +80,7 @@ core-webApp 提供默认运行时配置：
 - 默认货币
 - Turnstile site key 与测试 key 开关
 - Tawk script URL
-- 默认 SEO 与 alternate links
+- 默认 SEO 兜底；页面级 alternate links 由页面 SEO 数据管理，只有被添加的页面链接有 alternate能力。
 - CSP 额外第三方域名
 - 页面能力注册
 

@@ -20,11 +20,15 @@ function mergeValues(base: readonly string[] = [], extra: readonly string[] = []
 }
 
 export const defaultSiteSecurityConfig = {
-  csp: {
-    scriptSrc: ["https://challenges.cloudflare.com"],
-    frameSrc: [
-      "https://challenges.cloudflare.com",
-      "https://www.youtube-nocookie.com",
+    csp: {
+      scriptSrc: ["https://challenges.cloudflare.com"],
+      styleSrc: [],
+      fontSrc: [],
+      imgSrc: [],
+      mediaSrc: [],
+      frameSrc: [
+        "https://challenges.cloudflare.com",
+        "https://www.youtube-nocookie.com",
       "https://player.vimeo.com",
       "https://www.facebook.com",
       "https://www.tiktok.com",
@@ -41,6 +45,10 @@ export function mergeSiteSecurityConfig(
   return {
     csp: {
       scriptSrc: mergeValues(base.csp?.scriptSrc, override.csp?.scriptSrc),
+      styleSrc: mergeValues(base.csp?.styleSrc, override.csp?.styleSrc),
+      fontSrc: mergeValues(base.csp?.fontSrc, override.csp?.fontSrc),
+      imgSrc: mergeValues(base.csp?.imgSrc, override.csp?.imgSrc),
+      mediaSrc: mergeValues(base.csp?.mediaSrc, override.csp?.mediaSrc),
       frameSrc: mergeValues(base.csp?.frameSrc, override.csp?.frameSrc),
       connectSrc: mergeValues(base.csp?.connectSrc, override.csp?.connectSrc),
     },

@@ -46,6 +46,10 @@ export interface SiteConfig extends SiteLanguageConfig {
   security?: {
     csp?: {
       scriptSrc?: readonly string[];
+      styleSrc?: readonly string[];
+      fontSrc?: readonly string[];
+      imgSrc?: readonly string[];
+      mediaSrc?: readonly string[];
       frameSrc?: readonly string[];
       connectSrc?: readonly string[];
     };

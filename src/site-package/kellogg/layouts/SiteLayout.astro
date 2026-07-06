@@ -12,6 +12,7 @@ import type {
   FooterContent,
   HeaderContent,
   Language,
+  SeoAlternate,
   Translation,
 } from "@/cms/types";
 import { InquirySection } from "../components/blocks-containers";
@@ -25,6 +26,7 @@ interface Props {
     title?: string | Translation;
     description?: string | Translation;
     keywords?: string | Translation;
+    alternates?: readonly SeoAlternate[];
   };
 }
 
@@ -55,6 +57,18 @@ const displayDescription = seo?.description
       ? t(Astro.props.description)
       : "";
 const displayKeywords = seo?.keywords ? t(seo.keywords) : "";
+const displayAlternates = (seo?.alternates || [])
+  .filter((alternate) => alternate.enabled !== false && alternate.href?.trim() && alternate.hreflang?.trim())
+  .map((alternate) => {
+    const href = alternate.href.trim();
+    const isAbsolute = /^https?:\/\//i.test(href);
+    return {
+      href: isAbsolute
+        ? href
+        : `${kelloggSiteConfig.siteUrl.replace(/\/+$/, "")}/${href.replace(/^\/+/, "")}`,
+      hreflang: alternate.hreflang.trim(),
+    };
+  });
 ---
 
 <CoreLayout
@@ -62,8 +76,9 @@ const displayKeywords = seo?.keywords ? t(seo.keywords) : "";
   title={displayTitle}
   description={displayDescription}
   keywords={displayKeywords}
-  alternates={kelloggSiteConfig.seo?.alternates}
+  alternates={displayAlternates}
   exchangeRates={exchangeRates}
+  mediaConfig={kelloggSiteConfig.api}
   faviconHref="/kellogg/logo.jpg"
   bodyClass="bg-background text-foreground selection:bg-primary/10"
 >
@@ -84,10 +99,6 @@ const displayKeywords = seo?.keywords ? t(seo.keywords) : "";
 
   <Footer footer={footer} companyInfo={companyInfo} lang={lang} />
 
-  <script>
-    import { initPriceTracker } from "@/cms/lib/priceTracker";
-    initPriceTracker();
-  </script>
 </CoreLayout>
 
 <style is:global>
