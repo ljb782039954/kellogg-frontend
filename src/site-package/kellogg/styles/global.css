@@ -32,7 +32,6 @@
   --color-card-foreground: hsl(var(--card-foreground));
 
   /* NOTE  */
-  --color-tawkChat: var(--tawkChat); 
   --color-richTextPrimary: var(--richTextPrimary); 
 
 
@@ -82,7 +81,6 @@
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
     --radius: 0.625rem;
-    --tawkChat: rgb(73, 31, 170);
     --richTextPrimary: rgb(182, 40, 238);
   }
 
@@ -106,7 +104,6 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
-    --tawkChat: rgb(73, 31, 170);
     --richTextPrimary: rgb(182, 40, 238);
 
   }

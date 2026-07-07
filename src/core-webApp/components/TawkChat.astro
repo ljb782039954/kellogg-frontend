@@ -4,9 +4,8 @@
  *
  * Keep the widget native: styling and launcher behavior are controlled by Tawk.
  */
-import { kelloggSiteConfig } from "../config";
 
-const tawkScriptUrl = kelloggSiteConfig.tawk?.scriptUrl || "";
+const tawkScriptUrl = import.meta.env.PUBLIC_TAWCHAT_URL;
 ---
 
 <noscript>
