@@ -3,6 +3,8 @@ export const prerender = false;
 
 import { currentSite, loadSitePage } from "@site-package";
 
+Astro.response.headers.set("Cache-Control", "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400");
+
 const ProductDetailPage = await loadSitePage(currentSite.pages?.productDetail);
 const { id } = Astro.params;
 

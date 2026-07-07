@@ -1,10 +1,23 @@
 ---
-export const prerender = false;
-
+import { api } from "@services/api";
 import { currentSite, loadSitePage } from "@site-package";
+import type { BlogSummary } from "@/cms/types";
+
+export async function getStaticPaths() {
+  const BlogDetailPage = await loadSitePage(currentSite.pages?.blogDetail);
+  if (!BlogDetailPage) return [];
+
+  const blogs = await api.getBlogs({ pageSize: 1000, sort: "newest" });
+  return (blogs.data || [])
+    .filter((blog: BlogSummary) => Boolean(blog.slug))
+    .map((blog: BlogSummary) => ({
+      params: { slug: blog.slug },
+      props: { blogSlug: blog.slug },
+    }));
+}
 
 const BlogDetailPage = await loadSitePage(currentSite.pages?.blogDetail);
-const blogSlug = Astro.params.slug;
+const blogSlug = Astro.props.blogSlug || Astro.params.slug;
 
 if (!BlogDetailPage || !blogSlug) return Astro.redirect("/404");
 ---
