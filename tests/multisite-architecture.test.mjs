@@ -35,7 +35,7 @@ test("current site registry is the only site-package selection entry", async () 
 
 test("app SiteService connects currentSite to the core service factory", async () => {
   const appService = await readProjectFile("src/services/siteService.ts");
-  const coreService = await readProjectFile("src/core/services/siteService.ts");
+  const coreService = await readProjectFile("src/core-webApp/services/siteService.ts");
 
   assert.match(appService, /currentSite/);
   assert.match(appService, /createSiteService/);
@@ -72,7 +72,7 @@ test("core does not read build-time public environment directly", async () => {
 });
 
 test("core types do not own site content or catalog models", async () => {
-  const coreTypes = await readProjectFile("src/core/types.ts");
+  const coreTypes = await readProjectFile("src/core-webApp/types.ts");
 
   assert.doesNotMatch(coreTypes, /interface\s+(CompanyInfo|HeaderContent|FooterContent|BlogSummary|Blog|Product|Category|BulkPrice)\b/);
   assert.match(coreTypes, /type\s+SiteResource\s*=/);
@@ -82,7 +82,7 @@ test("core types do not own site content or catalog models", async () => {
 });
 
 test("site layout composes the core layout shell", async () => {
-  const coreLayout = await readProjectFile("src/core/layouts/CoreLayout.astro");
+  const coreLayout = await readProjectFile("src/core-webApp/layouts/CoreLayout.astro");
   const siteLayout = await readProjectFile("src/site-package/kellogg/layouts/SiteLayout.astro");
 
   assert.match(coreLayout, /<!doctype html>/);
@@ -120,7 +120,7 @@ test("pages and site packages use the app API service for runtime API access out
 });
 
 test("core API requester does not own site endpoint methods", async () => {
-  const coreApi = await readProjectFile("src/core/lib/api.ts");
+  const coreApi = await readProjectFile("src/core-webApp/lib/api.ts");
   const kelloggApi = await readProjectFile("src/site-package/kellogg/utils/api.ts");
 
   for (const endpoint of ["/api/products", "/api/categories", "/api/blogs", "/api/reviews", "/api/inquiries/submit"]) {

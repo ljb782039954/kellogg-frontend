@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { createRequestMemo } from "../src/core/lib/requestMemo.ts";
+import { createRequestMemo } from "../src/core-webApp/lib/requestMemo.ts";
 
 test("createRequestMemo reuses an in-flight request with the same key", async () => {
   const memo = createRequestMemo();

@@ -5,7 +5,7 @@ import {
   escapeXml,
   joinSiteUrl,
   renderSitemapXml,
-} from "../src/core/lib/sitemap.ts";
+} from "../src/cms/lib/sitemap.ts";
 
 const root = new URL("../", import.meta.url);
 
