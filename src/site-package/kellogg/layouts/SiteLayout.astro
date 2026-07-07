@@ -3,7 +3,7 @@ import "../styles/global.css";
 import CoreLayout from "@core-webApp/layouts/CoreLayout.astro";
 import { SiteService } from "@services/siteService";
 import Header from "../components/Header";
-import Footer from "../components/Footer.astro";
+import FooterView from "../components/FooterView";
 import TawkChat from "@core-webApp/components/TawkChat.astro";
 import { createTranslate } from "../utils/i18n";
 import { kelloggSiteConfig } from "../config";
@@ -97,7 +97,7 @@ const displayAlternates = (seo?.alternates || [])
     {!isInquiryPage && <InquirySection lang={lang} client:visible />}
   </main>
 
-  <Footer footer={footer} companyInfo={companyInfo} lang={lang} />
+  <FooterView footer={footer} companyInfo={companyInfo} lang={lang} t={t} />
 
 </CoreLayout>
 
