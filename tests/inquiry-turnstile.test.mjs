@@ -6,7 +6,7 @@ const root = new URL("../", import.meta.url);
 
 test("inquiry forms render Turnstile with the expected action", async () => {
   const [widget, baseForm, blockForm, blockContainer, pageForm] = await Promise.all([
-    readFile(new URL("src/core/components/TurnstileWidget.tsx", root), "utf8"),
+    readFile(new URL("src/core-webApp/components/TurnstileWidget.tsx", root), "utf8"),
     readFile(new URL("src/site-package/kellogg/components/base/InquiryForm.tsx", root), "utf8"),
     readFile(new URL("src/site-package/kellogg/components/blocks/InquirySection.tsx", root), "utf8"),
     readFile(new URL("src/site-package/kellogg/components/blocks-containers/InquirySectionContainer.tsx", root), "utf8"),
@@ -30,7 +30,7 @@ test("inquiry forms render Turnstile with the expected action", async () => {
 
 test("useInquiry submits a token and prevents duplicate submissions", async () => {
   const [hook, baseForm, blockForm, blockContainer, pageForm, siteInquiry] = await Promise.all([
-    readFile(new URL("src/core/hooks/useInquiry.ts", root), "utf8"),
+    readFile(new URL("src/core-webApp/hooks/useInquiry.ts", root), "utf8"),
     readFile(new URL("src/site-package/kellogg/components/base/InquiryForm.tsx", root), "utf8"),
     readFile(new URL("src/site-package/kellogg/components/blocks/InquirySection.tsx", root), "utf8"),
     readFile(new URL("src/site-package/kellogg/components/blocks-containers/InquirySectionContainer.tsx", root), "utf8"),

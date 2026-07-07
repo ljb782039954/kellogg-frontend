@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { sanitizeCmsHtml } from "../src/core/lib/contentSecurity.ts";
-import { buildContentSecurityPolicy } from "../src/core/lib/csp.ts";
-import { getSafeVideoSource } from "../src/core/lib/video.ts";
+import { sanitizeCmsHtml } from "../src/core-webApp/lib/contentSecurity.ts";
+import { buildContentSecurityPolicy } from "../src/core-webApp/lib/csp.ts";
+import { getSafeVideoSource } from "../src/core-webApp/lib/video.ts";
 import { readFile } from "node:fs/promises";
 
 test("sanitizeCmsHtml removes executable markup and unsafe URLs", () => {

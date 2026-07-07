@@ -47,9 +47,10 @@ export const kelloggSiteConfig = {
     siteKey: import.meta.env.PUBLIC_TURNSTILE_SITE_KEY,
     useTestSiteKey: import.meta.env.DEV,
   },
-  tawk: {
-    scriptUrl: "https://embed.tawk.to/69f7493d0b9cc71c320940a8/1jnmvc6gf",
-  },
+  // 实际未使用
+  // tawk: {
+  //   scriptUrl: import.meta.env.PUBLIC_TAWCHAT_URL,
+  // },
   seo: {
     defaultTitle: "Kellogg Fashion",
   },

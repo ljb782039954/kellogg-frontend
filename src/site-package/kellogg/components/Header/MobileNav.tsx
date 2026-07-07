@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
-import { createTranslate } from '../../utils/i18n';
-import type { NavLink, Language } from '@/cms/types';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import type { NavLink, Language } from "@/cms/types";
+import type { TranslateFn } from "@/cms/types/viewTypes";
 
 interface MobileNavProps {
   navItems: NavLink[];
@@ -10,15 +10,21 @@ interface MobileNavProps {
   pathname: string;
   onNavigate: () => void;
   textStyle: string;
+  t: TranslateFn;
 }
 
-export default function MobileNav({ navItems, lang, pathname, onNavigate, textStyle }: MobileNavProps) {
-  // 记录哪些带有子菜单的项被展开了
+export default function MobileNav({
+  navItems,
+  lang,
+  pathname,
+  onNavigate,
+  textStyle,
+  t,
+}: MobileNavProps) {
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
-const t = createTranslate(lang);
 
   const toggleExpand = (id: string) => {
-    setExpandedItems(prev => ({ ...prev, [id]: !prev[id] }));
+    setExpandedItems((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   return (
@@ -26,45 +32,48 @@ const t = createTranslate(lang);
       {navItems.map((item) => {
         const isSingleLink = item.children && item.children.length === 1;
         const hasDropdown = item.children && item.children.length > 1;
-        const targetHref = isSingleLink ? item.children![0].href : (item.href || '#');
-
+        const targetHref = isSingleLink ? item.children![0].href : item.href || "#";
         const itemId = item.id || targetHref;
         const isExpanded = expandedItems[itemId] || false;
-        
+
         return (
           <div key={itemId} className="flex flex-col border-b border-gray-100/10 pb-2 mb-2">
             <div className="flex items-center justify-between">
-              <a 
-                href={hasDropdown ? '#' : targetHref}
-                onClick={(e) => {
-                    if (hasDropdown) {
-                      e.preventDefault();
-                      toggleExpand(itemId);
-                    } else {
-                      onNavigate();
-                    }
+              <a
+                href={hasDropdown ? "#" : targetHref}
+                onClick={(event) => {
+                  if (hasDropdown) {
+                    event.preventDefault();
+                    toggleExpand(itemId);
+                    return;
+                  }
+
+                  onNavigate();
                 }}
-                className={`flex-1 text-lg font-bold py-2 ${textStyle} ${pathname === targetHref ? 'opacity-100' : 'opacity-70'}`}
+                className={`flex-1 text-lg font-bold py-2 ${textStyle} ${
+                  pathname === targetHref ? "opacity-100" : "opacity-70"
+                }`}
               >
                 {t(item.name, lang)}
               </a>
               {hasDropdown && (
-                <button 
+                <button
                   onClick={() => toggleExpand(itemId)}
-                  className={`p-2 ${textStyle} opacity-70 hover:opacity-100 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                  className={`p-2 ${textStyle} opacity-70 hover:opacity-100 transition-transform ${
+                    isExpanded ? "rotate-180" : ""
+                  }`}
                 >
                   <ChevronDown className="w-5 h-5" />
                 </button>
               )}
             </div>
 
-            {/* 子菜单 */}
             {hasDropdown && (
               <AnimatePresence>
                 {isExpanded && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
+                    animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
@@ -75,7 +84,9 @@ const t = createTranslate(lang);
                           key={child.id || child.href}
                           href={child.href}
                           onClick={() => onNavigate()}
-                          className={`text-base py-2 ${textStyle} ${pathname === child.href ? 'opacity-100 font-bold' : 'opacity-60'}`}
+                          className={`text-base py-2 ${textStyle} ${
+                            pathname === child.href ? "opacity-100 font-bold" : "opacity-60"
+                          }`}
                         >
                           {t(child.name, lang)}
                         </a>

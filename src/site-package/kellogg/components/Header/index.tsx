@@ -1,17 +1,14 @@
-import { useState, useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
-import { Coins } from 'lucide-react';
-import { useStore } from '@nanostores/react';
-import { $currency, $rates } from '@/cms/lib/currency';
-import { CurrencyService } from '@/core-webApp/services/currencyService';
-import { getHydrationSafeRates } from '@/cms/lib/hydrationState';
-import OptimizedImage from '@/runtime/components/OptimizedImage';
-import { createTranslate } from '../../utils/i18n';
-import type { CompanyInfo, HeaderContent, Language } from '@/cms/types';
+import { useEffect } from "react";
+import { useStore } from "@nanostores/react";
+import { $currency, $rates } from "@/cms/lib/currency";
+import { CurrencyService } from "@/core-webApp/services/currencyService";
+import { getHydrationSafeRates } from "@/cms/lib/hydrationState";
+import OptimizedImage from "@/runtime/components/OptimizedImage";
+import { createTranslate } from "../../utils/i18n";
+import { kelloggSiteConfig } from "../../config";
+import type { CompanyInfo, HeaderContent, Language } from "@/cms/types";
 
-import DesktopNav from './DesktopNav';
-import MobileNav from './MobileNav';
-import HeaderActions from './HeaderActions';
+import HeaderView from "./HeaderView";
 
 export interface HeaderProps {
   header: HeaderContent;
@@ -21,101 +18,65 @@ export interface HeaderProps {
   initialRates?: Record<string, number> | null;
 }
 
-export default function Header({ 
-  header, 
-  companyInfo, 
-  lang, 
+export default function Header({
+  header,
+  companyInfo,
+  lang,
   pathname,
-  initialRates = null
+  initialRates = null,
 }: HeaderProps) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const currency = useStore($currency);
   const rates = useStore($rates);
   const effectiveRates = getHydrationSafeRates(rates, initialRates);
-const t = createTranslate(lang);
+  const t = createTranslate(lang);
 
-  // 初始化逻辑转移到 Service
   useEffect(() => {
     CurrencyService.initRates(initialRates);
     CurrencyService.autoDetectCurrency();
   }, [initialRates]);
 
-  // 样式定义
-  const style = {
-    bg: 'bg-white/95 backdrop-blur-md shadow-sm',
-    text: 'text-gray-800',
-    border: 'border-gray-100',
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      alert(lang === "zh" ? "链接已复制到剪贴板" : "Link copied to clipboard");
+    });
+  };
+
+  const handleShare = () => {
+    const url = window.location.origin;
+    const title = t(companyInfo.name, lang);
+
+    if (navigator.share) {
+      navigator.share({ title, url }).catch(() => copyToClipboard(url));
+      return;
+    }
+
+    copyToClipboard(url);
+  };
+
+  const switchLanguage = () => {
+    const languages = kelloggSiteConfig.languages;
+    const currentIndex = languages.indexOf(lang);
+    const newLang =
+      languages[(currentIndex + 1) % languages.length] ||
+      kelloggSiteConfig.defaultLanguage;
+
+    document.cookie = `lang=${newLang};path=/;max-age=31536000`;
+    window.location.reload();
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${style.bg}`}>
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20 relative">
-          {/* Logo */}
-          <a href="/" className="flex items-center gap-2">
-            {companyInfo.logo && (
-              <OptimizedImage src={companyInfo.logo} alt="Logo" width={80} className="w-8 h-8 md:w-10 md:h-10 object-contain" />
-            )}
-            <span className={`text-base md:text-lg lg:text-xl font-bold tracking-wider ${style.text}`}>
-              {t(companyInfo.name, lang)}
-            </span>
-          </a>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:block h-full">
-            <DesktopNav 
-              navItems={header.navItems} 
-              lang={lang} 
-              pathname={pathname} 
-              textStyle={style.text}
-            />
-          </div>
-
-          {/* Right Actions */}
-          <HeaderActions 
-            currency={currency}
-            rates={effectiveRates}
-            lang={lang}
-            companyInfo={companyInfo}
-            isMobileMenuOpen={isMobileMenuOpen}
-            setIsMobileMenuOpen={setIsMobileMenuOpen}
-            textStyle={style.text}
-            borderStyle={style.border}
-          />
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <div className={`md:hidden ${style.bg} border-t ${style.border} overflow-hidden max-h-[80vh] overflow-y-auto`}>
-             <MobileNav 
-                navItems={header.navItems} 
-                lang={lang} 
-                pathname={pathname} 
-                onNavigate={() => setIsMobileMenuOpen(false)}
-                textStyle={style.text}
-             />
-             
-             {/* 移动端底部货币切换 */}
-             <div className="container mx-auto px-4 pb-6">
-                <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
-                  <div className={`flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-2xl ${style.text} border ${style.border}`}>
-                      <Coins className="w-5 h-5" />
-                      <select
-                        value={currency}
-                        onChange={(e) => CurrencyService.switchCurrency(e.target.value)}
-                        className="bg-transparent appearance-none border-none outline-none cursor-pointer font-bold"
-                      >
-                        {(effectiveRates ? Object.keys(effectiveRates) : ['USD', 'CNY']).map(cur => (
-                          <option key={cur} value={cur} className="text-gray-900 bg-white">{cur}</option>
-                        ))}
-                      </select>
-                  </div>
-                </div>
-             </div>
-          </div>
-        )}
-      </AnimatePresence>
-    </header>
+    <HeaderView
+      header={header}
+      companyInfo={companyInfo}
+      lang={lang}
+      pathname={pathname}
+      currency={currency}
+      rates={effectiveRates}
+      t={t}
+      onCurrencyChange={CurrencyService.switchCurrency}
+      onLanguageSwitch={switchLanguage}
+      onShare={handleShare}
+      LogoImage={OptimizedImage}
+    />
   );
 }
