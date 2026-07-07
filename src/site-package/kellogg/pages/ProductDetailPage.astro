@@ -17,8 +17,6 @@ interface Props {
   id: string;
 }
 
-Astro.response.headers.set("Cache-Control", "public, max-age=60, s-maxage=300, stale-while-revalidate=600");
-
 const { id } = Astro.props;
 const { lang } = await SiteService.getSiteData(Astro);
 const t = createTranslate(lang);

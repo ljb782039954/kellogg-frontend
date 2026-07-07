@@ -1,18 +1,26 @@
 ---
-export const prerender = false;
-
 import { SiteService } from "@services/siteService";
 import { currentSite, loadSitePage } from "@site-package";
+import type { CmsCustomPage } from "@/cms/types";
+
+export async function getStaticPaths() {
+  const { pages } = await SiteService.getSiteData();
+
+  return pages
+    .filter((item: CmsCustomPage) => item.id !== "products" && item.type !== "fixed-layout")
+    .map((page: CmsCustomPage) => {
+      const normalizedPath = page.path === "/" ? undefined : page.path.replace(/^\/+/, "");
+      return {
+        params: { slug: normalizedPath },
+        props: { pageId: page.id },
+      };
+    });
+}
 
 const CmsPage = await loadSitePage(currentSite.pages?.cms);
-const slug = Array.isArray(Astro.params.slug)
-  ? Astro.params.slug.join("/")
-  : Astro.params.slug;
-const requestPath = slug ? `/${slug}` : "/";
-const { pages } = await SiteService.getSiteData(Astro);
-const page = pages.find((item) => item.path === requestPath && item.id !== "products" && item.type !== "fixed-layout");
+const { pageId } = Astro.props;
 
-if (!CmsPage || !page) return Astro.redirect("/404");
+if (!CmsPage || !pageId) return Astro.redirect("/404");
 ---
 
-<CmsPage pageId={page.id} />
+<CmsPage pageId={pageId} />
