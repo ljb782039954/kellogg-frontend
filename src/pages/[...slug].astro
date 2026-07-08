@@ -3,14 +3,13 @@ import { api } from "@services/api";
 import { currentSite, loadSitePage } from "@site-package";
 import type { CmsCustomPage } from "@/cms/types";
 
-const fixedPageIds = new Set([
-  "products",
-  "system-inquiry",
-  "customer-reviews",
-  "system-blog",
-]);
-
 export async function getStaticPaths() {
+  const fixedPageIds = new Set([
+    "products",
+    "system-inquiry",
+    "customer-reviews",
+    "system-blog",
+  ]);
   const pages = await api.getConfig<CmsCustomPage[]>("pages");
 
   return (pages ?? [])
