@@ -1,7 +1,7 @@
 import { Mail, Phone, MapPin } from "lucide-react";
 import type { FooterContent, CompanyInfo, Language } from "@/cms/types";
 import type { TranslateFn } from "@/cms/types/viewTypes";
-import SocialLinksView from "./SocialLinksView";
+import SocialLinksView from "../base/SocialLinksView";
 
 interface FooterViewProps {
   footer: FooterContent;
