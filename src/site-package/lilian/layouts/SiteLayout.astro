@@ -1,0 +1,114 @@
+---
+import "../styles/global.css";
+import CoreLayout from "@core-webApp/layouts/CoreLayout.astro";
+import { SiteService } from "@services/siteService";
+import Header from "../components/Header";
+import FooterView from "../components/Footer/FooterView";
+import TawkChat from "@core-webApp/components/TawkChat.astro";
+import { createTranslate } from "../utils/i18n";
+import { lilianSiteConfig } from "../config";
+import type {
+  CompanyInfo,
+  FooterContent,
+  HeaderContent,
+  Language,
+  SeoAlternate,
+  Translation,
+} from "@/cms/types";
+import { InquirySection } from "../components/blocks-containers";
+
+interface Props {
+  title?: string | Translation;
+  description?: string | Translation;
+  lang?: Language;
+  hideInquiry?: boolean;
+  seo?: {
+    title?: string | Translation;
+    description?: string | Translation;
+    keywords?: string | Translation;
+    alternates?: readonly SeoAlternate[];
+  };
+}
+
+const { lang = lilianSiteConfig.defaultLanguage, seo, hideInquiry = false } = Astro.props;
+const siteData = await SiteService.getSiteData(Astro);
+const { exchangeRates } = siteData;
+const companyInfo = siteData.companyInfo as CompanyInfo;
+const header = siteData.header as HeaderContent;
+const footer = siteData.footer as FooterContent;
+
+const t = createTranslate(lang);
+
+// 自动检测是否为询盘页面
+const isInquiryPage = Astro.url.pathname.includes('/inquiry') || hideInquiry;
+
+const displayTitle = seo?.title
+  ? t(seo.title)
+  : typeof Astro.props.title === "string"
+    ? Astro.props.title
+    : Astro.props.title
+      ? t(Astro.props.title)
+      : lilianSiteConfig.seo?.defaultTitle || lilianSiteConfig.displayName;
+const displayDescription = seo?.description
+  ? t(seo.description)
+  : typeof Astro.props.description === "string"
+    ? Astro.props.description
+    : Astro.props.description
+      ? t(Astro.props.description)
+      : "";
+const displayKeywords = seo?.keywords ? t(seo.keywords) : "";
+const displayAlternates = (seo?.alternates || [])
+  .filter((alternate) => alternate.enabled !== false && alternate.href?.trim() && alternate.hreflang?.trim())
+  .map((alternate) => {
+    const href = alternate.href.trim();
+    const isAbsolute = /^https?:\/\//i.test(href);
+    return {
+      href: isAbsolute
+        ? href
+        : `${lilianSiteConfig.siteUrl.replace(/\/+$/, "")}/${href.replace(/^\/+/, "")}`,
+      hreflang: alternate.hreflang.trim(),
+    };
+  });
+---
+
+<CoreLayout
+  lang={lang}
+  title={displayTitle}
+  description={displayDescription}
+  keywords={displayKeywords}
+  alternates={displayAlternates}
+  exchangeRates={exchangeRates}
+  mediaConfig={lilianSiteConfig.api}
+  faviconHref="/lilian/logo.jpg"
+  bodyClass="bg-background text-foreground selection:bg-primary/10"
+>
+  <Header
+    client:idle
+    header={header}
+    companyInfo={companyInfo}
+    lang={lang}
+    pathname={Astro.url.pathname}
+    initialRates={exchangeRates?.rates}
+  />
+  <TawkChat lang={lang} />
+
+  <main class="mt-16 md:mt-20">
+    <slot />
+    {!isInquiryPage && <InquirySection lang={lang} client:visible />}
+  </main>
+
+  <FooterView footer={footer} companyInfo={companyInfo} lang={lang} t={t} />
+
+</CoreLayout>
+
+<style is:global>
+  /* Custom global styles can go here */
+  :root {
+    --header-height: 4rem;
+  }
+  @media (min-width: 768px) {
+    :root {
+      --header-height: 5rem;
+    }
+  }
+</style>

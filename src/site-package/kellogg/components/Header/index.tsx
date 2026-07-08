@@ -3,7 +3,6 @@ import { useStore } from "@nanostores/react";
 import { $currency, $rates } from "@/cms/lib/currency";
 import { CurrencyService } from "@/core-webApp/services/currencyService";
 import { getHydrationSafeRates } from "@/cms/lib/hydrationState";
-import OptimizedImage from "@/runtime/components/OptimizedImage";
 import { createTranslate } from "../../utils/i18n";
 import { kelloggSiteConfig } from "../../config";
 import type { CompanyInfo, HeaderContent, Language } from "@/cms/types";
@@ -76,7 +75,6 @@ export default function Header({
       onCurrencyChange={CurrencyService.switchCurrency}
       onLanguageSwitch={switchLanguage}
       onShare={handleShare}
-      LogoImage={OptimizedImage}
     />
   );
 }

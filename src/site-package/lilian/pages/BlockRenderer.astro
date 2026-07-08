@@ -1,0 +1,159 @@
+---
+import { formatPrice } from "@/cms/lib/currency";
+import type { Language } from "@/cms/types";
+import type { PageBlock } from "../types";
+import {
+  toBlogGridViewProps,
+  toCategoriesViewProps,
+  toProductCardViewProps,
+} from "../block-adapters";
+import type {
+  BlogGridContent,
+  CategoriesContent,
+} from "../block-adapters";
+import {
+  BeforeAfterSlider,
+  BlogGrid,
+  BlogSidebar,
+  BrandManifesto,
+  BrochureDownload,
+  Categories,
+  Categories2,
+  CertificationBadges,
+  FaqAccordion,
+  FeatureList,
+  FullscreenImageBackground,
+  FullscreenVideoPopup,
+  FullWidthBanner,
+  ImageCarousel,
+  ImagePairGrid,
+  ImageTextSplit,
+  LightboxGallery,
+  MainHeading,
+  MasonryGallery,
+  NumberCounter,
+  ParallaxImage,
+  ProductCardBlock,
+  RichTextBlock,
+  TestimonialMasonry,
+  TextGrid,
+  VideoGrid,
+} from "../components/blocks";
+import {
+  FeaturedProducts as FeaturedProductsContainer,
+  InquirySection,
+  NewArrivals as NewArrivalsContainer,
+  ProductGrid as ProductGridContainer,
+} from "../components/blocks-containers";
+import type { BlockType } from "../types";
+
+type BlockWithData = PageBlock & {
+  data?: Record<string, any>;
+};
+
+interface Props {
+  block: BlockWithData;
+  lang: Language;
+}
+
+const { block, lang } = Astro.props as Props;
+const content = (block.content ?? {}) as any;
+const data = block.data ?? {};
+
+const productCardProps = block.type === "productCard" && data.product
+  ? toProductCardViewProps(data.product, {
+      lang,
+      formatPriceText: formatPrice,
+      categoryNames: Object.fromEntries((data.categories ?? []).map((category: any) => [category.id, category.name])),
+    })
+  : null;
+
+const categoriesProps = (
+  block.type === "categories"
+    ? toCategoriesViewProps(content as CategoriesContent, { categories: data.categories ?? [], lang })
+    : {}
+) as ReturnType<typeof toCategoriesViewProps>;
+const blogGridProps = (
+  block.type === "blogGrid"
+    ? toBlogGridViewProps({ content: content as BlogGridContent, blogs: data.blogs ?? [], lang })
+    : {}
+) as ReturnType<typeof toBlogGridViewProps>;
+const renderedBlockTypes = {
+  productCard: true,
+  categories: true,
+  newArrivals: true,
+  featuredProducts: true,
+  productGrid: true,
+  featureList: true,
+  inquiry: true,
+  blogGrid: true,
+  imagePairGrid: true,
+  masonryGallery: true,
+  imageCarousel: true,
+  fullWidthBanner: true,
+  imageTextSplit: true,
+  categories2: true,
+  parallaxImage: true,
+  beforeAfterSlider: true,
+  lightboxGallery: true,
+  fullscreenImageBackground: true,
+  videoGrid: true,
+  fullscreenVideoPopup: true,
+  brandManifesto: true,
+  numberCounter: true,
+  testimonialMasonry: true,
+  faqAccordion: true,
+  blogSidebar: true,
+  certificationBadges: true,
+  brochureDownload: true,
+  mainHeading: true,
+  richTextBlock: true,
+  textGrid: true,
+} satisfies Record<BlockType, true>;
+
+const knownBlockTypes = new Set(Object.keys(renderedBlockTypes));
+---
+
+{block.type === "productCard" && productCardProps && <ProductCardBlock {...productCardProps} />}
+{block.type === "categories" && <Categories {...categoriesProps} />}
+{block.type === "newArrivals" && <NewArrivalsContainer {...content} {...data} lang={lang} />}
+{block.type === "featuredProducts" && <FeaturedProductsContainer {...content} {...data} lang={lang} />}
+{block.type === "productGrid" && <ProductGridContainer {...content} {...data} lang={lang} client:load />}
+{block.type === "featureList" && <FeatureList content={content} lang={lang} />}
+{block.type === "inquiry" && <InquirySection {...content} lang={lang} client:visible />}
+{block.type === "blogGrid" && <BlogGrid {...blogGridProps} />}
+{block.type === "imagePairGrid" && <ImagePairGrid content={content} lang={lang} />}
+{block.type === "masonryGallery" && <MasonryGallery content={content} lang={lang} />}
+{block.type === "imageCarousel" && <ImageCarousel content={content} lang={lang} client:load />}
+{block.type === "fullWidthBanner" && <FullWidthBanner content={content} lang={lang} />}
+{block.type === "imageTextSplit" && <ImageTextSplit content={content} lang={lang} />}
+{block.type === "categories2" && <Categories2 content={content} lang={lang} />}
+{block.type === "parallaxImage" && <ParallaxImage content={content} lang={lang} />}
+{block.type === "beforeAfterSlider" && <BeforeAfterSlider content={content} lang={lang} client:visible />}
+{block.type === "lightboxGallery" && <LightboxGallery content={content} lang={lang} client:visible />}
+{block.type === "fullscreenImageBackground" && <FullscreenImageBackground content={content} lang={lang} />}
+{block.type === "videoGrid" && <VideoGrid content={content} lang={lang} client:visible />}
+{block.type === "fullscreenVideoPopup" && <FullscreenVideoPopup content={content} lang={lang} client:visible />}
+{block.type === "brandManifesto" && <BrandManifesto content={content} lang={lang} />}
+{block.type === "numberCounter" && <NumberCounter content={content} lang={lang} client:visible />}
+{block.type === "testimonialMasonry" && <TestimonialMasonry content={content} lang={lang} />}
+{block.type === "faqAccordion" && <FaqAccordion content={content} lang={lang} client:visible />}
+{block.type === "blogSidebar" && <BlogSidebar content={content} lang={lang} />}
+{block.type === "certificationBadges" && <CertificationBadges content={content} lang={lang} client:visible />}
+{block.type === "brochureDownload" && <BrochureDownload content={content} lang={lang} />}
+{block.type === "mainHeading" && <MainHeading content={content} lang={lang} />}
+{block.type === "richTextBlock" && <RichTextBlock content={content} lang={lang} />}
+{block.type === "textGrid" && <TextGrid content={content} lang={lang} />}
+
+{!knownBlockTypes.has(block.type) && import.meta.env.DEV && (
+  <div class="py-10 border-b border-dashed border-gray-200">
+    <div class="container mx-auto px-4">
+      <p class="text-gray-400 text-sm">
+        [Block: {block.type}] (待迁移实现)
+      </p>
+      <pre class="bg-gray-100 p-4 rounded mt-2 text-xs overflow-auto max-h-40">
+        {JSON.stringify(block.content, null, 2)}
+      </pre>
+    </div>
+  </div>
+)}

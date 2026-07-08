@@ -1,0 +1,117 @@
+---
+import Layout from "../layouts/SiteLayout.astro";
+import ProductDetailView from "./productDetail/ProductDetailView";
+import { ProductCardStatic as ProductCard, ProductCustomFields, ProductVideo, SectionHeader } from "../components/base";
+import { formatPrice } from "@/cms/lib/currency";
+import {
+  toProductCardStaticProps,
+  toProductCustomFieldItems,
+  toProductVideoSources,
+} from "../block-adapters";
+import { api } from "@services/api";
+import { SiteService } from "@services/siteService";
+import type { Product } from "@/cms/types";
+import { createTranslate } from "../utils/i18n";
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+const { lang } = await SiteService.getSiteData(Astro);
+const t = createTranslate(lang);
+
+const [productRaw, productsRes, categories] = await Promise.all([
+  api.getProduct(Number(id)),
+  api.getProducts({ pageSize: 5 }),
+  api.getCategories(),
+]);
+
+if (!productRaw) {
+  return Astro.redirect("/404");
+}
+
+const categoryObj = categories.find((category) => category.id === productRaw.category);
+const product: Product = {
+  ...productRaw,
+  category: categoryObj ? categoryObj.name : productRaw.category,
+} as any;
+
+const relatedProducts = productsRes.data
+  .filter((item) => String(item.id) !== String(id))
+  .slice(0, 4);
+const relatedProductCards = relatedProducts.map((item) => ({
+  id: item.id,
+  href: `/product/${item.id}`,
+  props: toProductCardStaticProps(item, {
+    lang,
+    formatPriceText: formatPrice,
+  }),
+}));
+const customFieldItems = toProductCustomFieldItems(product.customFields, lang);
+const productVideoSources = toProductVideoSources(product.videos);
+
+const seo = {
+  title: t(product.name),
+  description: t(product.description),
+  image: product.image,
+};
+---
+
+<Layout title={seo.title} lang={lang} seo={seo}>
+  <main class="pt-32 pb-20">
+    <div class="container mx-auto px-4">
+      <nav class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-300 mb-12 overflow-hidden whitespace-nowrap">
+        <a href="/" class="hover:text-gray-900 transition-colors">{lang === "zh" ? "首页" : "Home"}</a>
+        <span class="text-gray-200">/</span>
+        <a href="/products" class="hover:text-gray-900 transition-colors">{lang === "zh" ? "全部商品" : "Products"}</a>
+        <span class="text-gray-200">/</span>
+        <span class="text-gray-900 truncate">{t(product.name)}</span>
+      </nav>
+
+      <ProductDetailView product={product} lang={lang} client:load />
+
+      <ProductCustomFields fields={customFieldItems} />
+
+      {productVideoSources.length > 0 && (
+        <section class="py-24 border-t border-gray-100">
+          <div class="max-w-4xl mx-auto">
+            <SectionHeader titleText={t({ zh: "视频展示", en: "Video Showcase" })} theme="light" />
+            <div class="grid grid-cols-1 gap-12 mt-12">
+              {productVideoSources.map((source) => <ProductVideo source={source} />)}
+            </div>
+          </div>
+        </section>
+      )}
+    </div>
+
+    {relatedProductCards.length > 0 && (
+      <section class="bg-gray-50/50 py-32 mt-20">
+        <div class="container mx-auto px-4">
+          <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+              <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+                {lang === "zh" ? "为您推荐" : "Recommended"}
+              </h2>
+              <div class="w-20 h-1.5 bg-gray-900 rounded-full" />
+            </div>
+            <a href="/products" class="inline-flex items-center gap-2 font-black uppercase tracking-tighter text-gray-900 hover:gap-4 transition-all group">
+              {lang === "zh" ? "查看更多" : "View More"}
+              <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+            {relatedProductCards.map((item) => (
+              <a href={item.href} class="block h-full">
+                <ProductCard {...item.props} />
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+  </main>
+</Layout>

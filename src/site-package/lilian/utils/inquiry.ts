@@ -4,7 +4,7 @@ import type {
 } from "@core-webApp/hooks/useInquiry";
 import type { Language } from "@/cms/types";
 
-export const kelloggInquiryContent: InquiryPageContent = {
+export const lilianInquiryContent: InquiryPageContent = {
   title: {
     zh: "联系我们获取样品",
     en: "Contact Us For Samples",
@@ -15,7 +15,7 @@ export const kelloggInquiryContent: InquiryPageContent = {
   },
 };
 
-const kelloggInquiryTranslations: Record<"zh" | "en", InquiryTranslations> = {
+const lilianInquiryTranslations: Record<"zh" | "en", InquiryTranslations> = {
   zh: {
     form: {
       name: "姓名",
@@ -58,12 +58,12 @@ const kelloggInquiryTranslations: Record<"zh" | "en", InquiryTranslations> = {
   },
 };
 
-export function getKelloggInquiryTranslations(lang: Language): InquiryTranslations {
-  return kelloggInquiryTranslations[lang as "zh" | "en"] || kelloggInquiryTranslations.en;
+export function getLilianInquiryTranslations(lang: Language): InquiryTranslations {
+  return lilianInquiryTranslations[lang as "zh" | "en"] || lilianInquiryTranslations.en;
 }
 
-export function getKelloggInquiryFormText(lang: Language) {
-  const translations = getKelloggInquiryTranslations(lang).form;
+export function getLilianInquiryFormText(lang: Language) {
+  const translations = getLilianInquiryTranslations(lang).form;
   const isZh = lang === "zh";
 
   return {

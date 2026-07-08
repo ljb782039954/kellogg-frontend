@@ -2,7 +2,8 @@ import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Coins } from "lucide-react";
 import type { CompanyInfo, HeaderContent, Language } from "@/cms/types";
-import type { LogoImageComponent, LogoImageProps, TranslateFn } from "@/cms/types/viewTypes";
+import type { TranslateFn } from "@/cms/types/viewTypes";
+import OptimizedImage from "@/runtime/components/OptimizedImage";
 
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
@@ -19,21 +20,6 @@ interface HeaderViewProps {
   onCurrencyChange: (currency: string) => void;
   onLanguageSwitch: () => void;
   onShare: () => void;
-  LogoImage?: LogoImageComponent;
-}
-
-function DefaultLogoImage({ src, alt, width, height, className }: LogoImageProps) {
-  if (!src) return null;
-
-  return (
-    <img
-      src={src}
-      alt={alt}
-      width={width}
-      height={height}
-      className={className}
-    />
-  );
 }
 
 export default function HeaderView({
@@ -47,7 +33,7 @@ export default function HeaderView({
   onCurrencyChange,
   onLanguageSwitch,
   onShare,
-  LogoImage = DefaultLogoImage,
+  // LogoImage = DefaultLogoImage,
 }: HeaderViewProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -63,7 +49,7 @@ export default function HeaderView({
         <div className="flex items-center justify-between h-16 md:h-20 relative">
           <a href="/" className="flex items-center gap-2">
             {companyInfo.logo && (
-              <LogoImage
+              <OptimizedImage
                 src={companyInfo.logo}
                 alt="Logo"
                 width={80}
