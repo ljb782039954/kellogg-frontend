@@ -1,13 +1,20 @@
 ---
-import { SiteService } from "@services/siteService";
+import { api } from "@services/api";
 import { currentSite, loadSitePage } from "@site-package";
 import type { CmsCustomPage } from "@/cms/types";
 
-export async function getStaticPaths() {
-  const { pages } = await SiteService.getSiteData();
+const fixedPageIds = new Set([
+  "products",
+  "system-inquiry",
+  "customer-reviews",
+  "system-blog",
+]);
 
-  return pages
-    .filter((item: CmsCustomPage) => item.id !== "products" && item.type !== "fixed-layout")
+export async function getStaticPaths() {
+  const pages = await api.getConfig<CmsCustomPage[]>("pages");
+
+  return (pages ?? [])
+    .filter((item: CmsCustomPage) => !fixedPageIds.has(item.id) && item.type !== "fixed-layout")
     .map((page: CmsCustomPage) => {
       const normalizedPath = page.path === "/" ? undefined : page.path.replace(/^\/+/, "");
       return {

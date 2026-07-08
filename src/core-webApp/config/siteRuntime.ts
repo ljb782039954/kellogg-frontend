@@ -19,21 +19,40 @@ function mergeValues(base: readonly string[] = [], extra: readonly string[] = []
   return Array.from(new Set([...base, ...extra]));
 }
 
+const tawkOrigins = [
+  "https://tawk.to",
+  "https://*.tawk.to",
+  "https://tawk.link",
+  "https://*.tawk.link",
+] as const;
+
 export const defaultSiteSecurityConfig = {
-    csp: {
-      scriptSrc: ["https://challenges.cloudflare.com"],
-      styleSrc: [],
-      fontSrc: [],
-      imgSrc: [],
-      mediaSrc: [],
-      frameSrc: [
-        "https://challenges.cloudflare.com",
-        "https://www.youtube-nocookie.com",
+  csp: {
+    scriptSrc: [
+      "https://challenges.cloudflare.com",
+      "https://static.cloudflareinsights.com",
+      ...tawkOrigins,
+    ],
+    styleSrc: tawkOrigins,
+    fontSrc: tawkOrigins,
+    imgSrc: tawkOrigins,
+    mediaSrc: tawkOrigins,
+    frameSrc: [
+      "https://challenges.cloudflare.com",
+      "https://www.youtube-nocookie.com",
       "https://player.vimeo.com",
       "https://www.facebook.com",
       "https://www.tiktok.com",
+      ...tawkOrigins,
     ],
-    connectSrc: ["https:", "wss:"],
+    connectSrc: [
+      "https:",
+      "wss:",
+      "https://challenges.cloudflare.com",
+      ...tawkOrigins,
+      "wss://*.tawk.to",
+      "wss://*.tawk.link",
+    ],
   },
   videoProviders: ["youtube", "vimeo", "facebook", "tiktok", "direct"],
 } satisfies SiteSecurityConfig;

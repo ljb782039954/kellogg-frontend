@@ -1,25 +1,23 @@
-<<<<<<< HEAD
-Error 1101 Ray ID: a166e8d3dea4de82 • 2026-07-05 14:02:48 UTC
-Worker threw exception
-What happened?
-You've requested a page on a website (dev.kelloggfashion.com) that is on the Cloudflare network. An unknown error occurred while rendering the page.
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+10:48:46 [vite] ✓ built in 4.55s
+Default inspector port 9229 not available, using 9230 instead
 
-What can I do?
-If you are the owner of this website:
-refer to Workers - Errors and Exceptions and check Workers Logs for dev.kelloggfashion.com.
+Using secrets defined in dist\server\.prerender\.dev.vars
+Using secrets defined in dist\server\.dev.vars
 
-Cloudflare Ray ID: a166e8d3dea4de82 • Your IP: Click to reveal • Performance & security by Cloudflare
-=======
-api.js?render=explicit:1 Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://challenges.cloudflare.com') does not match the recipient window's origin ('https://kelloggfashion.com').
-er @ api.js?render=explicit:1
-ne @ api.js?render=explicit:1
-Fa @ api.js?render=explicit:1
-(anonymous) @ api.js?render=explicit:1
-api.js?render=explicit:1 Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://challenges.cloudflare.com') does not match the recipient window's origin ('https://kelloggfashion.com').
-er @ api.js?render=explicit:1
-ne @ api.js?render=explicit:1
-Fa @ api.js?render=explicit:1
-(anonymous) @ api.js?render=explicit:1
-(index):1  Failed to load resource: the server responded with a status of 403 ()
-(index):1 Refused to display 'https://challenges.cloudflare.com/' in a frame because it set 'X-Frame-Options' to 'sameorigin'.
->>>>>>> refactor-0627
+ prerendering static routes 
+Failed to get static paths from the Cloudflare prerender server (500: Internal Server Error).
+Error: Network connection lost.
+    at async Object.fetch (file:///H:/Kellogg/webApp-astro/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22)
+  Location:
+    H:\Kellogg\webApp-astro\node_modules\miniflare\dist\src\workers\core\entry.worker.js:4672:22
+  Stack trace:
+    at async Object.fetch (file:///H:/Kellogg/webApp-astro/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async BasicMinimalPluginContext.handler (file:///H:/Kellogg/webApp-astro/node_modules/astro/dist/core/build/static-build.js:132:11)
+    at async buildEnvironments (file:///H:/Kellogg/webApp-astro/node_modules/astro/dist/core/build/static-build.js:332:3)
+    at async AstroBuilder.build (file:///H:/Kellogg/webApp-astro/node_modules/astro/dist/core/build/index.js:158:5)
+    at async build (file:///H:/Kellogg/webApp-astro/node_modules/astro/dist/core/build/index.js:48:3)

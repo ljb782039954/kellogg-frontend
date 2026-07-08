@@ -1,35 +1,10 @@
 import type { SiteConfig } from "@core-webApp/types";
 import { createDefaultSiteRuntimeConfig } from "@core-webApp/config/siteRuntime";
 
-const tawkOrigins = [
-  "https://tawk.to",
-  "https://*.tawk.to",
-  "https://tawk.link",
-  "https://*.tawk.link",
-] as const;
-
 const runtimeConfig = createDefaultSiteRuntimeConfig({
   fallbackSiteUrl: "https://kelloggfashion.com",
   api: {
     assetHostnames: ["kelloggfashion.com", "kellogg-fashion.com"],
-  },
-  security: {
-    csp: {
-      scriptSrc: [
-        ...tawkOrigins,
-        "https://static.cloudflareinsights.com",
-      ],
-      styleSrc: tawkOrigins,
-      fontSrc: tawkOrigins,
-      imgSrc: tawkOrigins,
-      mediaSrc: tawkOrigins,
-      frameSrc: tawkOrigins,
-      connectSrc: [
-        ...tawkOrigins,
-        "wss://*.tawk.to",
-        "wss://*.tawk.link",
-      ],
-    },
   },
 });
 
