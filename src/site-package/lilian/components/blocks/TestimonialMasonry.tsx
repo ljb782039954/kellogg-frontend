@@ -30,13 +30,13 @@ export interface TestimonialMasonryProps {
 }
 
 export default function TestimonialMasonry({ content, lang = "en", reviews = [] }: TestimonialMasonryProps) {
-  const translate = createTranslate(lang);
+  const t = createTranslate(lang);
   const resolvedReviews = content
     ? content.reviews.map((item) => ({
         name: item.name,
         company: item.company,
         avatar: item.avatar,
-        text: translate(item.text),
+        text: t(item.text),
         rating: item.rating,
       }))
     : reviews;

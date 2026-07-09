@@ -1,27 +1,20 @@
-﻿import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
-export interface NumberCounterItemProps {
-  value: number;
-  suffix?: string;
-  label: string;
-}
-
-export interface NumberCounterItemContent {
+export interface NumberCounterItem {
   value: number;
   suffix?: string;
   label: Translation;
 }
 
 export interface NumberCounterContent {
-  stats: NumberCounterItemContent[];
+  stats: NumberCounterItem[];
 }
 
 export interface NumberCounterProps {
-  content?: NumberCounterContent;
-  lang?: Language;
-  stats?: NumberCounterItemProps[];
+  content: NumberCounterContent;
+  lang: Language;
 }
 
 function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string }) {
@@ -54,11 +47,15 @@ function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string
   return <span ref={ref}>{current}{suffix}</span>;
 }
 
-export default function NumberCounter({ content, lang = "en", stats = [] }: NumberCounterProps) {
+export default function NumberCounter({ content, lang = "en" }: NumberCounterProps) {
+  if (!content) return null;
+
   const translate = createTranslate(lang);
-  const resolvedStats = content
-    ? content.stats.map((item) => ({ value: item.value, suffix: item.suffix, label: translate(item.label) }))
-    : stats;
+  const resolvedStats = (content.stats || []).map((item) => ({
+    value: item.value,
+    suffix: item.suffix,
+    label: translate(item.label),
+  }));
 
   return (
     <section className="max-w-5xl mx-auto px-6 py-16">

@@ -1,4 +1,4 @@
-﻿import EmbeddedVideo, { type EmbeddedVideoAspect } from "@/runtime/components/EmbeddedVideo";
+import EmbeddedVideo, { type EmbeddedVideoAspect } from "@/runtime/components/EmbeddedVideo";
 import OptimizedImage from "@/runtime/components/OptimizedImage";
 import { getSafeVideoSource, type SafeVideoProvider, type SafeVideoSource } from "@/cms/lib/video";
 import type { Language, Translation } from "@/cms/types";
@@ -22,30 +22,22 @@ export interface FullscreenVideoPopupProps {
   content?: VideoPopupContent;
   lang?: Language;
   source?: SafeVideoSource | null;
-  title?: string;
-  coverImage?: string;
-  coverImageAlt?: string;
-  aspect?: EmbeddedVideoAspect;
-  caption?: string;
 }
 
 export default function FullscreenVideoPopup({
   content,
   lang = "en",
   source,
-  title = "Video",
-  coverImage,
-  coverImageAlt = "",
-  aspect = "auto",
-  caption = "",
 }: FullscreenVideoPopupProps) {
+  if (!content) return null;
+
   const translate = createTranslate(lang);
-  const resolvedSource = content ? getSafeVideoSource(content.url, { providers: EXTERNAL_VIDEO_PROVIDERS }) : source;
-  const resolvedTitle = content ? translate(content.title) : title;
-  const resolvedCoverImage = content?.coverImage || coverImage || "";
-  const resolvedCoverImageAlt = content ? translate(content.coverImageAlt) : coverImageAlt;
-  const resolvedAspect = content ? toEmbeddedVideoAspect(content.aspect) || "auto" : aspect;
-  const resolvedCaption = content ? translate(content.caption) : caption;
+  const resolvedSource = getSafeVideoSource(content.url, { providers: EXTERNAL_VIDEO_PROVIDERS }) || source;
+  const resolvedTitle = translate(content.title) || "Video";
+  const resolvedCoverImage = content.coverImage || "";
+  const resolvedCoverImageAlt = translate(content.coverImageAlt);
+  const resolvedAspect = toEmbeddedVideoAspect(content.aspect) || "auto";
+  const resolvedCaption = translate(content.caption);
   const [isPlaying, setIsPlaying] = useState(false);
   if (!resolvedSource) return null;
   const coverAspectClass = resolvedAspect === "portrait"

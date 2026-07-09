@@ -3,27 +3,24 @@ import { useState } from "react";
 import type { Language } from "@/cms/types";
 import type { LilianImageItem } from "../../types/common";
 import { createTranslate } from "../../utils/i18n";
-import type { ImageGridItemProps } from "./ImagePairGrid";
 
 export interface LightboxGalleryContent {
   images: LilianImageItem[];
 }
 
 export interface LightboxGalleryProps {
-  content?: LightboxGalleryContent;
-  lang?: Language;
-  images?: ImageGridItemProps[];
+  content: LightboxGalleryContent;
+  lang: Language;
 }
 
-export default function LightboxGallery({ content, lang = "en", images = [] }: LightboxGalleryProps) {
+export default function LightboxGallery({ content, lang = "en"}: LightboxGalleryProps) {
   const translate = createTranslate(lang);
-  const resolvedImages = content
-    ? content.images.map((item) => ({
+  const resolvedImages = content.images.map((item) => ({
         image: item.image,
         imageAlt: translate(item.imageAlt),
         caption: translate(item.caption),
       }))
-    : images;
+    ;
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const activeImage = openIndex === null ? null : resolvedImages[openIndex];
 

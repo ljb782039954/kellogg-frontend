@@ -1,4 +1,4 @@
-﻿import RichText from "@/runtime/components/RichText";
+import RichText from "@/runtime/components/RichText";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
@@ -10,19 +10,15 @@ export interface TextGridContent {
 }
 
 export interface TextGridProps {
-  content?: TextGridContent;
-  lang?: Language;
-  items?: Array<{
-    title: string;
-    text: string;
-  }>;
+  content: TextGridContent;
+  lang: Language;
 }
 
-export default function TextGrid({ content, lang = "en", items = [] }: TextGridProps) {
+export default function TextGrid({ content, lang = "en", }: TextGridProps) {
+  if (!content) return null;
+
   const translate = createTranslate(lang);
-  const resolvedItems = content
-    ? content.items.map((item) => ({ title: translate(item.title), text: translate(item.text) }))
-    : items;
+  const resolvedItems = (content.items || []).map((item) => ({ title: translate(item.title), text: translate(item.text) }));
 
   return (
     <section className="max-w-5xl mx-auto px-6 py-10">

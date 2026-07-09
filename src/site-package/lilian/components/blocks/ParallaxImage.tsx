@@ -1,4 +1,4 @@
-﻿import OptimizedImage from "@/runtime/components/OptimizedImage";
+import OptimizedImage from "@/runtime/components/OptimizedImage";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
@@ -11,13 +11,8 @@ export interface ParallaxImageContent {
 }
 
 export interface ParallaxImageProps {
-  content?: ParallaxImageContent;
-  lang?: Language;
-  image?: string;
-  imageAlt?: string;
-  eyebrow?: string;
-  titleText?: string;
-  height?: "medium" | "large";
+  content: ParallaxImageContent;
+  lang: Language;
 }
 
 const heightClass = {
@@ -28,18 +23,15 @@ const heightClass = {
 export default function ParallaxImage({
   content,
   lang = "en",
-  image,
-  imageAlt = "",
-  eyebrow = "",
-  titleText = "",
-  height = "medium",
 }: ParallaxImageProps) {
+  if (!content) return null;
+
   const translate = createTranslate(lang);
-  const resolvedImage = content?.image || image || "";
-  const resolvedTitle = content ? translate(content.title) : titleText;
-  const resolvedEyebrow = content ? translate(content.eyebrow) : eyebrow;
-  const resolvedImageAlt = content ? translate(content.imageAlt, resolvedTitle) : imageAlt;
-  const resolvedHeight = content?.height || height;
+  const resolvedImage = content.image || "";
+  const resolvedTitle = translate(content.title);
+  const resolvedEyebrow = translate(content.eyebrow);
+  const resolvedImageAlt = translate(content.imageAlt, resolvedTitle);
+  const resolvedHeight = content.height || "medium";
 
   return (
     <section className={`relative ${heightClass[resolvedHeight]}`}>

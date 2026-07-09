@@ -1,33 +1,31 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
-export interface FaqAccordionItemContent {
+export interface FaqAccordionItem {
   question: Translation;
   answer: Translation;
 }
 
 export interface FaqAccordionContent {
   title?: Translation;
-  items: FaqAccordionItemContent[];
+  items: FaqAccordionItem[];
 }
 
 export interface FaqAccordionProps {
-  content?: FaqAccordionContent;
-  lang?: Language;
-  title?: string;
-  items?: Array<{
-    question: string;
-    answer: string;
-  }>;
+  content: FaqAccordionContent;
+  lang: Language;
 }
 
-export default function FaqAccordion({ content, lang = "en", title, items = [] }: FaqAccordionProps) {
-  const translate = createTranslate(lang);
-  const resolvedTitle = content ? translate(content.title) : title;
-  const resolvedItems = content
-    ? content.items.map((item) => ({ question: translate(item.question), answer: translate(item.answer) }))
-    : items;
+export default function FaqAccordion({ content, lang = "en" }: FaqAccordionProps) {
+  if (!content) return null;
+
+  const t = createTranslate(lang);
+  const resolvedTitle = t(content.title);
+  const resolvedItems = (content.items || []).map((item) => ({
+    question: t(item.question),
+    answer: t(item.answer),
+  }));
   const [open, setOpen] = useState<number | null>(0);
 
   return (

@@ -8,7 +8,7 @@ import type {
   ProductGridSortId,
 } from "../components/blocks";
 import { createTranslate } from "../utils/i18n";
-import { toProductCardViewProps } from "./productCardAdapter";
+import { toProductCardViewProps } from "../components/base/ProductCard";
 
 export interface ProductGridContent {
   title?: Translation;

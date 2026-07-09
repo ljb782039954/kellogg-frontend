@@ -1,4 +1,4 @@
-﻿import OptimizedImage from "@/runtime/components/OptimizedImage";
+import OptimizedImage from "@/runtime/components/OptimizedImage";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
@@ -9,11 +9,8 @@ export interface FullWidthBannerContent {
 }
 
 export interface FullWidthBannerProps {
-  content?: FullWidthBannerContent;
-  lang?: Language;
-  image?: string;
-  imageAlt?: string;
-  height?: "small" | "medium" | "large";
+  content: FullWidthBannerContent;
+  lang: Language;
 }
 
 const heightClass = {
@@ -25,14 +22,13 @@ const heightClass = {
 export default function FullWidthBanner({
   content,
   lang = "en",
-  image,
-  imageAlt = "Banner",
-  height = "medium",
 }: FullWidthBannerProps) {
+  if (!content) return null;
+
   const translate = createTranslate(lang);
-  const resolvedImage = content?.image || image || "";
-  const resolvedImageAlt = content ? translate(content.imageAlt, "Banner") : imageAlt;
-  const resolvedHeight = content?.height || height;
+  const resolvedImage = content.image || "";
+  const resolvedImageAlt = translate(content.imageAlt, "Banner");
+  const resolvedHeight = content.height || "medium";
 
   return (
     <section className="w-full py-12">

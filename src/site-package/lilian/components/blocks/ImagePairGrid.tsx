@@ -1,18 +1,7 @@
-﻿import OptimizedImage from "@/runtime/components/OptimizedImage";
+import OptimizedImage from "@/runtime/components/OptimizedImage";
 import type { Language } from "@/cms/types";
 import type { LilianImageItem } from "../../types/common";
 import { createTranslate } from "../../utils/i18n";
-
-export interface ImageQuadGridProps {
-  images: ImageGridItemProps[];
-}
-
-
-export interface ImageGridItemProps {
-  image: string;
-  imageAlt?: string;
-  caption?: string;
-}
 
 export interface ImagePairGridContent {
   images: [LilianImageItem, LilianImageItem];
@@ -21,18 +10,17 @@ export interface ImagePairGridContent {
 export interface ImagePairGridProps {
   content?: ImagePairGridContent;
   lang?: Language;
-  images?: [ImageGridItemProps, ImageGridItemProps];
 }
 
-export default function ImagePairGrid({ content, lang = "en", images }: ImagePairGridProps) {
+export default function ImagePairGrid({ content, lang = "en" }: ImagePairGridProps) {
+  if (!content) return null;
+
   const translate = createTranslate(lang);
-  const resolvedImages = content
-    ? content.images.map((item) => ({
-        image: item.image,
-        imageAlt: translate(item.imageAlt),
-        caption: translate(item.caption),
-      })) as [ImageGridItemProps, ImageGridItemProps]
-    : images || [];
+  const resolvedImages = (content.images || []).map((item) => ({
+    image: item.image,
+    imageAlt: translate(item.imageAlt),
+    caption: translate(item.caption),
+  }));
 
   return (
     <section className="max-w-6xl mx-auto px-6 py-12">

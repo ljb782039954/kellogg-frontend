@@ -1,4 +1,4 @@
-﻿import RichText from "@/runtime/components/RichText";
+import RichText from "@/runtime/components/RichText";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
@@ -10,27 +10,21 @@ export interface MainHeadingContent {
 }
 
 export interface MainHeadingProps {
-  content?: MainHeadingContent;
-  lang?: Language;
-  titleText?: string;
-  subtitleText?: string;
-  descriptionText?: string;
-  align?: "left" | "center";
+  content: MainHeadingContent;
+  lang: Language;
 }
 
 export default function MainHeading({
-  titleText,
-  subtitleText,
-  descriptionText,
   content,
   lang = "en",
-  align = "center",
 }: MainHeadingProps) {
+  if (!content) return null;
+
   const translate = createTranslate(lang);
-  const resolvedTitle = content ? translate(content.title) : titleText || "";
-  const resolvedSubtitle = content ? translate(content.subtitle) : subtitleText;
-  const resolvedDescription = content ? translate(content.description) : descriptionText;
-  const resolvedAlign = content?.align || align;
+  const resolvedTitle = translate(content.title) || "";
+  const resolvedSubtitle = translate(content.subtitle);
+  const resolvedDescription = translate(content.description);
+  const resolvedAlign = content.align || "center";
 
   return (
     <section className={`max-w-4xl mx-auto px-6 py-10 space-y-6 ${resolvedAlign === "center" ? "text-center" : ""}`}>

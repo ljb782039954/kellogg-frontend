@@ -1,4 +1,4 @@
-﻿import RichText from "@/runtime/components/RichText";
+import RichText from "@/runtime/components/RichText";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
@@ -10,12 +10,8 @@ export interface RichTextBlockContent {
 }
 
 export interface RichTextBlockProps {
-  content?: RichTextBlockContent;
-  lang?: Language;
-  titleText?: string;
-  contentText?: string;
-  align?: "left" | "center";
-  maxWidth?: "narrow" | "medium" | "wide";
+  content: RichTextBlockContent;
+  lang: Language;
 }
 
 const widthClass = {
@@ -25,18 +21,16 @@ const widthClass = {
 };
 
 export default function RichTextBlock({
-  titleText = "",
-  contentText,
   content,
   lang = "en",
-  align = "left",
-  maxWidth = "medium",
 }: RichTextBlockProps) {
+  if (!content) return null;
+
   const translate = createTranslate(lang);
-  const resolvedTitle = content ? translate(content.title) : titleText;
-  const resolvedContent = content ? translate(content.content) : contentText || "";
-  const resolvedAlign = content?.align || align;
-  const resolvedMaxWidth = content?.maxWidth || maxWidth;
+  const resolvedTitle = translate(content.title);
+  const resolvedContent = translate(content.content) || "";
+  const resolvedAlign = content.align || "left";
+  const resolvedMaxWidth = content.maxWidth || "medium";
 
   return (
     <section className="px-6 py-12">

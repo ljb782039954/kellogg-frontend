@@ -20,7 +20,7 @@ export { default as ImageCarousel } from "./ImageCarousel";
 export { default as ImagePairGrid } from "./ImagePairGrid";
 export { default as ImageTextSplit } from "./ImageTextSplit";
 export { default as Inquiry } from "../inquiry/InquirySection";
-export type { InquiryProps } from "../inquiry/InquirySection";
+export type { InquirySectionProps as InquiryProps } from "../inquiry/InquirySection";
 export { default as LightboxGallery } from "./LightboxGallery";
 export { default as MainHeading } from "./MainHeading";
 export { default as MasonryGallery } from "./MasonryGallery";

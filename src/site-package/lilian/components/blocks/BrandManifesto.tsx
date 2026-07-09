@@ -1,4 +1,4 @@
-﻿import type { Language, Translation } from "@/cms/types";
+import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
 export interface BrandManifestoContent {
@@ -9,27 +9,21 @@ export interface BrandManifestoContent {
 }
 
 export interface BrandManifestoProps {
-  content?: BrandManifestoContent;
-  lang?: Language;
-  eyebrow?: string;
-  quote?: string;
-  attribution?: string;
-  backgroundColor?: string;
+  content: BrandManifestoContent;
+  lang: Language;
 }
 
 export default function BrandManifesto({
   content,
   lang = "en",
-  eyebrow,
-  quote,
-  attribution,
-  backgroundColor = "var(--color-ink)",
 }: BrandManifestoProps) {
+  if (!content) return null;
+
   const translate = createTranslate(lang);
-  const resolvedEyebrow = content ? translate(content.eyebrow) : eyebrow;
-  const resolvedQuote = content ? translate(content.quote) : quote || "";
-  const resolvedAttribution = content ? translate(content.attribution) : attribution;
-  const resolvedBackgroundColor = content?.backgroundColor || backgroundColor;
+  const resolvedEyebrow = translate(content.eyebrow);
+  const resolvedQuote = translate(content.quote) || "";
+  const resolvedAttribution = translate(content.attribution);
+  const resolvedBackgroundColor = content.backgroundColor || "var(--color-ink)";
 
   return (
     <section className="py-20" style={{ background: resolvedBackgroundColor }}>

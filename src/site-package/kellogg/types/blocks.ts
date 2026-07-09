@@ -5,7 +5,7 @@ import type { ProductGridContent } from "../components/blocks/ProductGrid";
 export type { FeaturedProductsContent, NewArrivalsContent, ProductGridContent };
 
 // Import component content types and props directly
-import type { BrandValuesProps } from "../components/blocks/BrandValues";
+import type { BrandValuesContent } from "../components/blocks/BrandValues";
 import type { CarouselContent } from "../components/blocks/Carousel";
 import type { CategoriesContent } from "../components/blocks/Categories";
 import type { CtaBannerContent } from "../components/blocks/CtaBanner";
@@ -28,7 +28,7 @@ import type { VideoSectionContent } from "../components/blocks/VideoSection";
 // }
 
 export interface BlockContentMap {
-  brandValues: Omit<BrandValuesProps, "lang">;
+  brandValues: BrandValuesContent;
   carousel: CarouselContent;
   categories: CategoriesContent;
   ctaBanner: CtaBannerContent;

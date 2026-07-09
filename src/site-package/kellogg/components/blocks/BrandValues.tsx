@@ -11,14 +11,17 @@ export interface BrandItem {
   description: Translation;
 }
 
-export interface BrandValuesProps {
+export interface BrandValuesContent{
   title?: Translation;
   subtitle?: Translation;
   items?: BrandItem[];
+}
+export interface BrandValuesProps {
+  content: BrandValuesContent;
   lang: Language;
 }
 
-export default function BrandValues({ title, subtitle, items = [], lang }: BrandValuesProps) {
+export default function BrandValues({ content: {title, subtitle, items = []}, lang }: BrandValuesProps) {
   if (items.length === 0) return null;
   const t = createTranslate(lang);
 

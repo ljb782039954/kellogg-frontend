@@ -1,4 +1,4 @@
-﻿import OptimizedImage from "@/runtime/components/OptimizedImage";
+import OptimizedImage from "@/runtime/components/OptimizedImage";
 import RichText from "@/runtime/components/RichText";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
@@ -13,33 +13,23 @@ export interface ImageTextSplitContent {
 }
 
 export interface ImageTextSplitProps {
-  content?: ImageTextSplitContent;
-  lang?: Language;
-  eyebrow?: string;
-  titleText?: string;
-  contentText?: string;
-  image?: string;
-  imageAlt?: string;
-  imagePosition?: "left" | "right";
+  content: ImageTextSplitContent;
+  lang: Language;
 }
 
 export default function ImageTextSplit({
   content,
   lang = "en",
-  eyebrow = "",
-  titleText = "",
-  contentText = "",
-  image,
-  imageAlt = "",
-  imagePosition = "right",
 }: ImageTextSplitProps) {
+  if (!content) return null;
+
   const translate = createTranslate(lang);
-  const resolvedEyebrow = content ? translate(content.eyebrow) : eyebrow;
-  const resolvedTitle = content ? translate(content.title) : titleText;
-  const resolvedContent = content ? translate(content.content) : contentText;
-  const resolvedImage = content?.image || image || "";
-  const resolvedImageAlt = content ? translate(content.imageAlt, resolvedTitle) : imageAlt;
-  const resolvedImagePosition = content?.imagePosition || imagePosition;
+  const resolvedEyebrow = translate(content.eyebrow);
+  const resolvedTitle = translate(content.title);
+  const resolvedContent = translate(content.content);
+  const resolvedImage = content.image || "";
+  const resolvedImageAlt = translate(content.imageAlt, resolvedTitle);
+  const resolvedImagePosition = content.imagePosition || "right";
   const imageFirst = resolvedImagePosition === "left";
 
   return (

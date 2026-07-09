@@ -1,4 +1,4 @@
-﻿import OptimizedImage from "@/runtime/components/OptimizedImage";
+import OptimizedImage from "@/runtime/components/OptimizedImage";
 import RichText from "@/runtime/components/RichText";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
@@ -15,39 +15,25 @@ export interface BrochureDownloadContent {
 }
 
 export interface BrochureDownloadProps {
-  content?: BrochureDownloadContent;
-  lang?: Language;
-  image?: string;
-  imageAlt?: string;
-  eyebrow?: string;
-  titleText?: string;
-  descriptionText?: string;
-  buttonText?: string;
-  fileMeta?: string;
-  href?: string;
+  content: BrochureDownloadContent;
+  lang: Language;
 }
 
 export default function BrochureDownload({
   content,
   lang = "en",
-  image,
-  imageAlt = "",
-  eyebrow = "",
-  titleText = "",
-  descriptionText = "",
-  buttonText = "",
-  fileMeta = "",
-  href = "#",
 }: BrochureDownloadProps) {
+  if (!content) return null;
+
   const translate = createTranslate(lang);
-  const resolvedImage = content?.image || image || "";
-  const resolvedTitle = content ? translate(content.title) : titleText;
-  const resolvedImageAlt = content ? translate(content.imageAlt, resolvedTitle) : imageAlt;
-  const resolvedEyebrow = content ? translate(content.eyebrow) : eyebrow;
-  const resolvedDescription = content ? translate(content.description) : descriptionText;
-  const resolvedButtonText = content ? translate(content.buttonText) : buttonText;
-  const resolvedFileMeta = content ? translate(content.fileMeta) : fileMeta;
-  const resolvedHref = content?.href || href;
+  const resolvedImage = content.image || "";
+  const resolvedTitle = translate(content.title);
+  const resolvedImageAlt = translate(content.imageAlt, resolvedTitle);
+  const resolvedEyebrow = translate(content.eyebrow);
+  const resolvedDescription = translate(content.description);
+  const resolvedButtonText = translate(content.buttonText);
+  const resolvedFileMeta = translate(content.fileMeta);
+  const resolvedHref = content.href || "#";
 
   return (
     <section className="max-w-4xl mx-auto px-6 py-12">

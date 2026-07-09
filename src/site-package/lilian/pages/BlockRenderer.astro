@@ -2,13 +2,8 @@
 import { formatPrice } from "@/cms/lib/currency";
 import type { Language } from "@/cms/types";
 import type { PageBlock } from "../types";
-import {
-  toCategoriesViewProps,
-  toProductCardViewProps,
-} from "../block-adapters";
-import type {
-  CategoriesContent,
-} from "../block-adapters";
+import { toProductCardViewProps } from "../components/base/ProductCard";
+import type { CategoriesContent } from "../components/blocks/Categories";
 import {
   BeforeAfterSlider,
   // BlogSidebar,
@@ -66,11 +61,6 @@ const productCardProps = block.type === "productCard" && data.product
     })
   : null;
 
-const categoriesProps = (
-  block.type === "categories"
-    ? toCategoriesViewProps(content as CategoriesContent, { categories: data.categories ?? [], lang })
-    : {}
-) as ReturnType<typeof toCategoriesViewProps>;
 
 const renderedBlockTypes = {
   productCard: true,
@@ -108,7 +98,7 @@ const renderedBlockTypes = {
 const knownBlockTypes = new Set(Object.keys(renderedBlockTypes));
 ---
 
-{block.type === "categories" && <Categories {...categoriesProps} />}
+{block.type === "categories" && <Categories content={{ ...content, categories: data.categories || [] }} lang={lang} />}
 {block.type === "newArrivals" && <NewArrivalsContainer {...content} {...data} lang={lang} />}
 {block.type === "featuredProducts" && <FeaturedProductsContainer {...content} {...data} lang={lang} />}
 {block.type === "productGrid" && <ProductGridContainer {...content} {...data} lang={lang} client:load />}

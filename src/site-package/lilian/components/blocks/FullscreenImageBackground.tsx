@@ -1,4 +1,4 @@
-﻿import OptimizedImage from "@/runtime/components/OptimizedImage";
+import OptimizedImage from "@/runtime/components/OptimizedImage";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
@@ -11,30 +11,22 @@ export interface FullscreenImageBackgroundContent {
 }
 
 export interface FullscreenImageBackgroundProps {
-  content?: FullscreenImageBackgroundContent;
-  lang?: Language;
-  image?: string;
-  imageAlt?: string;
-  eyebrow?: string;
-  titleText?: string;
-  overlay?: boolean;
+  content: FullscreenImageBackgroundContent;
+  lang: Language;
 }
 
 export default function FullscreenImageBackground({
   content,
   lang = "en",
-  image,
-  imageAlt = "",
-  eyebrow = "",
-  titleText = "",
-  overlay = true,
 }: FullscreenImageBackgroundProps) {
+  if (!content) return null;
+
   const translate = createTranslate(lang);
-  const resolvedImage = content?.image || image || "";
-  const resolvedTitle = content ? translate(content.title) : titleText;
-  const resolvedEyebrow = content ? translate(content.eyebrow) : eyebrow;
-  const resolvedImageAlt = content ? translate(content.imageAlt, resolvedTitle || resolvedEyebrow) : imageAlt;
-  const resolvedOverlay = content?.overlay ?? overlay;
+  const resolvedImage = content.image || "";
+  const resolvedTitle = translate(content.title);
+  const resolvedEyebrow = translate(content.eyebrow);
+  const resolvedImageAlt = translate(content.imageAlt, resolvedTitle || resolvedEyebrow);
+  const resolvedOverlay = content.overlay ?? true;
 
   return (
     <section className="relative overflow-hidden h-[60vh]">

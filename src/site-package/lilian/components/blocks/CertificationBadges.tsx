@@ -1,15 +1,9 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import RichText from "@/runtime/components/RichText";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
-export interface CertificationBadgeItemProps {
-  name: string;
-  fullName?: string;
-  description?: string;
-}
-
-export interface CertificationBadgeItemContent {
+export interface CertificationBadgeItem {
   name: string;
   fullName?: Translation;
   description?: Translation;
@@ -17,26 +11,27 @@ export interface CertificationBadgeItemContent {
 
 export interface CertificationBadgesContent {
   eyebrow?: Translation;
-  certifications: CertificationBadgeItemContent[];
+  certifications: CertificationBadgeItem[];
 }
 
 export interface CertificationBadgesProps {
-  content?: CertificationBadgesContent;
-  lang?: Language;
-  eyebrow?: string;
-  certifications?: CertificationBadgeItemProps[];
+  content: CertificationBadgesContent;
+  lang: Language;
 }
 
-export default function CertificationBadges({ content, lang = "en", eyebrow = "", certifications = [] }: CertificationBadgesProps) {
+export default function CertificationBadges({
+  content,
+  lang = "en",
+}: CertificationBadgesProps) {
+  if (!content) return null;
+
   const translate = createTranslate(lang);
-  const resolvedEyebrow = content ? translate(content.eyebrow) : eyebrow;
-  const resolvedCertifications = content
-    ? content.certifications.map((item) => ({
-        name: item.name,
-        fullName: translate(item.fullName),
-        description: translate(item.description),
-      }))
-    : certifications;
+  const resolvedEyebrow = translate(content.eyebrow);
+  const resolvedCertifications = (content.certifications || []).map((item) => ({
+    name: item.name,
+    fullName: translate(item.fullName),
+    description: translate(item.description),
+  }));
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (

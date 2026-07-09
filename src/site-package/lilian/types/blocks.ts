@@ -1,12 +1,19 @@
 import type {
   BlogGridContent,
-  CategoriesContent,
-  FeaturedProductsContent,
-  InquiryContent,
-  NewArrivalsContent,
-  ProductCardContent,
   ProductGridContent,
 } from "../block-adapters";
+
+export interface ProductCardContent {
+  productId?: number;
+}
+
+export interface InquiryContent {}
+import type { CategoriesContent } from "../components/blocks/Categories";
+export type { CategoriesContent };
+
+import type { FeaturedProductsContent } from "../components/blocks/FeaturedProducts";
+import type { NewArrivalsContent } from "../components/blocks/NewArrivals";
+export type { FeaturedProductsContent, NewArrivalsContent };
 import type { BeforeAfterSliderContent } from "../components/blocks/BeforeAfterSlider";
 import type { BrochureDownloadContent } from "../components/blocks/BrochureDownload";
 import type { BrandManifestoContent } from "../components/blocks/BrandManifesto";

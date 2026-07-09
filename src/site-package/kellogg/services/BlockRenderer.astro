@@ -27,17 +27,6 @@ import {
 } from "../components/blocks-containers";
 import type { BlockType } from "../types";
 
-type BlockWithData = PageBlock & {
-  data?: Record<string, any>;
-};
-
-interface Props {
-  block: BlockWithData;
-  lang: Language;
-  api: {
-    getOptimizedImageUrl: (src: string, width: number) => string;
-  };
-}
 
 const { block, lang, api } = Astro.props;
 const content = block.content ?? {};

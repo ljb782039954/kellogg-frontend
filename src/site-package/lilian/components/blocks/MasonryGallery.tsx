@@ -3,13 +3,6 @@ import type { Language } from "@/cms/types";
 import type { LilianImageItem } from "../../types/common";
 import { createTranslate } from "../../utils/i18n";
 
-export interface MasonryGalleryImageProps {
-  image: string;
-  imageAlt?: string;
-  caption?: string;
-  heightClass?: string;
-}
-
 export interface MasonryGalleryImageContent extends LilianImageItem {
   heightClass?: string;
 }
@@ -19,21 +12,18 @@ export interface MasonryGalleryContent {
 }
 
 export interface MasonryGalleryProps {
-  content?: MasonryGalleryContent;
-  lang?: Language;
-  images?: MasonryGalleryImageProps[];
+  content: MasonryGalleryContent;
+  lang: Language;
 }
 
-export default function MasonryGallery({ content, lang = "en", images = [] }: MasonryGalleryProps) {
+export default function MasonryGallery({ content, lang = "en"}: MasonryGalleryProps) {
   const translate = createTranslate(lang);
-  const resolvedImages = content
-    ? content.images.map((item) => ({
+  const resolvedImages = content.images.map((item) => ({
         image: item.image,
         imageAlt: translate(item.imageAlt),
         caption: translate(item.caption),
         heightClass: item.heightClass,
-      }))
-    : images;
+      }));
 
   return (
     <section className="max-w-6xl mx-auto px-6 py-12">

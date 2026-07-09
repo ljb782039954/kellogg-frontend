@@ -1,16 +1,10 @@
-﻿import * as LucideIcons from "lucide-react";
+import * as LucideIcons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import RichText from "@/runtime/components/RichText";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
 export interface FeatureListItem {
-  icon: string;
-  titleText: string;
-  descriptionText: string;
-}
-
-export interface FeatureListItemContent {
   icon: string;
   title: Translation;
   description: Translation;
@@ -19,28 +13,28 @@ export interface FeatureListItemContent {
 export interface FeatureListContent {
   title?: Translation;
   subtitle?: Translation;
-  items?: FeatureListItemContent[];
-}
-
-export interface FeatureListProps {
-  content?: FeatureListContent;
-  lang?: Language;
-  titleText?: string;
-  subtitleText?: string;
   items?: FeatureListItem[];
 }
 
-export default function FeatureList({ content, lang = "en", titleText = "", subtitleText = "", items = [] }: FeatureListProps) {
+export interface FeatureListProps {
+  content: FeatureListContent;
+  lang: Language;
+}
+
+export default function FeatureList({
+  content,
+  lang = "en",
+}: FeatureListProps) {
+  if (!content) return null;
+
   const translate = createTranslate(lang);
-  const resolvedTitle = content ? translate(content.title) : titleText;
-  const resolvedSubtitle = content ? translate(content.subtitle) : subtitleText;
-  const resolvedItems = content
-    ? (content.items || []).map((item) => ({
-        icon: item.icon,
-        titleText: translate(item.title),
-        descriptionText: translate(item.description),
-      }))
-    : items;
+  const resolvedTitle = translate(content.title);
+  const resolvedSubtitle = translate(content.subtitle);
+  const resolvedItems = (content.items || []).map((item) => ({
+    icon: item.icon,
+    titleText: translate(item.title),
+    descriptionText: translate(item.description),
+  }));
 
   if (resolvedItems.length === 0) return null;
 

@@ -3,11 +3,9 @@ import type { SiteApiClient } from "@core-webApp/services/apiClient";
 import type { CmsPageBlock } from "@/cms/types";
 import type {
   BlogGridContent,
-  FeaturedProductsContent,
-  NewArrivalsContent,
-  ProductCardContent,
   ProductGridContent,
 } from "../block-adapters";
+import type { FeaturedProductsContent, NewArrivalsContent, ProductCardContent } from "../types/blocks";
 
 interface LoadBlockDataOptions {
   block: CmsPageBlock;

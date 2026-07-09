@@ -15,10 +15,6 @@ function toEmbeddedVideoAspect(aspect: LilianExternalVideoItem["aspect"]): Embed
 }
 
 export interface VideoCardProps {
-  title?: string;
-  description?: string;
-  coverImage: string;
-  coverImageAlt?: string;
   aspect?: EmbeddedVideoAspect;
   source?: SafeVideoSource | null;
 }
@@ -28,23 +24,20 @@ export interface VideoGridContent {
 }
 
 export interface VideoGridProps {
-  content?: VideoGridContent;
-  lang?: Language;
-  items?: VideoCardProps[];
+  content: VideoGridContent;
+  lang: Language;
 }
 
-export default function VideoGrid({ content, lang = "en", items = [] }: VideoGridProps) {
+export default function VideoGrid({ content, lang = "en"}: VideoGridProps) {
   const translate = createTranslate(lang);
-  const resolvedItems = content
-    ? content.items.map((item) => ({
+  const resolvedItems = content.items.map((item) => ({
         title: translate(item.title),
         description: translate(item.description),
         coverImage: item.coverImage,
         coverImageAlt: translate(item.coverImageAlt),
         aspect: toEmbeddedVideoAspect(item.aspect),
         source: getSafeVideoSource(item.url, { providers: EXTERNAL_VIDEO_PROVIDERS }),
-      }))
-    : items;
+      }));
   const [activeVideo, setActiveVideo] = useState<VideoCardProps | null>(null);
 
   return (
@@ -90,7 +83,7 @@ export default function VideoGrid({ content, lang = "en", items = [] }: VideoGri
           <div className="w-full max-w-5xl" onClick={(event) => event.stopPropagation()}>
             <EmbeddedVideo
               source={activeVideo.source}
-              title={activeVideo.title || "Video"}
+              title={activeVideo.aspect.title|| "Video"}
               aspect={activeVideo.aspect}
               className="rounded-md shadow-2xl"
             />
