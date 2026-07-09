@@ -1,7 +1,6 @@
-import { ProductVideo } from "../base";
+import VideoEmbed, { getVideoEmbedSource } from "@/runtime/components/VideoEmbed";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
-import { toProductVideoSource } from "../../block-adapters/productMediaAdapter";
 
 export interface VideoSectionValues {
   videoUrl?: string;
@@ -34,9 +33,9 @@ export default function VideoSection({
   const translate = createTranslate(lang);
   const titleText = title ? translate(title) : "";
   const subtitleText = subtitle ? translate(subtitle) : "";
-  const videoSource = toProductVideoSource(videoUrl || values?.videoUrl);
+  const resolvedVideoUrl = videoUrl || values?.videoUrl;
 
-  if (!videoSource) return null;
+  if (!getVideoEmbedSource(resolvedVideoUrl)) return null;
 
   return (
     <section className="py-20 bg-white">
@@ -49,9 +48,7 @@ export default function VideoSection({
               <div className="w-12 h-1 bg-gray-900 mx-auto rounded-full mt-6" />
             </div>
           )}
-          <div className="shadow-2xl rounded-[40px] overflow-hidden">
-            <ProductVideo source={videoSource} />
-          </div>
+          <VideoEmbed url={resolvedVideoUrl} title={titleText || "Video"} />
         </div>
       </div>
     </section>

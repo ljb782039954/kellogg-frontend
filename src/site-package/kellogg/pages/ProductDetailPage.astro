@@ -1,10 +1,8 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
 import ProductDetailView from "./productDetail/ProductDetailView";
-import { ProductCardStatic as ProductCard, ProductCustomFields, ProductVideo, SectionHeader } from "../components/base";
-import {
-  toProductVideoSources,
-} from "../block-adapters";
+import VideoEmbed, { getVideoEmbedSource } from "@/runtime/components/VideoEmbed";
+import { ProductCardStatic as ProductCard, ProductCustomFields, SectionHeader } from "../components/base";
 import { PageService } from "@core-webApp/services/pageService";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
@@ -34,7 +32,7 @@ const product: Product = {
   category: pageData.product.categoryName || pageData.product.category,
 } as any;
 
-const productVideoSources = toProductVideoSources(product.videos);
+const productVideoUrls = (product.videos || []).filter((url) => Boolean(getVideoEmbedSource(url)));
 
 const seo = {
   title: t(product.name),
@@ -58,12 +56,12 @@ const seo = {
 
       <ProductCustomFields customFields={product.customFields} lang={lang} />
 
-      {productVideoSources.length > 0 && (
+      {productVideoUrls.length > 0 && (
         <section class="py-24 border-t border-gray-100">
           <div class="max-w-4xl mx-auto">
             <SectionHeader titleText={t({ zh: "视频展示", en: "Video Showcase" })} theme="light" />
             <div class="grid grid-cols-1 gap-12 mt-12">
-              {productVideoSources.map((source) => <ProductVideo source={source} />)}
+              {productVideoUrls.map((url) => <VideoEmbed url={url} title={t(product.name)} />)}
             </div>
           </div>
         </section>
