@@ -1,18 +1,22 @@
 import type { CSSProperties } from "react";
+import type { Language, Translation, NavLink } from "@/cms/types";
+import { createTranslate } from "../../utils/i18n";
 
-interface CtaButton {
-  href: string;
-  label: string;
+// 实际的内容编辑栏
+export interface CtaBannerContent {
+  title?: Translation;
+  subtitle?: Translation;
+  primaryButton?: NavLink;
+  secondaryButton?: NavLink;
+  backgroundImage?: string;
+  backgroundColor?: string;
+  alignment?: "left" | "center" | "right";
 }
 
 export interface CtaBannerProps {
-  titleText?: string;
-  subtitleText?: string;
-  primaryButton?: CtaButton;
-  secondaryButton?: CtaButton;
-  backgroundImageUrl?: string;
-  backgroundColor?: string;
-  alignment?: "left" | "center" | "right";
+  content: CtaBannerContent;
+  getImageUrl?: (src: string, width: number) => string;
+  lang: Language;
 }
 
 const alignmentClass = {
@@ -22,14 +26,33 @@ const alignmentClass = {
 };
 
 export default function CtaBanner({
-  titleText = "",
-  subtitleText = "",
-  primaryButton,
-  secondaryButton,
-  backgroundImageUrl = "",
-  backgroundColor,
-  alignment = "center",
+  content,
+  getImageUrl,
+  lang,
 }: CtaBannerProps) {
+  const translate = createTranslate(lang);
+  const titleText = content.title ? translate(content.title) : "";
+  const subtitleText = content.subtitle ? translate(content.subtitle) : "";
+  
+  const alignment = content.alignment || "center";
+  const backgroundColor = content.backgroundColor;
+  const backgroundImageUrl = content.backgroundImage && getImageUrl
+    ? getImageUrl(content.backgroundImage, 1920)
+    : (content.backgroundImage || "");
+
+  const primaryButton = content.primaryButton?.name
+    ? {
+        href: content.primaryButton.href,
+        label: translate(content.primaryButton.name),
+      }
+    : undefined;
+
+  const secondaryButton = content.secondaryButton?.name
+    ? {
+        href: content.secondaryButton.href,
+        label: translate(content.secondaryButton.name),
+      }
+    : undefined;
   const backgroundStyle: CSSProperties | undefined = backgroundColor ? { backgroundColor } : undefined;
 
   return (

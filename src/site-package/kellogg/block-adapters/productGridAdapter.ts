@@ -1,11 +1,6 @@
 import type { Language } from "@/cms/types";
 
 // 迁移类型
-export interface ProductGridContent {
-  itemsPerPage?: number;
-  category?: string;
-}
-
 import type { Category, Product, SortOption } from "@/cms/types";
 import { toProductCardStaticProps } from "./productCardAdapter";
 import type {

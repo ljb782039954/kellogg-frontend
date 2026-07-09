@@ -8,7 +8,6 @@ import type {
   ProductGridContent,
 } from "../block-adapters";
 import type { BeforeAfterSliderContent } from "../components/blocks/BeforeAfterSlider";
-import type { BlogSidebarContent } from "../pages/blog/BlogSidebar";
 import type { BrochureDownloadContent } from "../components/blocks/BrochureDownload";
 import type { BrandManifestoContent } from "../components/blocks/BrandManifesto";
 import type { Categories2Content } from "../components/blocks/Categories2";
@@ -56,7 +55,6 @@ export interface BlockContentMap {
   numberCounter: NumberCounterContent;
   testimonialMasonry: TestimonialMasonryContent;
   faqAccordion: FaqAccordionContent;
-  blogSidebar: BlogSidebarContent;
   certificationBadges: CertificationBadgesContent;
   brochureDownload: BrochureDownloadContent;
   mainHeading: MainHeadingContent;

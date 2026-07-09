@@ -1,11 +1,16 @@
 import { ProductCardStatic, type ProductCardStaticProps } from "../base";
+import type { Translation } from "@/cms/types";
 
 export interface FeaturedProductCard {
   id: string;
   href: string;
   card: ProductCardStaticProps;
 }
-
+export interface FeaturedProductsContent {
+  title?: Translation;
+  subtitle?: Translation;
+  maxItems?: number;
+}
 export interface FeaturedProductsProps {
   titleText?: string;
   subtitleText?: string;
@@ -13,7 +18,7 @@ export interface FeaturedProductsProps {
 }
 
 export default function FeaturedProducts({
-  titleText = "",
+    titleText = "",
   subtitleText = "",
   cards = [],
 }: FeaturedProductsProps) {

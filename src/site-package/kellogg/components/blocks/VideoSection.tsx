@@ -1,12 +1,41 @@
-import { ProductVideo, type ProductVideoSource } from "../base";
+import { ProductVideo } from "../base";
+import type { Language, Translation } from "@/cms/types";
+import { createTranslate } from "../../utils/i18n";
+import { toProductVideoSource } from "../../block-adapters/productMediaAdapter";
 
-export interface VideoSectionProps {
-  titleText?: string;
-  subtitleText?: string;
-  videoSource?: ProductVideoSource | null;
+export interface VideoSectionValues {
+  videoUrl?: string;
+  posterImage?: string;
+  autoPlay?: boolean;
+  loop?: boolean;
 }
 
-export default function VideoSection({ titleText = "", subtitleText = "", videoSource = null }: VideoSectionProps) {
+export interface VideoSectionContent {
+  title?: Translation;
+  subtitle?: Translation;
+  videoUrl?: string;
+  values?: VideoSectionValues;
+}
+export interface VideoSectionProps {
+  content: VideoSectionContent;
+  lang: Language;
+}
+
+export default function VideoSection({
+  content: 
+  {
+    title,
+    subtitle,
+    videoUrl,
+    values,
+  },
+  lang,
+}: VideoSectionProps) {
+  const translate = createTranslate(lang);
+  const titleText = title ? translate(title) : "";
+  const subtitleText = subtitle ? translate(subtitle) : "";
+  const videoSource = toProductVideoSource(videoUrl || values?.videoUrl);
+
   if (!videoSource) return null;
 
   return (

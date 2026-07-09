@@ -1,6 +1,6 @@
 import { formatPrice } from "@/cms/lib/currency";
 import { toNewArrivalsViewProps } from "../../block-adapters";
-import type { NewArrivalsContent } from "../../block-adapters";
+import type { NewArrivalsContent } from "../blocks";
 import type { Language, Product } from "@/cms/types";
 import NewArrivals from "../blocks/NewArrivals";
 

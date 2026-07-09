@@ -1,9 +1,16 @@
 import { ProductCardStatic, type ProductCardStaticProps } from "../base";
+import type { Translation } from "@/cms/types";
 
 export interface NewArrivalCard {
   id: string;
   href: string;
   card: ProductCardStaticProps;
+}
+
+export interface NewArrivalsContent {
+  title?: Translation;
+  subtitle?: Translation;
+  maxItems?: number;
 }
 
 export interface NewArrivalsProps {
@@ -12,10 +19,11 @@ export interface NewArrivalsProps {
   cards?: NewArrivalCard[];
 }
 
+
 export default function NewArrivals({
-  titleText = "",
-  subtitleText = "",
-  cards = [],
+    titleText = "",
+    subtitleText = "",
+    cards = [],
 }: NewArrivalsProps) {
   if (cards.length === 0) return null;
 

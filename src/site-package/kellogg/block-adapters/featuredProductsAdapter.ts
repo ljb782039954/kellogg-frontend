@@ -1,13 +1,8 @@
 import type { Language } from "@/cms/types";
 
 // 迁移类型
-import type { Translation } from "@/cms/types";
-export interface FeaturedProductsContent {
-  title?: Translation;
-  subtitle?: Translation;
-  maxItems?: number;
-}
-import type { FeaturedProductsProps } from "../components/blocks";
+
+import type { FeaturedProductsProps, FeaturedProductsContent } from "../components/blocks";
 import type { Product } from "@/cms/types";
 import { createTranslate } from "../utils/i18n";
 import { toProductCardStaticProps } from "./productCardAdapter";

@@ -5,7 +5,7 @@ import type {
   FeaturedProductsContent,
   NewArrivalsContent,
   ProductGridContent,
-} from "../block-adapters";
+} from "../types/blocks";
 
 interface LoadBlockDataOptions {
   block: CmsPageBlock;
