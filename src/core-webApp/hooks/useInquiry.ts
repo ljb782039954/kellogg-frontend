@@ -4,9 +4,9 @@ import type { Language } from '@/cms/types';
 export interface InquiryFormData {
   name: string;
   email: string;
-  phone: string;
-  country: string;
-  company: string;
+  phone?: string;
+  country?: string;
+  company?: string;
   product_type: string;
   quantity: string;
   message: string;
@@ -21,9 +21,9 @@ export interface InquiryTranslations {
   form: {
     name: string;
     email: string;
-    phone: string;
+    phone?: string;
     country: string;
-    company: string;
+    company?: string;
     productType: string;
     quantity: string;
     message: string;

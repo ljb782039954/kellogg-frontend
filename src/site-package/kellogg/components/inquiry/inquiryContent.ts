@@ -71,9 +71,9 @@ export function getKelloggInquiryFormText(lang: Language) {
     placeholders: {
       name: isZh ? "请输入您的姓名" : "Enter your name",
       email: "example@email.com",
-      phone: "+1...",
+      // phone: "+1...",
       country: isZh ? "输入国家" : "Your country",
-      company: isZh ? "输入公司名称" : "Company name",
+      // company: isZh ? "输入公司名称" : "Company name",
       product_type: isZh ? "想要的产品" : "Interested product",
       quantity: "e.g. 500 pcs",
       message: isZh ? "告诉我们您的具体需求" : "Tell us about your requirements...",

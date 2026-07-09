@@ -34,9 +34,9 @@ export interface BlogsQuery {
 export interface SubmitInquiryInput {
   name: string;
   email: string;
-  phone: string;
-  country: string;
-  company: string;
+  phone?: string;
+  country?: string;
+  company?: string;
   product_type: string;
   quantity: string;
   message: string;
@@ -103,3 +103,5 @@ export function createSiteApiClient(config: ApiClientConfig) {
 }
 
 export type SiteApiClient = ReturnType<typeof createSiteApiClient>;
+
+

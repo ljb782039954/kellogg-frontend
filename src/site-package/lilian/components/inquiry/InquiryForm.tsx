@@ -7,9 +7,7 @@ import type { Language } from '@/cms/types';
 export interface InquiryFormValues {
   name: string;
   email: string;
-  phone: string;
-  country: string;
-  company: string;
+  country?: string;
   product_type: string;
   quantity: string;
   message: string;
@@ -18,9 +16,7 @@ export interface InquiryFormValues {
 export interface InquiryFormText {
   name: string;
   email: string;
-  phone: string;
-  country: string;
-  company: string;
+  country?: string;
   productType: string;
   quantity: string;
   message: string;
@@ -112,11 +108,11 @@ export default function InquiryForm({
               />
             </label>
             <label className="block">
-              <span className="text-xs uppercase text-subtle">{text.company}</span>
+              <span className="text-xs uppercase text-subtle">{text.country}</span>
               <input
-                value={values.company}
-                placeholder={text.placeholders.company}
-                onChange={(event) => updateField("company", event.target.value)}
+                value={values.country || ''}
+                placeholder={text.placeholders.country}
+                onChange={(event) => updateField("country", event.target.value)}
                 className="mt-2 w-full rounded border border-border px-4 py-3 text-sm outline-none focus:border-ink-strong"
               />
             </label>
@@ -153,16 +149,18 @@ export default function InquiryForm({
             </label>
           </div>
 
-                <TurnstileWidget
-                  lang={turnstileLang}
-                  siteKey={turnstileSiteKey}
-                  useTestSiteKey={useTurnstileTestSiteKey}
-                  onTokenChange={onTurnstileTokenChange}
-                  resetKey={turnstileResetKey}
-                />
+          <TurnstileWidget
+            lang={turnstileLang}
+            siteKey={turnstileSiteKey}
+            useTestSiteKey={useTurnstileTestSiteKey}
+            onTokenChange={onTurnstileTokenChange}
+            resetKey={turnstileResetKey}
+          />
 
-          <button type="submit" className="mt-6 w-full bg-ink-strong rounded text-on-dark py-4 text-sm uppercase flex items-center justify-center gap-3">
-            <Send className="w-4 h-4" />
+          <button 
+          disabled={isSubmitting}
+          type="submit" className="mt-6 w-full bg-ink-strong rounded text-on-dark py-4 text-sm uppercase flex items-center justify-center gap-3">
+        {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : <Send className="w-5 h-5" />}
             {text.submit}
           </button>
         </form>

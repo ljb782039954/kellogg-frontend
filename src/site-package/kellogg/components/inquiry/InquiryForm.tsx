@@ -7,9 +7,9 @@ import type { Language } from '@/cms/types';
 export interface InquiryFormValues {
   name: string;
   email: string;
-  phone: string;
-  country: string;
-  company: string;
+  // phone: string;
+  country?: string;
+  // company: string;
   product_type: string;
   quantity: string;
   message: string;
@@ -18,9 +18,9 @@ export interface InquiryFormValues {
 export interface InquiryFormText {
   name: string;
   email: string;
-  phone: string;
-  country: string;
-  company: string;
+  // phone: string;
+  country?: string;
+  // company: string;
   productType: string;
   quantity: string;
   message: string;
@@ -122,7 +122,7 @@ export default function InquiryForm({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
           <label className="text-xs font-bold text-gray-400 uppercase ml-1 flex items-center gap-1">
             <Phone className="w-3 h-3" /> {text.phone}
@@ -147,17 +147,17 @@ export default function InquiryForm({
             className="w-full px-5 py-4 bg-gray-50 border-transparent border-2 rounded-2xl focus:bg-white focus:border-gray-900 focus:ring-0 transition-all text-sm outline-none"
           />
         </div>
-      </div>
+      </div> */}
 
       <div className="space-y-2">
         <label className="text-xs font-bold text-gray-400 uppercase ml-1 flex items-center gap-1">
-          <Building2 className="w-3 h-3" /> {text.company}
+          <Globe className="w-3 h-3" /> {text.country}
         </label>
         <input
           type="text"
-          placeholder={text.placeholders.company}
-          value={values.company}
-          onChange={(event) => updateField('company', event.target.value)}
+          placeholder={text.placeholders.country}
+          value={values.country || ''}
+          onChange={(event) => updateField('country', event.target.value)}
           className="w-full px-5 py-4 bg-gray-50 border-transparent border-2 rounded-2xl focus:bg-white focus:border-gray-900 focus:ring-0 transition-all text-sm outline-none"
         />
       </div>

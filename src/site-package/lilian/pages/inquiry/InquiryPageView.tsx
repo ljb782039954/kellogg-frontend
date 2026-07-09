@@ -1,15 +1,8 @@
 import { motion } from 'framer-motion';
 import { Phone, MapPin } from 'lucide-react';
-import { useInquiry } from '@core-webApp/hooks/useInquiry';
-import { api } from '@services/api';
-import InquiryForm from '../../components/base-2/InquiryForm';
-import { lilianSiteConfig } from '../../config';
+import InquiryFormContainer from '../../components/inquiry/InquiryFormContainer';
 import type { Language, CompanyInfo } from '@/cms/types';
-import {
-  getLilianInquiryFormText,
-  getLilianInquiryTranslations,
-  lilianInquiryContent,
-} from '../../utils/inquiry';
+import { lilianInquiryContent } from '../../components/inquiry/inquiryContent';
 
 interface Props {
   lang: Language;
@@ -18,20 +11,8 @@ interface Props {
 }
 
 export default function InquiryPageView({ lang, companyInfo, pageContent }: Props) {
-  const {
-    formData,
-    setFormData,
-    isSubmitting,
-    isSuccess,
-    setIsSuccess,
-    setTurnstileToken,
-    turnstileResetKey,
-    handleSubmit,
-    config,
-    language,
-  } = useInquiry(lang, pageContent || lilianInquiryContent, getLilianInquiryTranslations(lang), {
-    submitInquiry: api.submitInquiry,
-  });
+  const config = pageContent || lilianInquiryContent;
+  const language = lang === 'zh' || lang === 'en' ? lang : 'en';
 
   const contactInfo = companyInfo?.contact || {
     address: { zh: '中国 广州', en: 'Guangzhou, China' },
@@ -58,10 +39,10 @@ export default function InquiryPageView({ lang, companyInfo, pageContent }: Prop
                   className="space-y-6"
                 >
                   <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
-                    {config.title[language]}
+                    {config.title[language] || config.title.en}
                   </h1>
                   <p className="text-xl text-gray-500 font-light leading-relaxed">
-                    {config.description[language]}
+                    {config.description[language] || config.description.en}
                   </p>
                 </motion.div>
 
@@ -121,19 +102,9 @@ export default function InquiryPageView({ lang, companyInfo, pageContent }: Prop
                   animate={{ opacity: 1, scale: 1 }}
                   className="relative bg-white border border-gray-100 rounded-[40px] p-8 md:p-12 shadow-2xl shadow-gray-200/50"
                 >
-                  <InquiryForm
-                    values={formData}
-                    text={getLilianInquiryFormText(lang)}
-                    isSubmitting={isSubmitting}
-                    isSuccess={isSuccess}
-                    turnstileLang={lang}
-                    turnstileSiteKey={lilianSiteConfig.turnstile?.siteKey}
-                    useTurnstileTestSiteKey={lilianSiteConfig.turnstile?.useTestSiteKey}
-                    turnstileResetKey={turnstileResetKey}
-                    onValuesChange={setFormData}
-                    onTurnstileTokenChange={setTurnstileToken}
-                    onSubmit={handleSubmit}
-                    onBack={() => setIsSuccess(false)}
+                  <InquiryFormContainer
+                    lang={lang}
+                    pageContent={pageContent}
                   />
                 </motion.div>
               </div>

@@ -1,13 +1,17 @@
 import { motion } from 'framer-motion';
-import InquiryForm, { type InquiryFormProps } from '../base-2/InquiryForm';
+import InquiryFormContainer from './InquiryFormContainer';
+import type { Language } from '@/cms/types';
 
-export interface InquirySectionProps extends InquiryFormProps {
+export interface InquirySectionProps {
   titleText: string;
+  lang: Language;
+  pageContent?: any;
 }
 
 export default function InquirySection({
   titleText,
-  ...formProps
+  lang,
+  pageContent,
 }: InquirySectionProps) {
   return (
     <section className="py-24 bg-gray-50/50">
@@ -37,7 +41,7 @@ export default function InquirySection({
             viewport={{ once: true }}
             className="bg-white border border-gray-100 rounded-[40px] p-8 md:p-12 shadow-2xl shadow-gray-200/40"
           >
-            <InquiryForm {...formProps} />
+            <InquiryFormContainer lang={lang} pageContent={pageContent} />
           </motion.div>
         </div>
       </div>

@@ -9,14 +9,14 @@ export interface InquiryContent {
 
 
 import type { Language } from "@/cms/types";
-import type { InquiryFormValues, InquiryProps } from "../components/blocks-fixed/InquirySection";
+import type { InquiryFormValues, InquiryProps } from "../components/inquiry/InquirySection";
 import { createTranslate } from "../utils/i18n";
 
 function emptyInquiryValues(): InquiryFormValues {
   return {
     name: "",
     email: "",
-    company: "",
+    country: "",
     product_type: "",
     quantity: "",
     message: "",
@@ -34,7 +34,7 @@ export function toInquiryViewProps(content: InquiryContent, lang: Language): Inq
     text: {
       name: isZh ? "姓名" : "Name",
       email: isZh ? "邮箱" : "Email",
-      company: isZh ? "公司" : "Company",
+      country: isZh ? "国家/地区" : "Country/Region",
       productType: isZh ? "关注品类" : "Product Type",
       quantity: isZh ? "预计数量" : "Estimated Quantity",
       message: isZh ? "需求说明" : "Message",
@@ -42,7 +42,7 @@ export function toInquiryViewProps(content: InquiryContent, lang: Language): Inq
       placeholders: {
         name: isZh ? "请输入您的姓名" : "Your name",
         email: isZh ? "请输入您的邮箱" : "Your email",
-        company: isZh ? "公司或品牌名称" : "Company or brand name",
+        country: isZh ? "国家或地区" : "Country or region",
         product_type: isZh ? "例如 Dresses / Blazers" : "E.g. Dresses / Blazers",
         quantity: isZh ? "例如 300 件" : "E.g. 300 pcs",
         message: translate(content.subtitle, isZh ? "请描述您的采购需求。" : "Tell us about your sourcing needs."),

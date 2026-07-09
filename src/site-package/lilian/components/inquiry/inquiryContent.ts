@@ -10,8 +10,8 @@ export const lilianInquiryContent: InquiryPageContent = {
     en: "Contact Us For Samples",
   },
   description: {
-    zh: "如果您有任何产品咨询，请填写下方表格，我们的团队会尽快与您联系。",
-    en: "If you have any inquiries about our products, please fill out the form below and our team will get back to you as soon as possible.",
+    zh: "如果您有任何产品咨询，请填写表格，我们的团队会尽快与您联系。",
+    en: "If you have any inquiries about our products, please fill out the form and our team will get back to you as soon as possible.",
   },
 };
 
