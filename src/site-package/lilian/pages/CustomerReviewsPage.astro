@@ -4,6 +4,7 @@ import CustomerReviews from "./customerReviews/CustomerReviews";
 import { toCustomerReviewsViewProps } from "./customerReviews/adapter";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
+import MainHeading from "../components/blocks/MainHeading";
 
 const siteData = await SiteService.getSiteData(Astro);
 const { lang } = siteData;
@@ -30,23 +31,14 @@ const customerReviewsProps = toCustomerReviewsViewProps(reviews, lang);
 ---
 
 <Layout seo={pageSEO} lang={lang}>
-  <section class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden">
-    <div class="absolute inset-0 opacity-10">
-      <div class="absolute top-0 -left-4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-2xl"></div>
-      <div class="absolute -bottom-8 right-0 w-72 h-72 bg-amber-500 rounded-full mix-blend-multiply filter blur-2xl"></div>
-    </div>
-    <div class="relative max-w-7xl mx-auto px-6 py-20 text-center">
-      <span class="inline-block px-3 py-1 bg-white/10 text-white/80 text-xs font-semibold rounded-full uppercase tracking-widest mb-4">
-        {lang === "zh" ? "客户见证" : "Testimonials"}
-      </span>
-      <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-        {lang === "zh" ? "客户评价" : "Customer Reviews"}
-      </h1>
-      <p class="text-lg text-white/70 max-w-xl mx-auto">
-        {lang === "zh" ? "听听来自全球合作伙伴的真实反馈，见证高品质服装制造。" : "Real feedback from global partners, witnessing premium apparel manufacturing."}
-      </p>
-    </div>
-  </section>
-
-  <CustomerReviews {...customerReviewsProps} />
+  <main class="py-12 bg-surface min-h-[60vh]">
+    <MainHeading
+      titleText={lang === "zh" ? "客户评价" : "Customer Reviews"}
+      subtitleText={lang === "zh" ? "客户见证" : "Testimonials"}
+      descriptionText={lang === "zh" ? "听听来自全球合作伙伴的真实反馈，见证高品质服装制造。" : "Real feedback from global partners, witnessing premium apparel manufacturing."}
+      lang={lang}
+    />
+    
+    <CustomerReviews {...customerReviewsProps} />
+  </main>
 </Layout>

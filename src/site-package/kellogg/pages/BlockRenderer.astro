@@ -5,7 +5,6 @@ import {
   toBrandValuesViewProps,
   toCategoriesViewProps,
   toCarouselViewProps,
-  toCountdownViewProps,
   toCtaBannerViewProps,
   toFAQViewProps,
   toFeatureListViewProps,
@@ -24,7 +23,6 @@ import type {
   BrandValuesContent,
   CategoriesContent,
   CarouselContent,
-  CountdownContent,
   CtaBannerContent,
   FAQContent,
   FeatureListContent,
@@ -44,7 +42,6 @@ import {
   BrandValues,
   Carousel,
   Categories,
-  Countdown,
   CtaBanner,
   FAQ,
   FeatureList,
@@ -100,9 +97,6 @@ const categoriesProps = block.type === "categories"
   : {};
 const carouselProps = block.type === "carousel"
   ? toCarouselViewProps(content as CarouselContent, lang)
-  : {};
-const countdownProps = block.type === "countdown"
-  ? toCountdownViewProps(content as CountdownContent, lang)
   : {};
 const ctaBannerProps = block.type === "ctaBanner"
   ? toCtaBannerViewProps(content as CtaBannerContent, { lang, getImageUrl })
@@ -177,7 +171,6 @@ const knownBlockTypes = new Set(Object.keys(renderedBlockTypes));
 {block.type === "imageText" && <ImageText {...imageTextProps} />}
 {block.type === "ctaBanner" && <CtaBanner {...ctaBannerProps} />}
 {block.type === "featureList" && <FeatureList {...featureListProps} />}
-{block.type === "countdown" && <Countdown {...countdownProps} client:load />}
 {block.type === "gallery" && <Gallery {...galleryProps} client:visible />}
 {block.type === "imageBannerTag" && <ImageBannerTag {...imageBannerTagProps} />}
 {block.type === "imageFull" && <ImageFull {...imageFullProps} client:visible />}

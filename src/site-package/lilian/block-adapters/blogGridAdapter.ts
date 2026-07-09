@@ -29,7 +29,8 @@ function formatDate(value: string | null, lang: Language) {
 
 export function toBlogGridViewProps({ content, blogs, lang }: BlogGridAdapterOptions): BlogGridProps {
   const translate = createTranslate(lang);
-  const displayBlogs = blogs.slice(0, content.maxItems || 3);
+  const max = content.maxItems !== undefined ? content.maxItems : 3;
+  const displayBlogs = max > 0 ? blogs.slice(0, max) : blogs;
 
   return {
     titleText: translate(content.title),

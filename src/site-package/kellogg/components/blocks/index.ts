@@ -4,8 +4,6 @@ export { default as Carousel } from "./Carousel";
 export type { CarouselProps } from "./Carousel";
 export { default as Categories } from "./Categories";
 export type { CategoriesProps } from "./Categories";
-export { default as Countdown } from "./Countdown";
-export type { CountdownProps } from "./Countdown";
 export { default as CtaBanner } from "./CtaBanner";
 export type { CtaBannerProps } from "./CtaBanner";
 export { default as FAQ } from "./FAQ";

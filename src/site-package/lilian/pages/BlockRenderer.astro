@@ -3,17 +3,14 @@ import { formatPrice } from "@/cms/lib/currency";
 import type { Language } from "@/cms/types";
 import type { PageBlock } from "../types";
 import {
-  toBlogGridViewProps,
   toCategoriesViewProps,
   toProductCardViewProps,
 } from "../block-adapters";
 import type {
-  BlogGridContent,
   CategoriesContent,
 } from "../block-adapters";
 import {
   BeforeAfterSlider,
-  BlogGrid,
   // BlogSidebar,
   BrandManifesto,
   BrochureDownload,
@@ -44,6 +41,7 @@ import {
   InquirySection,
   NewArrivals as NewArrivalsContainer,
   ProductGrid as ProductGridContainer,
+  BlogGrid as BlogGridContainer,
 } from "../components/blocks-containers";
 import type { BlockType } from "../types";
 
@@ -73,11 +71,7 @@ const categoriesProps = (
     ? toCategoriesViewProps(content as CategoriesContent, { categories: data.categories ?? [], lang })
     : {}
 ) as ReturnType<typeof toCategoriesViewProps>;
-const blogGridProps = (
-  block.type === "blogGrid"
-    ? toBlogGridViewProps({ content: content as BlogGridContent, blogs: data.blogs ?? [], lang })
-    : {}
-) as ReturnType<typeof toBlogGridViewProps>;
+
 const renderedBlockTypes = {
   productCard: true,
   categories: true,
@@ -120,7 +114,7 @@ const knownBlockTypes = new Set(Object.keys(renderedBlockTypes));
 {block.type === "productGrid" && <ProductGridContainer {...content} {...data} lang={lang} client:load />}
 {block.type === "featureList" && <FeatureList content={content} lang={lang} />}
 {block.type === "inquiry" && <InquirySection {...content} lang={lang} client:visible />}
-{block.type === "blogGrid" && <BlogGrid {...blogGridProps} />}
+{block.type === "blogGrid" && <BlogGridContainer {...content} {...data} lang={lang} client:load />}
 {block.type === "imagePairGrid" && <ImagePairGrid content={content} lang={lang} />}
 {block.type === "masonryGallery" && <MasonryGallery content={content} lang={lang} />}
 {block.type === "imageCarousel" && <ImageCarousel content={content} lang={lang} client:load />}

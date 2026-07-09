@@ -1,7 +1,6 @@
 export * from "./brandValuesAdapter";
 export * from "./categoriesAdapter";
 export * from "./carouselAdapter";
-export * from "./countdownAdapter";
 export * from "./ctaBannerAdapter";
 export * from "./faqAdapter";
 export * from "./featureListAdapter";

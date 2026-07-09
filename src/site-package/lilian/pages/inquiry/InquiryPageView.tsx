@@ -38,24 +38,24 @@ export default function InquiryPageView({ lang, companyInfo, pageContent }: Prop
                   animate={{ opacity: 1, y: 0 }}
                   className="space-y-6"
                 >
-                  <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
+                  <h1 className="font-luxury-heading text-4xl sm:text-5xl font-light text-ink leading-tight">
                     {config.title[language] || config.title.en}
                   </h1>
-                  <p className="text-xl text-gray-500 font-light leading-relaxed">
+                  <p className="text-sm text-subtle font-light leading-relaxed">
                     {config.description[language] || config.description.en}
                   </p>
                 </motion.div>
 
                 <div className="space-y-10">
                   <div className="flex gap-6">
-                    <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-6 h-6 text-gray-900" />
+                    <div className="w-12 h-12 bg-panel border border-border rounded-md flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-5 h-5 text-ink" />
                     </div>
                     <div>
-                      <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+                      <h4 className="text-[10px] font-bold text-subtle uppercase tracking-widest mb-1">
                         {tSidebar.location}
                       </h4>
-                      <p className="text-gray-900 font-medium">
+                      <p className="text-ink text-sm font-medium">
                         {typeof contactInfo.address === 'string'
                           ? contactInfo.address
                           : contactInfo.address[language]}
@@ -64,15 +64,15 @@ export default function InquiryPageView({ lang, companyInfo, pageContent }: Prop
                   </div>
 
                   <div className="flex gap-6">
-                    <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-6 h-6 text-gray-900" />
+                    <div className="w-12 h-12 bg-panel border border-border rounded-md flex items-center justify-center flex-shrink-0">
+                      <Phone className="w-5 h-5 text-ink" />
                     </div>
                     <div>
-                      <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+                      <h4 className="text-[10px] font-bold text-subtle uppercase tracking-widest mb-1">
                         {tSidebar.contact}
                       </h4>
-                      <p className="text-gray-900 font-medium">{contactInfo.phone}</p>
-                      <p className="text-gray-500">{contactInfo.email}</p>
+                      <p className="text-ink text-sm font-medium">{contactInfo.phone}</p>
+                      <p className="text-xs text-subtle">{contactInfo.email}</p>
                     </div>
                   </div>
                 </div>
@@ -85,10 +85,10 @@ export default function InquiryPageView({ lang, companyInfo, pageContent }: Prop
                     {['Facebook', 'Instagram', 'LinkedIn', 'Twitter'].map((social) => (
                       <button
                         key={social}
-                        className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 hover:bg-gray-900 hover:text-white transition-all"
+                        className="w-10 h-10 bg-panel border border-border rounded-md flex items-center justify-center text-subtle hover:bg-ink-strong hover:text-on-dark transition-all"
                       >
                         <span className="sr-only">{social}</span>
-                        <div className="w-4 h-4 border border-current rounded-sm" />
+                        <div className="w-3.5 h-3.5 border border-current rounded-sm" />
                       </button>
                     ))}
                   </div>
@@ -96,11 +96,10 @@ export default function InquiryPageView({ lang, companyInfo, pageContent }: Prop
               </div>
 
               <div className="relative">
-                <div className="absolute inset-0 bg-gray-50 rounded-[40px] -rotate-1 lg:block hidden" />
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="relative bg-white border border-gray-100 rounded-[40px] p-8 md:p-12 shadow-2xl shadow-gray-200/50"
+                  className="relative bg-surface border border-border rounded-md p-8 md:p-12 shadow-sm"
                 >
                   <InquiryFormContainer
                     lang={lang}
