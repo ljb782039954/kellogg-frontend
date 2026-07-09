@@ -8,7 +8,7 @@ import type {
   ProductGridContent,
 } from "../block-adapters";
 import type { BeforeAfterSliderContent } from "../components/blocks/BeforeAfterSlider";
-import type { BlogSidebarContent } from "../components/base/BlogSidebar";
+import type { BlogSidebarContent } from "../pages/blog/BlogSidebar";
 import type { BrochureDownloadContent } from "../components/blocks/BrochureDownload";
 import type { BrandManifestoContent } from "../components/blocks/BrandManifesto";
 import type { Categories2Content } from "../components/blocks/Categories2";

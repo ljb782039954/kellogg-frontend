@@ -1,5 +1,4 @@
 export { default as BeforeAfterSlider } from "./BeforeAfterSlider";
-export { default as BlogSidebar } from "../base/BlogSidebar";
 export { default as BlogGrid } from "./BlogGrid";
 export type { BlogGridProps } from "./BlogGrid";
 export { default as BrandManifesto } from "./BrandManifesto";
@@ -29,7 +28,7 @@ export { default as NewArrivals } from "./NewArrivals";
 export type { NewArrivalsProps } from "./NewArrivals";
 export { default as NumberCounter } from "./NumberCounter";
 export { default as ParallaxImage } from "./ParallaxImage";
-export { default as ProductCardBlock } from "./ProductCardBlock";
+// export { default as ProductCardBlock } from "./ProductCardBlock";
 export { default as ProductGrid } from "./ProductGrid";
 export type { ProductGridItem, ProductGridLabels, ProductGridOption, ProductGridProps, ProductGridSortId } from "./ProductGrid";
 export { default as RichTextBlock } from "./RichTextBlock";

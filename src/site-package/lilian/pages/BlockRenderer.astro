@@ -14,7 +14,7 @@ import type {
 import {
   BeforeAfterSlider,
   BlogGrid,
-  BlogSidebar,
+  // BlogSidebar,
   BrandManifesto,
   BrochureDownload,
   Categories,
@@ -33,7 +33,7 @@ import {
   MasonryGallery,
   NumberCounter,
   ParallaxImage,
-  ProductCardBlock,
+  // ProductCardBlock,
   RichTextBlock,
   TestimonialMasonry,
   TextGrid,
@@ -114,7 +114,6 @@ const renderedBlockTypes = {
 const knownBlockTypes = new Set(Object.keys(renderedBlockTypes));
 ---
 
-{block.type === "productCard" && productCardProps && <ProductCardBlock {...productCardProps} />}
 {block.type === "categories" && <Categories {...categoriesProps} />}
 {block.type === "newArrivals" && <NewArrivalsContainer {...content} {...data} lang={lang} />}
 {block.type === "featuredProducts" && <FeaturedProductsContainer {...content} {...data} lang={lang} />}
@@ -138,7 +137,6 @@ const knownBlockTypes = new Set(Object.keys(renderedBlockTypes));
 {block.type === "numberCounter" && <NumberCounter content={content} lang={lang} client:visible />}
 {block.type === "testimonialMasonry" && <TestimonialMasonry content={content} lang={lang} />}
 {block.type === "faqAccordion" && <FaqAccordion content={content} lang={lang} client:visible />}
-{block.type === "blogSidebar" && <BlogSidebar content={content} lang={lang} />}
 {block.type === "certificationBadges" && <CertificationBadges content={content} lang={lang} client:visible />}
 {block.type === "brochureDownload" && <BrochureDownload content={content} lang={lang} />}
 {block.type === "mainHeading" && <MainHeading content={content} lang={lang} />}

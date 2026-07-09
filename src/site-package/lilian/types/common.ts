@@ -3,7 +3,7 @@ import type { Translation } from "@/cms/types";
 export interface LilianImageItem {
   image: string;
   imageAlt?: Translation;
-  caption?: Translation;
+  caption?: Translation; 
 }
 
 export interface LilianExternalVideoItem {
