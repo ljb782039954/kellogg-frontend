@@ -1,8 +1,8 @@
-import type { Language } from "@/cms/types";
+import type { Language , } from "@/cms/types";
+import type { SiteConfig } from "@core-webApp/types";
 import { sanitizeCmsHtml } from "@/cms/lib/contentSecurity";
 import { getSafeVideoSource } from "@/cms/lib/video";
-import { kelloggSiteConfig } from "../../config";
-import type { CustomerReviewsProps } from "./CustomerReviews";
+import type { CustomerReviewsProps } from "../../site-package/kellogg/pages/customerReviews/CustomerReviews";
 
 export interface CustomerReviewRecord {
   id?: number | string;
@@ -16,6 +16,7 @@ export interface CustomerReviewRecord {
 }
 
 export function toCustomerReviewsViewProps(
+  siteConfig: SiteConfig,
   reviews: CustomerReviewRecord[] = [],
   lang: Language,
 ): CustomerReviewsProps {
@@ -27,8 +28,8 @@ export function toCustomerReviewsViewProps(
       const rating = Math.max(0, Math.min(5, Number(review.rating) || 0));
       const videoSource = review.media_type === "video" && review.media_url
         ? getSafeVideoSource(review.media_url, {
-            assetsBase: kelloggSiteConfig.api.assetsBaseUrl,
-            providers: kelloggSiteConfig.security?.videoProviders,
+            assetsBase: siteConfig.api.assetsBaseUrl,
+            providers: siteConfig.security?.videoProviders,
           })
         : null;
       const media = videoSource

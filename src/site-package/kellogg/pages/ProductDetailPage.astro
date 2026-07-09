@@ -2,12 +2,10 @@
 import Layout from "../layouts/SiteLayout.astro";
 import ProductDetailView from "./productDetail/ProductDetailView";
 import { ProductCardStatic as ProductCard, ProductCustomFields, ProductVideo, SectionHeader } from "../components/base";
-import { formatPrice } from "@/cms/lib/currency";
 import {
-  toProductCardStaticProps,
-  toProductCustomFieldItems,
   toProductVideoSources,
 } from "../block-adapters";
+import { PageService } from "@core-webApp/services/pageService";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
 import type { Product } from "@/cms/types";
@@ -21,34 +19,21 @@ const { id } = Astro.props;
 const { lang } = await SiteService.getSiteData(Astro);
 const t = createTranslate(lang);
 
-const [productRaw, productsRes, categories] = await Promise.all([
-  api.getProduct(Number(id)),
-  api.getProducts({ pageSize: 5 }),
-  api.getCategories(),
-]);
+const pageData = await PageService.loadProductDetailPageData({
+  id: Number(id),
+  api,
+  lang,
+});
 
-if (!productRaw) {
+if (!pageData.product) {
   return Astro.redirect("/404");
 }
 
-const categoryObj = categories.find((category) => category.id === productRaw.category);
 const product: Product = {
-  ...productRaw,
-  category: categoryObj ? categoryObj.name : productRaw.category,
+  ...pageData.product,
+  category: pageData.product.categoryName || pageData.product.category,
 } as any;
 
-const relatedProducts = productsRes.data
-  .filter((item) => String(item.id) !== String(id))
-  .slice(0, 4);
-const relatedProductCards = relatedProducts.map((item) => ({
-  id: item.id,
-  href: `/product/${item.id}`,
-  props: toProductCardStaticProps(item, {
-    lang,
-    formatPriceText: formatPrice,
-  }),
-}));
-const customFieldItems = toProductCustomFieldItems(product.customFields, lang);
 const productVideoSources = toProductVideoSources(product.videos);
 
 const seo = {
@@ -71,7 +56,7 @@ const seo = {
 
       <ProductDetailView product={product} lang={lang} client:load />
 
-      <ProductCustomFields fields={customFieldItems} />
+      <ProductCustomFields customFields={product.customFields} lang={lang} />
 
       {productVideoSources.length > 0 && (
         <section class="py-24 border-t border-gray-100">
@@ -85,7 +70,7 @@ const seo = {
       )}
     </div>
 
-    {relatedProductCards.length > 0 && (
+    {pageData.relatedProducts.length > 0 && (
       <section class="bg-gray-50/50 py-32 mt-20">
         <div class="container mx-auto px-4">
           <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
@@ -104,10 +89,8 @@ const seo = {
           </div>
 
           <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-            {relatedProductCards.map((item) => (
-              <a href={item.href} class="block h-full">
-                <ProductCard {...item.props} />
-              </a>
+            {pageData.relatedProducts.map((item) => (
+              <ProductCard product={item} lang={lang} />
             ))}
           </div>
         </div>

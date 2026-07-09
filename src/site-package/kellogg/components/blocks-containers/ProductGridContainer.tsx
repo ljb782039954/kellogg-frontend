@@ -2,14 +2,11 @@ import { useEffect, useState } from "react";
 import { api } from "@services/api";
 import { useStore } from "@nanostores/react";
 import { $currency, $rates, formatPrice } from "@/cms/lib/currency";
-import {
-  toProductGridInitialCategory,
-  toProductGridQuery,
-  toProductGridViewProps,
-} from "../../block-adapters";
 import type { ProductGridContent } from "../blocks";
 import type { Category, Language, Product } from "@/cms/types";
-import { ProductGrid as ProductGridView, type ProductGridSortId } from "../blocks";
+import { ProductGrid as ProductGridView } from "../blocks";
+import { useProductGrid } from "@core-webApp/hooks/useProductGrid";
+import { createTranslate } from "../../utils/i18n";
 
 export interface ProductGridContainerProps extends ProductGridContent {
   categories: Category[];
@@ -17,6 +14,13 @@ export interface ProductGridContainerProps extends ProductGridContent {
   totalProducts?: number;
   lang: Language;
 }
+
+const PRODUCT_GRID_SORT_OPTIONS = [
+  { id: "newest", name: { zh: "最新上架", en: "Newest" } },
+  { id: "price-asc", name: { zh: "价格从低到高", en: "Price Low-High" } },
+  { id: "price-desc", name: { zh: "价格从高到低", en: "Price High-Low" } },
+  { id: "sales", name: { zh: "销量优先", en: "Best Selling" } },
+];
 
 export default function ProductGridContainer({
   itemsPerPage: defaultItemsPerPage = 12,
@@ -26,91 +30,86 @@ export default function ProductGridContainer({
   totalProducts: initialTotal = 0,
   lang,
 }: ProductGridContainerProps) {
-  // 读取后台配置的每页显示数量，若未指定则默认显示 12 个
   const currentItemsPerPage = defaultItemsPerPage || 12;
-  const initialCategory = toProductGridInitialCategory(category);
+  const initialCategory = category && category !== "all" ? category : "all";
   const currency = useStore($currency);
   const rates = useStore($rates);
   const [hasMounted, setHasMounted] = useState(false);
-
-  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
-  const [sortBy, setSortBy] = useState<ProductGridSortId>("newest");
-  const [currentPage, setCurrentPage] = useState(1);
-  
-  // 维护客户端展示的产品列表和产品总数
-  const [displayedProducts, setDisplayedProducts] = useState<Product[]>(initialProducts);
-  const [totalCount, setTotalCount] = useState(initialTotal);
-  const [isLoading, setIsLoading] = useState(false);
+  const t = createTranslate(lang);
 
   useEffect(() => setHasMounted(true), []);
 
-  // 监听翻页、筛选和排序变化，发起客户端 Fetch 请求
-  useEffect(() => {
-    // 首次加载（第一页，且仍为后台配置的初始分类/默认排序）时，直接使用静态传入的 products 数组数据
-    // 保证首屏的极致加载速度与零客户端冗余请求
-    if (currentPage === 1 && selectedCategory === initialCategory && sortBy === "newest") {
-      setDisplayedProducts(initialProducts);
-      setTotalCount(initialTotal);
-      return;
-    }
-
-    const controller = new AbortController();
-    const fetchFilteredProducts = async () => {
-      setIsLoading(true);
-      try {
-        const res = await api.getProducts(
-          toProductGridQuery({
-            currentPage,
-            itemsPerPage: currentItemsPerPage,
-            selectedCategory,
-            sortBy,
-          }),
-          { signal: controller.signal },
-        );
-
-        if (!controller.signal.aborted) {
-          setDisplayedProducts(res.data || []);
-          setTotalCount(res.pagination?.total || 0);
-        }
-      } catch (err) {
-        if (!controller.signal.aborted) console.error('[ProductGrid] Failed to fetch products on client:', err);
-      } finally {
-        if (!controller.signal.aborted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    fetchFilteredProducts();
-
-    return () => {
-      controller.abort();
-    };
-  }, [currentPage, selectedCategory, sortBy, initialProducts, initialTotal, initialCategory, currentItemsPerPage]);
-
-  const viewProps = toProductGridViewProps({
-    categories,
-    products: displayedProducts,
-    totalCount,
-    currentPage,
-    itemsPerPage: currentItemsPerPage,
+  const {
     selectedCategory,
     sortBy,
+    currentPage,
+    displayedProducts,
+    totalCount,
     isLoading,
-    lang,
-    formatPriceText: (price) => hasMounted
-      ? formatPrice(price, currency, rates)
-      : formatPrice(price),
-    onCategoryChange: (categoryId) => {
-      setSelectedCategory(categoryId);
-      setCurrentPage(1);
-    },
-    onSortChange: (sortId) => {
-      setSortBy(sortId);
-      setCurrentPage(1);
-    },
-    onPageChange: setCurrentPage,
+    setSelectedCategory,
+    setSortBy,
+    setCurrentPage,
+  } = useProductGrid<Product>({
+    initialProducts,
+    initialTotal,
+    initialCategory,
+    itemsPerPage: currentItemsPerPage,
+    fetchProducts: (query, options) => api.getProducts(query as any, options),
   });
 
-  return <ProductGridView {...viewProps} />;
+  // 1. Map category options
+  const categoryOptions = [
+    {
+      id: "all",
+      label: lang === "zh" ? "全部" : "All",
+      selected: selectedCategory === "all",
+    },
+    ...categories.map((cat) => ({
+      id: cat.id,
+      label: t(cat.name),
+      selected: selectedCategory === cat.id,
+    })),
+  ];
+
+  // 2. Map sort options
+  const sortOptions = PRODUCT_GRID_SORT_OPTIONS.map((option) => ({
+    id: option.id as any,
+    label: t(option.name),
+    selected: sortBy === option.id,
+  }));
+
+  // 3. Map product items to include raw product and formatting tools
+  const mappedProducts = displayedProducts.map((product) => ({
+    id: String(product.id),
+    product,
+    lang,
+    formatPriceText: (price?: number) => hasMounted
+      ? formatPrice(price, currency, rates)
+      : formatPrice(price),
+  }));
+
+  // 4. Resolve multi-language labels
+  const labels = {
+    loading: lang === "zh" ? "正在为您加载商品..." : "Loading products...",
+    empty: lang === "zh" ? "暂无商品" : "No products available",
+    total: lang === "zh" ? `共 ${totalCount} 件商品` : `${totalCount} products total`,
+  };
+
+  return (
+    <ProductGridView
+      categories={categoryOptions}
+      sortOptions={sortOptions}
+      products={mappedProducts}
+      labels={labels}
+      totalCount={totalCount}
+      totalPages={Math.ceil(totalCount / currentItemsPerPage)}
+      currentPage={currentPage}
+      selectedCategory={selectedCategory}
+      sortBy={sortBy as any}
+      isLoading={isLoading}
+      onCategoryChange={setSelectedCategory}
+      onSortChange={setSortBy as any}
+      onPageChange={setCurrentPage}
+    />
+  );
 }

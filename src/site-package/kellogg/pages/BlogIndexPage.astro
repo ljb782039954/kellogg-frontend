@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
 import OptimizedImage from "@/core-webApp/components/OptimizedImage.astro";
+import { PageService } from "@core-webApp/services/pageService";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
 import type { BlogSummary, Language } from "@/cms/types";
@@ -8,22 +9,9 @@ import type { BlogSummary, Language } from "@/cms/types";
 const siteData = await SiteService.getSiteData(Astro);
 const { lang } = siteData;
 
-let blogs: BlogSummary[] = [];
-let categories: string[] = ["All"];
-let totalBlogs = 0;
-
-try {
-  const resp = await api.getBlogs({ page: 1, pageSize: 100, sort: "newest" });
-  blogs = resp.data || [];
-  totalBlogs = resp.pagination?.total || 0;
-  const cats = new Set<string>();
-  blogs.forEach((blog) => {
-    if (blog.category) cats.add(blog.category);
-  });
-  categories = ["All", ...Array.from(cats)];
-} catch (error) {
-  console.error("[Blog Index] Failed to fetch blogs:", error);
-}
+const pageData = await PageService.loadBlogIndexPageData({ api, lang });
+const { blogs, categories, blogPageDetail } = pageData;
+const totalBlogs = blogs.length;
 
 function t(zh: string, en: string) {
   return lang === "zh" ? zh : en;
@@ -44,13 +32,6 @@ function getBlogTitle(blog: BlogSummary) {
 
 function getBlogSummary(blog: BlogSummary) {
   return lang === "zh" ? (blog.summary_zh || "") : (blog.summary_en || "");
-}
-
-let blogPageDetail: any = null;
-try {
-  blogPageDetail = await api.getPageById("system-blog");
-} catch (error) {
-  console.error("[Blog Index SSR] Failed to fetch system-blog page details:", error);
 }
 
 const blogSEO = blogPageDetail?.seo || {

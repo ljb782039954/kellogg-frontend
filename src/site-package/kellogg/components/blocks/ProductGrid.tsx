@@ -17,7 +17,6 @@ export interface ProductGridOption<TId extends string = string> {
 
 export interface ProductGridItem extends ProductCardStaticProps {
   id: string;
-  href: string;
 }
 
 export interface ProductGridLabels {
@@ -115,9 +114,7 @@ export default function ProductGrid({
             <>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                 {products.map((product) => (
-                  <a key={product.id} href={product.href} className="block group h-full">
-                    <ProductCardStatic {...product} />
-                  </a>
+                  <ProductCardStatic key={product.id} {...product} />
                 ))}
               </div>
 

@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
 import OptimizedImage from "@/core-webApp/components/OptimizedImage.astro";
+import { PageService } from "@core-webApp/services/pageService";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
 import type { Blog, BlogSummary } from "@/cms/types";
@@ -15,27 +16,13 @@ const { blogSlug } = Astro.props;
 const siteData = await SiteService.getSiteData(Astro);
 const { lang } = siteData;
 
-let blog: Blog | null = null;
-let relatedBlogs: BlogSummary[] = [];
+const pageData = await PageService.loadBlogDetailPageData({ blogSlug, api, lang });
 
-try {
-  blog = await api.getBlog(blogSlug || "");
-} catch {
+if (!pageData.blog) {
   return Astro.redirect("/blog");
 }
 
-if (!blog) return Astro.redirect("/blog");
-
-try {
-  const resp = await api.getBlogs({
-    pageSize: 20,
-    category: blog.category || undefined,
-    sort: "newest",
-  });
-  relatedBlogs = (resp.data || [])
-    .filter((item: BlogSummary) => item.slug !== blog!.slug)
-    .slice(0, 4);
-} catch {}
+const { blog, relatedBlogs } = pageData;
 
 function t(zh: string, en: string) {
   return lang === "zh" ? zh : en;

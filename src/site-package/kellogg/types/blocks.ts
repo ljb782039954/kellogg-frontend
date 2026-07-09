@@ -22,10 +22,10 @@ import type { TestimonialsContent } from "../components/blocks/Testimonials";
 import type { TextSectionContent } from "../components/blocks/TextSection";
 import type { VideoSectionContent } from "../components/blocks/VideoSection";
 
-// Countdown Content
-export interface CountdownContent {
-  targetDate?: string;
-}
+// TODO Countdown Content 这个组件已经移除了，并不需要
+// export interface CountdownContent {
+//   targetDate?: string;
+// }
 
 export interface BlockContentMap {
   brandValues: Omit<BrandValuesProps, "lang">;
@@ -48,7 +48,6 @@ export interface BlockContentMap {
   newArrivals: NewArrivalsContent;
   featuredProducts: FeaturedProductsContent;
   productGrid: ProductGridContent;
-  countdown: CountdownContent;
   inquiry: Record<string, never>;
 }
 

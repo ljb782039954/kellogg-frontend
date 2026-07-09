@@ -1,8 +1,9 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
 import CustomerReviews from "./customerReviews/CustomerReviews";
-import { toCustomerReviewsViewProps } from "./customerReviews/adapter";
+import { toCustomerReviewsViewProps } from "@/core-webApp/components/customerReviewsAdapter";
 import { api } from "@services/api";
+import { kelloggSiteConfig } from "../config";
 import { SiteService } from "@services/siteService";
 
 const siteData = await SiteService.getSiteData(Astro);
@@ -26,7 +27,7 @@ const pageSEO = customerReviewsPage?.seo || {
     en: "Real try-on videos and honest client reviews from global brand buyers — see Kellogg Fashion apparel quality in action.",
   },
 };
-const customerReviewsProps = toCustomerReviewsViewProps(reviews, lang);
+const customerReviewsProps = toCustomerReviewsViewProps(kelloggSiteConfig ,reviews, lang);
 ---
 
 <Layout seo={pageSEO} lang={lang}>
