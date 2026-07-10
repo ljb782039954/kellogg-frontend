@@ -1,22 +1,14 @@
-﻿import EmbeddedVideo, { type EmbeddedVideoAspect } from "@/runtime/components/EmbeddedVideo";
+﻿import VideoEmbed, { getVideoEmbedSource } from "@/runtime/components/VideoEmbed";
 import OptimizedImage from "@/runtime/components/OptimizedImage";
-import { getSafeVideoSource, type SafeVideoProvider, type SafeVideoSource } from "@/cms/lib/video";
 import type { Language } from "@/cms/types";
 import { Play, X } from "lucide-react";
 import { useState } from "react";
 import type { LilianExternalVideoItem } from "../../types/common";
 import { createTranslate } from "../../utils/i18n";
 
-const EXTERNAL_VIDEO_PROVIDERS: SafeVideoProvider[] = ["youtube", "vimeo", "facebook", "tiktok"];
-
-function toEmbeddedVideoAspect(aspect: LilianExternalVideoItem["aspect"]): EmbeddedVideoAspect | undefined {
-  if (aspect === "video") return "landscape";
-  return aspect;
-}
-
-export interface VideoCardProps {
-  aspect?: EmbeddedVideoAspect;
-  source?: SafeVideoSource | null;
+interface ActiveVideo {
+  url: string;
+  title: string;
 }
 
 export interface VideoGridContent {
@@ -30,26 +22,28 @@ export interface VideoGridProps {
 
 export default function VideoGrid({ content, lang = "en"}: VideoGridProps) {
   const translate = createTranslate(lang);
-  const resolvedItems = content.items.map((item) => ({
+  const resolvedItems = (Array.isArray(content?.items) ? content.items : [])
+    .map((item) => ({
         title: translate(item.title),
         description: translate(item.description),
         coverImage: item.coverImage,
         coverImageAlt: translate(item.coverImageAlt),
-        aspect: toEmbeddedVideoAspect(item.aspect),
-        source: getSafeVideoSource(item.url, { providers: EXTERNAL_VIDEO_PROVIDERS }),
-      }));
-  const [activeVideo, setActiveVideo] = useState<VideoCardProps | null>(null);
+        url: item.url,
+        canEmbed: Boolean(getVideoEmbedSource(item.url)),
+      }))
+    .filter((item) => item.canEmbed);
+  const [activeVideo, setActiveVideo] = useState<ActiveVideo | null>(null);
 
   return (
     <section className="max-w-6xl mx-auto px-6 py-12">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 items-start">
         {resolvedItems.map((item, index) => (
           <button
-            key={`${item.title}-${index}`}
+            key={`${item.url}-${index}`}
             type="button"
             className="w-full text-left group"
-            onClick={() => item.source && setActiveVideo(item)}
-            disabled={!item.source}
+            onClick={() => setActiveVideo({ url: item.url, title: item.title || "Video" })}
+            aria-label={item.title || "Play video"}
           >
             <div className="relative overflow-hidden rounded-md bg-soft aspect-video">
               <OptimizedImage
@@ -81,10 +75,9 @@ export default function VideoGrid({ content, lang = "en"}: VideoGridProps) {
             <X className="w-5 h-5" />
           </button>
           <div className="w-full max-w-5xl" onClick={(event) => event.stopPropagation()}>
-            <EmbeddedVideo
-              source={activeVideo.source}
-              title={activeVideo.aspect.title|| "Video"}
-              aspect={activeVideo.aspect}
+            <VideoEmbed
+              url={activeVideo.url}
+              title={activeVideo.title}
               className="rounded-md shadow-2xl"
             />
           </div>
@@ -93,5 +86,4 @@ export default function VideoGrid({ content, lang = "en"}: VideoGridProps) {
     </section>
   );
 }
-
 

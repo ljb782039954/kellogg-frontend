@@ -1,11 +1,5 @@
-import type {
-  BlogGridContent,
-  ProductGridContent,
-} from "../block-adapters";
-
-export interface ProductCardContent {
-  productId?: number;
-}
+import type { BlogGridContent } from "../block-adapters";
+import type {ProductGridContent} from '../components/blocks'
 
 export interface InquiryContent {}
 import type { CategoriesContent } from "../components/blocks/Categories";
@@ -37,6 +31,7 @@ import type { VideoGridContent } from "../components/blocks/VideoGrid";
 
 export interface BlockContentMap {
   categories: CategoriesContent;
+  categories2: Categories2Content;
   newArrivals: NewArrivalsContent;
   featuredProducts: FeaturedProductsContent;
   productGrid: ProductGridContent;
@@ -48,7 +43,6 @@ export interface BlockContentMap {
   imageCarousel: ImageCarouselContent;
   fullWidthBanner: FullWidthBannerContent;
   imageTextSplit: ImageTextSplitContent;
-  categories2: Categories2Content;
   parallaxImage: ParallaxImageContent;
   beforeAfterSlider: BeforeAfterSliderContent;
   lightboxGallery: LightboxGalleryContent;

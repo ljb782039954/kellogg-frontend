@@ -1,5 +1,5 @@
 import { SlidersHorizontal } from "lucide-react";
-import { Pagination, ProductCardStatic, type ProductCardStaticProps } from "../base";
+import { Pagination, ProductCard, type ProductCardProps } from "../base";
 import { type ProductGridSortId } from '@/cms/types'
 
 export interface ProductGridContent {
@@ -7,15 +7,13 @@ export interface ProductGridContent {
   category?: string;
 }
 
-
-
 export interface ProductGridOption<TId extends string = string> {
   id: TId;
   label: string;
   selected: boolean;
 }
 
-export interface ProductGridItem extends ProductCardStaticProps {
+export interface ProductGridItem extends ProductCardProps {
   id: string;
 }
 
@@ -114,7 +112,7 @@ export default function ProductGrid({
             <>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                 {products.map((product) => (
-                  <ProductCardStatic key={product.id} {...product} />
+                  <ProductCard key={product.id} {...product} />
                 ))}
               </div>
 

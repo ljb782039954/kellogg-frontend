@@ -3,20 +3,29 @@ import type { SiteApiClient } from "@core-webApp/services/apiClient";
 import type { CmsPageBlock } from "@/cms/types";
 import type {
   BlogGridContent,
-  ProductGridContent,
 } from "../block-adapters";
-import type { FeaturedProductsContent, NewArrivalsContent, ProductCardContent } from "../types/blocks";
+import {
+  parseProductGridSearchParams,
+  toProductGridApiQuery,
+} from "@core-webApp/lib/productGrid";
+import type {
+  FeaturedProductsContent,
+  NewArrivalsContent,
+} from "../types/blocks";
+import type { ProductGridContent } from "../components/blocks";
 
 interface LoadBlockDataOptions {
   block: CmsPageBlock;
   api: SiteApiClient;
   requestMemo: RequestMemo;
+  url?: URL;
 }
 
 export async function loadLilianBlockData({
   block,
   api,
   requestMemo,
+  url,
 }: LoadBlockDataOptions): Promise<Record<string, any>> {
   const getCategories = () => requestMemo.get("categories", () => api.getCategories());
   const getProducts = (params: Parameters<typeof api.getProducts>[0]) =>
@@ -27,14 +36,13 @@ export async function loadLilianBlockData({
   if (block.type === "productGrid") {
     const content = block.content as ProductGridContent;
     const pageSize = content.itemsPerPage || 12;
-    const params: NonNullable<Parameters<typeof api.getProducts>[0]> = { pageSize, page: 1 };
-
-    if (content.category && content.category !== "all") {
-      params.category = String(content.category);
-    }
+    const queryState = parseProductGridSearchParams(url?.searchParams || new URLSearchParams(), {
+      pageSize,
+      category: content.category,
+    });
 
     const [productsData, categoriesData] = await Promise.all([
-      getProducts(params),
+      getProducts(toProductGridApiQuery(queryState)),
       getCategories(),
     ]);
 
@@ -42,6 +50,9 @@ export async function loadLilianBlockData({
       products: productsData.data || [],
       categories: categoriesData || [],
       totalProducts: productsData.pagination?.total || 0,
+      initialPage: productsData.pagination?.page || queryState.page,
+      initialCategory: queryState.category,
+      initialSort: queryState.sort,
     };
   }
 
@@ -69,20 +80,20 @@ export async function loadLilianBlockData({
     return { categories: categoriesData };
   }
 
-  if (block.type === "productCard") {
-    const content = block.content as ProductCardContent;
-    if (!content.productId) return {};
+  // if (block.type === "productCard") {
+  //   const content = block.content as ProductCardContent;
+  //   if (!content.productId) return {};
 
-    const [product, categoriesData] = await Promise.all([
-      requestMemo.get(`product:${content.productId}`, () => api.getProduct(content.productId!)),
-      getCategories(),
-    ]);
+  //   const [product, categoriesData] = await Promise.all([
+  //     requestMemo.get(`product:${content.productId}`, () => api.getProduct(content.productId!)),
+  //     getCategories(),
+  //   ]);
 
-    return {
-      product,
-      categories: categoriesData,
-    };
-  }
+  //   return {
+  //     product,
+  //     categories: categoriesData,
+  //   };
+  // }
 
   if (block.type === "blogGrid") {
     const content = block.content as BlogGridContent;

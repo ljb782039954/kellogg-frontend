@@ -1,4 +1,4 @@
-import { ProductCardStatic } from "../base";
+import { ProductCard } from "../base";
 import type { Language, Product, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
@@ -41,7 +41,7 @@ export default function FeaturedProducts({
 
         <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
           {products.map((product) => (
-            <ProductCardStatic
+            <ProductCard
               key={product.id}
               product={product}
               lang={lang}

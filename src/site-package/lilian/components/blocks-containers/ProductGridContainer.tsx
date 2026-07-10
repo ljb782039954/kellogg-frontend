@@ -2,107 +2,125 @@ import { useEffect, useState } from "react";
 import { api } from "@services/api";
 import { useStore } from "@nanostores/react";
 import { $currency, $rates, formatPrice } from "@/cms/lib/currency";
-import {
-  toProductGridInitialCategory,
-  toProductGridQuery,
-  toProductGridViewProps,
-} from "../../block-adapters";
-import type { ProductGridContent } from "../../block-adapters";
-import type { Category, Language, Product } from "@/cms/types";
-import { ProductGrid as ProductGridView, type ProductGridSortId } from "../blocks";
+import type { ProductGridContent } from "../blocks";
+import type { Category, Language, Product, ProductGridSortId, Translation } from "@/cms/types";
+import { ProductGrid as ProductGridView } from "../blocks";
+import { useProductGrid } from "@core-webApp/hooks/useProductGrid";
+import { createTranslate } from "../../utils/i18n";
 
 export interface ProductGridContainerProps extends ProductGridContent {
   categories: Category[];
   products: Product[];
   totalProducts?: number;
   lang: Language;
+  initialPage?: number;
+  initialCategory?: string;
+  initialSort?: ProductGridSortId;
 }
+
+const PRODUCT_GRID_SORT_OPTIONS: Array<{ id: ProductGridSortId; name: Translation }> = [
+  { id: "newest", name: { zh: "最新上架", en: "Newest" } },
+  { id: "price-asc", name: { zh: "价格从低到高", en: "Price Low-High" } },
+  { id: "price-desc", name: { zh: "价格从高到低", en: "Price High-Low" } },
+  { id: "sales", name: { zh: "销量优先", en: "Best Selling" } },
+];
 
 export default function ProductGridContainer({
   itemsPerPage: defaultItemsPerPage = 12,
   category,
+  title,
+  subtitle,
   categories = [],
   products: initialProducts = [],
-  totalProducts,
+  totalProducts: initialTotal = 0,
   lang,
-  ...content
+  initialPage = 1,
+  initialCategory: serverInitialCategory,
+  initialSort = "newest",
 }: ProductGridContainerProps) {
   const currentItemsPerPage = defaultItemsPerPage || 12;
-  const initialCategory = toProductGridInitialCategory(category);
+  const initialCategory = serverInitialCategory || (category && category !== "all" ? category : "all");
   const currency = useStore($currency);
   const rates = useStore($rates);
   const [hasMounted, setHasMounted] = useState(false);
-
-  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
-  const [sortBy, setSortBy] = useState<ProductGridSortId>("newest");
-  const [displayedProducts, setDisplayedProducts] = useState<Product[]>(initialProducts);
-  const [totalCount, setTotalCount] = useState(totalProducts || initialProducts.length);
-  const [isLoading, setIsLoading] = useState(false);
+  const t = createTranslate(lang);
+  const categoryNames = Object.fromEntries(categories.map((item) => [item.id, item.name]));
 
   useEffect(() => setHasMounted(true), []);
 
-  useEffect(() => {
-    if (selectedCategory === initialCategory && sortBy === "newest") {
-      setDisplayedProducts(initialProducts);
-      setTotalCount(totalProducts || initialProducts.length);
-      return;
-    }
-
-    const controller = new AbortController();
-
-    const fetchProducts = async () => {
-      setIsLoading(true);
-      try {
-        const response = await api.getProducts(
-          toProductGridQuery({
-            itemsPerPage: currentItemsPerPage,
-            selectedCategory,
-            sortBy,
-          }),
-          { signal: controller.signal },
-        );
-
-        if (!controller.signal.aborted) {
-          setDisplayedProducts(response.data || []);
-          setTotalCount(response.pagination?.total || 0);
-        }
-      } catch (error) {
-        if (!controller.signal.aborted) {
-          console.error("[Lilian ProductGrid] Failed to fetch products:", error);
-        }
-      } finally {
-        if (!controller.signal.aborted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    fetchProducts();
-
-    return () => controller.abort();
-  }, [currentItemsPerPage, initialCategory, initialProducts, selectedCategory, sortBy, totalProducts]);
-
-  const viewProps = toProductGridViewProps({
-    content: {
-      ...content,
-      itemsPerPage: defaultItemsPerPage,
-      category,
-    },
-    categories,
-    products: displayedProducts,
-    totalCount,
+  const {
     selectedCategory,
     sortBy,
+    currentPage,
+    displayedProducts,
+    totalCount,
     isLoading,
-    lang,
-    formatPriceText: (price) => hasMounted
-      ? formatPrice(price, currency, rates)
-      : formatPrice(price),
-    onCategoryChange: (categoryId) => {
-      setSelectedCategory(categoryId);
-    },
-    onSortChange: setSortBy,
+    setSelectedCategory,
+    setSortBy,
+    setCurrentPage,
+  } = useProductGrid<Product>({
+    initialProducts,
+    initialTotal,
+    initialPage,
+    initialCategory,
+    initialSort,
+    itemsPerPage: currentItemsPerPage,
+    syncUrl: true,
+    fetchProducts: (query, options) => api.getProducts(query as any, options),
   });
 
-  return <ProductGridView {...viewProps} />;
+  const categoryOptions = [
+    {
+      id: "all",
+      label: lang === "zh" ? "全部" : "All",
+      selected: selectedCategory === "all",
+    },
+    ...categories.map((cat) => ({
+      id: cat.id,
+      label: t(cat.name),
+      selected: selectedCategory === cat.id,
+    })),
+  ];
+
+  const sortOptions = PRODUCT_GRID_SORT_OPTIONS.map((option) => ({
+    id: option.id,
+    label: t(option.name),
+    selected: sortBy === option.id,
+  }));
+
+  const mappedProducts = displayedProducts.map((product) => ({
+    id: String(product.id),
+    product,
+    lang,
+    formatPriceText: (price?: number) => hasMounted
+      ? formatPrice(price, currency, rates)
+      : formatPrice(price),
+    categoryNames,
+  }));
+
+  const labels = {
+    loading: lang === "zh" ? "正在为您加载商品..." : "Loading products...",
+    empty: lang === "zh" ? "暂无商品" : "No products available",
+    total: lang === "zh" ? `共 ${totalCount} 件商品` : `${totalCount} products total`,
+  };
+
+  return (
+    <ProductGridView
+      categories={categoryOptions}
+      sortOptions={sortOptions}
+      products={mappedProducts}
+      labels={labels}
+      totalCount={totalCount}
+      totalPages={Math.ceil(totalCount / currentItemsPerPage)}
+      currentPage={currentPage}
+      selectedCategory={selectedCategory}
+      sortBy={sortBy}
+      isLoading={isLoading}
+      onCategoryChange={setSelectedCategory}
+      onSortChange={setSortBy}
+      onPageChange={setCurrentPage}
+      titleText={title ? t(title) : undefined}
+      subtitleText={subtitle ? t(subtitle) : undefined}
+    />
+  );
 }

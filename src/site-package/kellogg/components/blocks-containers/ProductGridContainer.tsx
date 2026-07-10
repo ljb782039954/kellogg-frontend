@@ -3,9 +3,9 @@ import { api } from "@services/api";
 import { useStore } from "@nanostores/react";
 import { $currency, $rates, formatPrice } from "@/cms/lib/currency";
 import type { ProductGridContent } from "../blocks";
-import type { Category, Language, Product } from "@/cms/types";
+import type { Category, Language, Product, ProductGridSortId  } from "@/cms/types";
 import { ProductGrid as ProductGridView } from "../blocks";
-import { useProductGrid, type ProductGridSortId } from "@core-webApp/hooks/useProductGrid";
+import { useProductGrid,} from "@core-webApp/hooks/useProductGrid";
 import { createTranslate } from "../../utils/i18n";
 
 export interface ProductGridContainerProps extends ProductGridContent {

@@ -1,52 +1,35 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
+import BlogIndexView from "./blog/BlogIndexView.astro";
+import { PageService } from "@core-webApp/services/pageService";
+import { parseBlogGridSearchParams } from "@core-webApp/lib/blogGrid";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
-import type { BlogSummary } from "@/cms/types";
-import MainHeading from "../components/blocks/MainHeading";
-import BlogGridContainer from "../components/blocks-containers/BlogGridContainer";
 
 const siteData = await SiteService.getSiteData(Astro);
 const { lang } = siteData;
+const query = parseBlogGridSearchParams(Astro.url.searchParams, { pageSize: 12 });
 
-let blogs: BlogSummary[] = [];
-try {
-  const resp = await api.getBlogs({ page: 1, pageSize: 100, sort: "newest" });
-  blogs = resp.data || [];
-} catch (error) {
-  console.error("[Blog Index SSR] Failed to fetch blogs:", error);
-}
-
-let blogPageDetail: any = null;
-try {
-  blogPageDetail = await api.getPageById("system-blog");
-} catch (error) {
-  console.error("[Blog Index SSR] Failed to fetch system-blog page details:", error);
-}
+const pageData = await PageService.loadBlogIndexPageData({ api, lang, ...query });
+const { blogs, categories, blogPageDetail, pagination } = pageData;
 
 const blogSEO = blogPageDetail?.seo || {
-  title: { zh: "博客与资讯 - Lilian Fashion", en: "Blog & Resources - Lilian Fashion" },
+  title: { zh: "博客与资讯 - Kellogg Fashion", en: "Blog & Resources - Kellogg Fashion" },
   description: {
-    zh: "浏览 Lilian Fashion 博客，获取最新行业资讯、面料指南、服装制造技巧和流行趋势报告。",
-    en: "Explore Lilian Fashion blog for industry news, fabric guides, OEM tips, and trend reports from a leading apparel manufacturer.",
+    zh: "浏览 Kellogg Fashion 博客，获取最新行业资讯、面料指南、服装制造技巧和流行趋势报告。",
+    en: "Explore Kellogg Fashion blog for industry news, fabric guides, OEM tips, and trend reports from a leading apparel manufacturer.",
   },
 };
 ---
 
 <Layout seo={blogSEO} lang={lang}>
-  <main class="py-12 bg-surface min-h-[60vh]">
-    <MainHeading
-      titleText={lang === "zh" ? blogPageDetail?.title?.zh || "博客与资讯" : blogPageDetail?.title?.en || "Blog & Resources"}
-      subtitleText={lang === "zh" ? blogPageDetail?.subtitle?.zh || "行业洞察" : blogPageDetail?.subtitle?.en || "Industry Insights"}
-      lang={lang}
-    />
-
-    <BlogGridContainer
-      blogs={blogs}
-      lang={lang}
-      maxItems={-1}
-      client:load
-    />
-  </main>
+  <BlogIndexView
+    blogs={blogs}
+    categories={categories}
+    totalBlogs={pagination.total}
+    initialPage={pagination.page}
+    initialCategory={query.category}
+    initialSort={query.sort}
+    lang={lang}
+  />
 </Layout>
-
