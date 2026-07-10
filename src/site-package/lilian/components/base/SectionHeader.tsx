@@ -11,13 +11,13 @@ export default function SectionHeader({
   theme = "dark",
   className,
 }: SectionHeaderProps) {
-  const titleClass = theme === "dark" ? "text-white" : "text-gray-900";
-  const subtitleClass = theme === "dark" ? "text-white/70" : "text-gray-600";
+  const titleClass = theme === "dark" ? "text-on-dark" : "text-ink-strong";
+  const subtitleClass = theme === "dark" ? "text-on-dark-soft" : "text-body";
 
   return (
-    <div className={["text-center mb-12 max-w-2xl mx-auto", className].filter(Boolean).join(" ")}>
-      <h2 className={`text-2xl md:text-4xl font-bold mb-4 ${titleClass}`}>{titleText}</h2>
-      {subtitleText && <p className={`text-lg md:text-xl max-w-2xl mx-auto ${subtitleClass}`}>{subtitleText}</p>}
+    <div className={["mx-auto mb-10 max-w-2xl text-center", className].filter(Boolean).join(" ")}>
+      <h2 className={`font-luxury-heading text-3xl font-light leading-tight md:text-4xl ${titleClass}`}>{titleText}</h2>
+      {subtitleText && <p className={`mx-auto mt-3 max-w-xl text-sm leading-6 md:text-base ${subtitleClass}`}>{subtitleText}</p>}
     </div>
   );
 }

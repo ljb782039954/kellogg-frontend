@@ -36,29 +36,29 @@ export default function ProductCustomFields({
   if (displayFields.length === 0) return null;
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(500px,1fr))] gap-y-10 gap-x-20 py-16 border-t border-gray-100">
+    <div className="grid grid-cols-1 gap-x-16 gap-y-8 border-t border-border py-12 md:grid-cols-2">
       {displayFields.map((field, idx) => (
-        <div key={`${field.nameText}-${idx}`} className="flex flex-col gap-3">
-          <p className="text-xs text-gray-800 uppercase font-black tracking-widest">
-            {idx + 1}. {field.nameText}
+        <div key={`${field.nameText}-${idx}`} className="border-l border-border pl-5">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-subtle">
+            {String(idx + 1).padStart(2, "0")} / {field.nameText}
           </p>
 
-          <div className="space-y-3">
+          <div className="mt-3">
             {field.parts.length > 1 ? (
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {field.parts.map((part, partIndex) => (
-                  <li key={`${part}-${partIndex}`} className="flex items-start gap-3 group">
-                    <div className="mt-2 w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary transition-colors flex-shrink-0" />
-                    <span className="text-gray-600 leading-relaxed text-base">
+                  <li key={`${part}-${partIndex}`} className="flex items-start gap-3">
+                    <span className="mt-2 h-1 w-1 shrink-0 bg-ink-strong" />
+                    <span className="text-sm leading-6 text-body">
                       {part}
                     </span>
                   </li>
                 ))}
               </ul>
             ) : (
-              <div className="flex items-start gap-3 group">
-                <div className="mt-2 w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary transition-colors flex-shrink-0" />
-                <p className="text-gray-600 leading-relaxed text-base">{field.parts[0]}</p>
+              <div className="flex items-start gap-3">
+                <span className="mt-2 h-1 w-1 shrink-0 bg-ink-strong" />
+                <p className="text-sm leading-6 text-body">{field.parts[0]}</p>
               </div>
             )}
           </div>

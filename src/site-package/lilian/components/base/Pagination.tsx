@@ -45,21 +45,21 @@ export default function Pagination({
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="p-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="flex h-10 w-10 items-center justify-center border border-border bg-surface text-ink-strong transition-colors hover:border-ink-strong disabled:cursor-not-allowed disabled:opacity-35"
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="h-4 w-4" />
         </button>
 
         {pageItems.map((item, index) => item === "ellipsis" ? (
-          <span key={`ellipsis-${index}`} className="w-6 text-center text-gray-400" aria-hidden="true">...</span>
+          <span key={`ellipsis-${index}`} className="w-6 text-center text-sm text-subtle" aria-hidden="true">...</span>
         ) : (
           <button
             key={item}
             onClick={() => handlePageChange(item)}
-            className={`w-10 h-10 rounded-lg font-medium transition-colors ${
+            className={`flex h-10 w-10 items-center justify-center border text-xs font-medium transition-colors ${
               currentPage === item
-                ? 'bg-gray-800 text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ? 'border-ink-strong bg-ink-strong text-on-dark'
+                : 'border-border bg-surface text-body hover:border-ink-strong hover:text-ink-strong'
             }`}
           >
             {item}
@@ -69,14 +69,14 @@ export default function Pagination({
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="p-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="flex h-10 w-10 items-center justify-center border border-border bg-surface text-ink-strong transition-colors hover:border-ink-strong disabled:cursor-not-allowed disabled:opacity-35"
         >
-          <ChevronRight className="w-5 h-5" />
+          <ChevronRight className="h-4 w-4" />
         </button>
       </div>
 
       {totalCount !== undefined && (
-        <div className="text-center mt-6 text-sm text-gray-500">
+        <div className="mt-5 text-center text-[11px] uppercase tracking-[0.14em] text-subtle">
           {totalText || `${totalCount}`}
         </div>
       )}

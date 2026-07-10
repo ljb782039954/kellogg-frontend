@@ -54,10 +54,10 @@ const translate = createTranslate(lang);
   const gallery = product.images && product.images.length > 0 ? product.images : [product.image];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20">
+    <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16 xl:gap-20">
       {/* Left: Gallery */}
-      <div className="space-y-6">
-        <div className="aspect-[4/5] rounded-[40px] overflow-hidden bg-gray-50 border border-gray-100 relative shadow-2xl shadow-gray-200/50">
+      <div className="space-y-4">
+        <div className="relative aspect-[4/5] overflow-hidden rounded-md border border-border bg-media">
           <AnimatePresence mode="wait">
             <motion.div
               key={variantPreviewImage || gallery[activeImageIndex]}
@@ -77,13 +77,13 @@ const translate = createTranslate(lang);
           </AnimatePresence>
 
           {product.tag && (
-            <span className="absolute top-8 left-8 px-5 py-2 bg-gray-900 text-white text-xs font-bold rounded-full tracking-widest uppercase z-10 shadow-lg">
+            <span className="absolute left-5 top-5 z-10 bg-ink-strong px-3 py-1.5 text-[10px] uppercase tracking-[0.16em] text-on-dark">
               {translate(product.tag)}
             </span>
           )}
         </div>
 
-        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+        <div className="scrollbar-hide flex gap-3 overflow-x-auto pb-1">
           {gallery.map((img, idx) => (
             <button
               key={idx}
@@ -91,8 +91,8 @@ const translate = createTranslate(lang);
                 setActiveImageIndex(idx);
                 setVariantPreviewImage(null);
               }}
-              className={`relative w-24 aspect-square rounded-2xl overflow-hidden flex-shrink-0 border-2 transition-all ${
-                activeImageIndex === idx && !variantPreviewImage ? 'border-gray-900 scale-105 shadow-md' : 'border-transparent hover:border-gray-200'
+              className={`relative aspect-square w-20 shrink-0 overflow-hidden rounded-md border transition-colors ${
+                activeImageIndex === idx && !variantPreviewImage ? 'border-ink-strong' : 'border-border hover:border-ink'
               }`}
             >
               <OptimizedImage src={img} alt="thumbnail" className="w-full h-full object-cover" width={100} />
@@ -102,37 +102,37 @@ const translate = createTranslate(lang);
       </div>
 
       {/* Right: Info */}
-      <div className="flex flex-col space-y-8">
+      <div className="flex flex-col space-y-8 lg:pt-2">
         <div>
-          <div className="flex items-center gap-3 mb-6">
-            <span className="text-xs font-bold text-amber-600 bg-amber-50 px-4 py-1.5 rounded-full uppercase tracking-wider">
+          <div className="mb-5 flex items-center gap-3">
+            <span className="border border-border px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-body">
               {translate(product.category)}
             </span>
-            <div className="flex items-center gap-1.5 text-amber-400 bg-gray-50 px-3 py-1 rounded-full">
+            <div className="flex items-center gap-1.5 text-rating">
               <Star className="w-4 h-4 fill-current" />
-              <span className="text-sm font-bold text-gray-900">{product.rating || '5.0'}</span>
+              <span className="text-[11px] text-body">{product.rating || '5.0'}</span>
             </div>
           </div>
           
-          <div className="flex justify-between items-start gap-4">
-            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
+          <div className="flex items-start justify-between gap-4">
+            <h1 className="font-luxury-heading text-4xl font-light leading-tight text-ink-strong md:text-5xl">
               {translate(product.name)}
             </h1>
             <button
               onClick={handleShare}
-              className="p-4 rounded-2xl bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition-all shadow-sm flex-shrink-0"
+              className="flex h-10 w-10 shrink-0 items-center justify-center border border-border text-subtle transition-colors hover:border-ink-strong hover:text-ink-strong"
             >
-              <Share2 className="w-6 h-6" />
+              <Share2 className="h-4 w-4" />
             </button>
           </div>
 
           {/* Price Section */}
-          <div className="mt-8 flex items-baseline gap-4">
-            <span className="text-4xl md:text-5xl font-black text-gray-900 tracking-tighter">
+          <div className="mt-7 flex items-baseline gap-4">
+            <span className="font-luxury-heading text-4xl text-ink-strong md:text-5xl">
               {getDisplayPrice(product.price)}
             </span>
             {product.originalPrice && (
-              <span className="text-xl md:text-2xl text-gray-300 line-through font-medium">
+              <span className="text-lg font-light text-subtle line-through md:text-xl">
                 {getDisplayPrice(product.originalPrice)}
               </span>
             )}
@@ -143,18 +143,18 @@ const translate = createTranslate(lang);
         {product.bulkPrices && product.bulkPrices.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <span className="text-xs font-black text-gray-300 uppercase tracking-[0.3em] whitespace-nowrap">
+              <span className="whitespace-nowrap text-[10px] uppercase tracking-[0.18em] text-subtle">
                 {lang === 'zh' ? '批量阶梯价格' : 'Bulk Pricing'}
               </span>
-              <div className="h-px w-full bg-gray-100" />
+              <div className="h-px w-full bg-border" />
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {product.bulkPrices.map((tier, idx) => (
-                <div key={idx} className="bg-gray-50 rounded-2xl p-4 border border-transparent hover:border-gray-200 transition-all text-center">
-                  <p className="text-[10px] font-bold text-gray-400 uppercase mb-1">
+                <div key={idx} className="border border-border bg-page p-4 text-center transition-colors hover:border-ink-strong">
+                  <p className="mb-1 text-[10px] uppercase tracking-[0.1em] text-subtle">
                     {tier.maxQty ? `${tier.minQty}-${tier.maxQty} PCS` : `${tier.minQty}+ PCS`}
                   </p>
-                  <p className="text-base font-bold text-gray-900">{getDisplayPrice(tier.price)}</p>
+                  <p className="font-luxury-heading text-lg text-ink-strong">{getDisplayPrice(tier.price)}</p>
                 </div>
               ))}
             </div>
@@ -162,16 +162,16 @@ const translate = createTranslate(lang);
         )}
 
         {/* Variants */}
-        <div className="space-y-10 py-10 border-y border-gray-100">
+        <div className="space-y-8 border-y border-border py-8">
           {product.colors && product.colors.length > 0 && (
             <div className="space-y-4">
-              <div className="flex gap-2 md:gap-4 items-center">
-                <span className="text-xs font-bold uppercase tracking-widest text-gray-400">{lang === 'zh' ? '颜色' : 'Color'}</span>
-                <span className="text-sm font-bold text-gray-900">
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] uppercase tracking-[0.16em] text-subtle">{lang === 'zh' ? '颜色' : 'Color'}</span>
+                <span className="text-sm text-ink-strong">
                   {selectedColorIndex !== null ? translate(product.colors[selectedColorIndex].name) : (lang === 'zh' ? '请选择' : 'Select')}
                 </span>
               </div>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-3">
                 {product.colors.map((color, idx) => (
                   <button
                     key={idx}
@@ -179,14 +179,14 @@ const translate = createTranslate(lang);
                       setSelectedColorIndex(idx);
                       if (color.image) setVariantPreviewImage(color.image);
                     }}
-                    className={`w-14 h-14 rounded-full p-1 border-2 transition-all ${
-                      selectedColorIndex === idx ? 'border-gray-900 scale-110 shadow-xl' : 'border-transparent hover:border-gray-200'
+                    className={`h-12 w-12 rounded-full border p-1 transition-colors ${
+                      selectedColorIndex === idx ? 'border-ink-strong' : 'border-border hover:border-ink'
                     }`}
                   >
                     {color.image ? (
                       <OptimizedImage src={color.image} alt="" width={80} className="w-full h-full object-cover rounded-full" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-full text-[10px] font-bold uppercase">
+                      <div className="flex h-full w-full items-center justify-center rounded-full bg-media text-[10px] uppercase text-body">
                         {translate(color.name).slice(0, 2)}
                       </div>
                     )}
@@ -198,11 +198,11 @@ const translate = createTranslate(lang);
 
           {product.sizes && product.sizes.length > 0 && (
             <div className="space-y-4">
-              <div className="flex gap-2 md:gap-4 items-center">
-                <span className="text-xs font-bold uppercase tracking-widest text-gray-400">{lang === 'zh' ? '尺码' : 'Size'}</span>
-                <span className="text-sm font-bold text-gray-900">{selectedSize || (lang === 'zh' ? '请选择' : 'Select')}</span>
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] uppercase tracking-[0.16em] text-subtle">{lang === 'zh' ? '尺码' : 'Size'}</span>
+                <span className="text-sm text-ink-strong">{selectedSize || (lang === 'zh' ? '请选择' : 'Select')}</span>
               </div>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2">
                 {product.sizes.map((size, idx) => (
                   <button
                     key={idx}
@@ -210,10 +210,10 @@ const translate = createTranslate(lang);
                       setSelectedSize(size.name);
                       if (size.image) setVariantPreviewImage(size.image);
                     }}
-                    className={`px-8 py-3.5 rounded-2xl border-2 text-sm font-black transition-all ${
+                    className={`border px-6 py-3 text-sm transition-colors ${
                       selectedSize === size.name
-                        ? 'bg-gray-900 border-gray-900 text-white shadow-xl scale-105'
-                        : 'border-gray-100 text-gray-900 hover:border-gray-300 bg-white'
+                        ? 'border-ink-strong bg-ink-strong text-on-dark'
+                        : 'border-border bg-surface text-ink-strong hover:border-ink'
                     }`}
                   >
                     {size.name}
@@ -225,24 +225,24 @@ const translate = createTranslate(lang);
         </div>
 
         {/* Extra Info */}
-        <div className="space-y-8">
-          <p className="text-gray-500 leading-relaxed text-lg italic font-light">
+        <div className="space-y-7">
+          <p className="text-base font-light leading-8 text-body">
             {translate(product.description)}
           </p>
           
-          <div className="grid grid-cols-2 gap-8">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-gray-50 rounded-2xl text-gray-400"><Layers size={20} /></div>
+          <div className="grid grid-cols-2 gap-6">
+            <div className="flex items-center gap-3 border-l border-border pl-4">
+              <Layers size={18} className="text-subtle" />
               <div>
-                <p className="text-[10px] text-gray-400 uppercase font-black">{lang === 'zh' ? '分类' : 'Category'}</p>
-                <p className="font-bold text-gray-900">{translate(product.category)}</p>
+                <p className="text-[10px] uppercase tracking-[0.14em] text-subtle">{lang === 'zh' ? '分类' : 'Category'}</p>
+                <p className="mt-1 text-sm text-ink-strong">{translate(product.category)}</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-gray-50 rounded-2xl text-gray-400"><Calendar size={20} /></div>
+            <div className="flex items-center gap-3 border-l border-border pl-4">
+              <Calendar size={18} className="text-subtle" />
               <div>
-                <p className="text-[10px] text-gray-400 uppercase font-black">{lang === 'zh' ? '发布' : 'Release'}</p>
-                <p className="font-bold text-gray-900">{product.releaseDate || '2024'}</p>
+                <p className="text-[10px] uppercase tracking-[0.14em] text-subtle">{lang === 'zh' ? '发布' : 'Release'}</p>
+                <p className="mt-1 text-sm text-ink-strong">{product.releaseDate || '2024'}</p>
               </div>
             </div>
           </div>
