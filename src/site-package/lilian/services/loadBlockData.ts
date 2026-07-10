@@ -1,9 +1,6 @@
 import type { RequestMemo } from "@/cms/lib/requestMemo";
 import type { SiteApiClient } from "@core-webApp/services/apiClient";
 import type { CmsPageBlock } from "@/cms/types";
-import type {
-  BlogGridContent,
-} from "../block-adapters";
 import {
   parseProductGridSearchParams,
   toProductGridApiQuery,
@@ -30,8 +27,8 @@ export async function loadLilianBlockData({
   const getCategories = () => requestMemo.get("categories", () => api.getCategories());
   const getProducts = (params: Parameters<typeof api.getProducts>[0]) =>
     requestMemo.get(`products:${JSON.stringify(params)}`, () => api.getProducts(params));
-  const getBlogs = (params: Parameters<typeof api.getBlogs>[0]) =>
-    requestMemo.get(`blogs:${JSON.stringify(params)}`, () => api.getBlogs(params));
+  // const getBlogs = (params: Parameters<typeof api.getBlogs>[0]) =>
+  //   requestMemo.get(`blogs:${JSON.stringify(params)}`, () => api.getBlogs(params));
 
   if (block.type === "productGrid") {
     const content = block.content as ProductGridContent;
@@ -80,32 +77,17 @@ export async function loadLilianBlockData({
     return { categories: categoriesData };
   }
 
-  // if (block.type === "productCard") {
-  //   const content = block.content as ProductCardContent;
-  //   if (!content.productId) return {};
-
-  //   const [product, categoriesData] = await Promise.all([
-  //     requestMemo.get(`product:${content.productId}`, () => api.getProduct(content.productId!)),
-  //     getCategories(),
-  //   ]);
+  // if (block.type === "blogGrid") {
+  //   const content = block.content as BlogGridContent;
+  //   const blogsData = await getBlogs({
+  //     pageSize: content.maxItems || 3,
+  //     page: 1,
+  //   });
 
   //   return {
-  //     product,
-  //     categories: categoriesData,
+  //     blogs: blogsData.data || [],
   //   };
   // }
-
-  if (block.type === "blogGrid") {
-    const content = block.content as BlogGridContent;
-    const blogsData = await getBlogs({
-      pageSize: content.maxItems || 3,
-      page: 1,
-    });
-
-    return {
-      blogs: blogsData.data || [],
-    };
-  }
 
   return {};
 }

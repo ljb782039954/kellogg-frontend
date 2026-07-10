@@ -1,12 +1,8 @@
 ---
-import { formatPrice } from "@/cms/lib/currency";
 import type { Language } from "@/cms/types";
 import type { PageBlock } from "../types";
-import { toProductCardViewProps } from "../components/base/ProductCard";
-import type { CategoriesContent } from "../components/blocks/Categories";
 import {
   BeforeAfterSlider,
-  // BlogSidebar,
   BrandManifesto,
   BrochureDownload,
   Categories,
@@ -25,7 +21,6 @@ import {
   MasonryGallery,
   NumberCounter,
   ParallaxImage,
-  // ProductCardBlock,
   RichTextBlock,
   FeaturedProducts,
   NewArrivals,
@@ -34,9 +29,9 @@ import {
   VideoGrid,
 } from "../components/blocks";
 import {
-  InquirySection,
   ProductGrid as ProductGridContainer,
 } from "../components/blocks-containers";
+import InquirySection from "../components/inquiry/InquirySection";
 import type { BlockType } from "../types";
 
 type BlockWithData = PageBlock & {
@@ -62,7 +57,6 @@ const renderedBlockTypes = {
   productGrid: true,
   featureList: true,
   inquiry: true,
-  blogGrid: true,
   imagePairGrid: true,
   masonryGallery: true,
   imageCarousel: true,

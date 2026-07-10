@@ -1,5 +1,5 @@
-import type { BlogGridContent } from "../block-adapters";
-import type {ProductGridContent} from '../components/blocks'
+
+import type { ProductGridContent } from '../components/blocks';
 
 export interface InquiryContent {}
 import type { CategoriesContent } from "../components/blocks/Categories";
@@ -37,7 +37,6 @@ export interface BlockContentMap {
   productGrid: ProductGridContent;
   featureList: FeatureListContent;
   inquiry: InquiryContent;
-  blogGrid: BlogGridContent;
   imagePairGrid: ImagePairGridContent;
   masonryGallery: MasonryGalleryContent;
   imageCarousel: ImageCarouselContent;

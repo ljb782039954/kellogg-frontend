@@ -1,7 +1,7 @@
 import type {
   InquiryPageContent,
   InquiryTranslations,
-} from "@core-webApp/hooks/useInquiry";
+} from '@/cms/types';
 import type { Language } from "@/cms/types";
 
 export const lilianInquiryContent: InquiryPageContent = {

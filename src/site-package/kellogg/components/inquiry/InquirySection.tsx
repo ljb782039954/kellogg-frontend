@@ -1,18 +1,19 @@
 import { motion } from 'framer-motion';
 import InquiryFormContainer from './InquiryFormContainer';
 import type { Language } from '@/cms/types';
+import { kelloggInquiryContent } from './inquiryContent';
 
 export interface InquirySectionProps {
-  titleText: string;
   lang: Language;
-  pageContent?: any;
 }
 
 export default function InquirySection({
-  titleText,
   lang,
-  pageContent,
 }: InquirySectionProps) {
+  const language = lang === 'zh' || lang === 'en' ? lang : 'en';
+  const resolvedTitle = kelloggInquiryContent.title[language] || kelloggInquiryContent.title.en;
+  const resolvedPageContent = kelloggInquiryContent;
+
   return (
     <section className="py-24 bg-gray-50/50">
       <div className="container mx-auto px-4">
@@ -24,7 +25,7 @@ export default function InquirySection({
               viewport={{ once: true }}
               className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
             >
-              {titleText}
+              {resolvedTitle}
             </motion.h2>
             <motion.div
               initial={{ opacity: 0 }}
@@ -41,7 +42,7 @@ export default function InquirySection({
             viewport={{ once: true }}
             className="bg-white border border-gray-100 rounded-[40px] p-8 md:p-12 shadow-2xl shadow-gray-200/40"
           >
-            <InquiryFormContainer lang={lang} pageContent={pageContent} />
+            <InquiryFormContainer lang={lang} pageContent={resolvedPageContent} />
           </motion.div>
         </div>
       </div>

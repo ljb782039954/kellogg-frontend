@@ -1,6 +1,6 @@
 import type { FormEventHandler } from 'react';
-import { motion } from 'framer-motion';
-import { Send, Loader2, CheckCircle2, Phone, Globe, Building2, Package } from 'lucide-react';
+// import { motion } from 'framer-motion';
+import { Send, Loader2, Package } from 'lucide-react';
 import TurnstileWidget from '@/runtime/components/TurnstileWidget';
 import type { Language } from '@/cms/types';
 
