@@ -2,7 +2,7 @@ import type { Language , } from "@/cms/types";
 import type { SiteConfig } from "@core-webApp/types";
 import { sanitizeCmsHtml } from "@/cms/lib/contentSecurity";
 import { getSafeVideoSource } from "@/cms/lib/video";
-import type { CustomerReviewsProps } from "../../site-package/kellogg/pages/customerReviews/CustomerReviews";
+import type { CustomerReviewsProps } from "./CustomerReviews";
 
 export interface CustomerReviewRecord {
   id?: number | string;

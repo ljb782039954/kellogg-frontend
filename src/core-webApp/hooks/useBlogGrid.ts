@@ -1,69 +1,67 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  buildProductGridUrl,
-  parseProductGridSearchParams,
-  toProductGridApiQuery,
-} from "../lib/productGrid";
+  buildBlogGridUrl,
+  parseBlogGridSearchParams,
+  toBlogGridApiQuery,
+} from "../lib/blogGrid";
 
-import {type ProductGridSortId} from '@/cms/types'
+import {type BlogGridSortId} from '@/cms/types'
 
-export interface ProductGridQuery {
+export interface BlogGridQuery {
   page: number;
   pageSize: number;
   category?: string;
   sort?: string;
 }
 
-export interface UseProductGridOptions<TProduct> {
-  initialProducts?: TProduct[];
+export interface UseBlogGridOptions<TBlog> {
+  initialBlogs?: TBlog[];
   initialTotal?: number;
   initialPage?: number;
   initialCategory?: string;
-  initialSort?: ProductGridSortId;
+  initialSort?: BlogGridSortId;
   itemsPerPage?: number;
   syncUrl?: boolean;
-  fetchProducts: (
-    query: ProductGridQuery,
+  fetchBlogs: (
+    query: BlogGridQuery,
     options?: { signal?: AbortSignal }
   ) => Promise<{
-    data: TProduct[];
+    data: TBlog[];
     pagination?: { total: number };
   }>;
 }
 
-/**
- * Shared product list state: initial SSR data, remote page loading, and optional URL synchronization.
- */
-export function useProductGrid<TProduct>({
-  initialProducts = [],
+/** Shared blog list state: SSR data, remote page loading, and optional URL synchronization. */
+export function useBlogGrid<TBlog>({
+  initialBlogs = [],
   initialTotal = 0,
   initialPage = 1,
-  initialCategory = "all",
+  initialCategory = "All",
   initialSort = "newest",
   itemsPerPage = 12,
   syncUrl = false,
-  fetchProducts,
-}: UseProductGridOptions<TProduct>) {
+  fetchBlogs,
+}: UseBlogGridOptions<TBlog>) {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
-  const [sortBy, setSortBy] = useState<ProductGridSortId>(initialSort);
+  const [sortBy, setSortBy] = useState<BlogGridSortId>(initialSort);
   const [currentPage, setCurrentPage] = useState(initialPage);
-  const [displayedProducts, setDisplayedProducts] = useState<TProduct[]>(initialProducts);
+  const [displayedBlogs, setDisplayedBlogs] = useState<TBlog[]>(initialBlogs);
   const [totalCount, setTotalCount] = useState(initialTotal);
   const [isLoading, setIsLoading] = useState(false);
-  const fetchProductsRef = useRef(fetchProducts);
+  const fetchBlogsRef = useRef(fetchBlogs);
 
   useEffect(() => {
-    fetchProductsRef.current = fetchProducts;
-  }, [fetchProducts]);
+    fetchBlogsRef.current = fetchBlogs;
+  }, [fetchBlogs]);
 
   const syncLocation = useCallback((nextState: {
     page: number;
     category: string;
-    sort: ProductGridSortId;
+    sort: BlogGridSortId;
   }) => {
     if (!syncUrl || typeof window === "undefined") return;
 
-    const nextUrl = buildProductGridUrl(window.location.href, nextState, {
+    const nextUrl = buildBlogGridUrl(window.location.href, nextState, {
       category: initialCategory,
       sort: initialSort,
     });
@@ -80,7 +78,7 @@ export function useProductGrid<TProduct>({
       && selectedCategory === initialCategory
       && sortBy === initialSort
     ) {
-      setDisplayedProducts(initialProducts);
+      setDisplayedBlogs(initialBlogs);
       setTotalCount(initialTotal);
       return;
     }
@@ -90,8 +88,8 @@ export function useProductGrid<TProduct>({
     const loadData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetchProductsRef.current(
-          toProductGridApiQuery({
+        const response = await fetchBlogsRef.current(
+          toBlogGridApiQuery({
             page: currentPage,
             pageSize: itemsPerPage,
             category: selectedCategory,
@@ -101,12 +99,12 @@ export function useProductGrid<TProduct>({
         );
 
         if (!controller.signal.aborted) {
-          setDisplayedProducts(response.data || []);
+          setDisplayedBlogs(response.data || []);
           setTotalCount(response.pagination?.total || 0);
         }
       } catch (error) {
         if (!controller.signal.aborted) {
-          console.error("[useProductGrid] Failed to fetch products:", error);
+          console.error("[useBlogGrid] Failed to fetch blogs:", error);
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -122,7 +120,7 @@ export function useProductGrid<TProduct>({
     currentPage,
     selectedCategory,
     sortBy,
-    initialProducts,
+    initialBlogs,
     initialTotal,
     initialPage,
     initialCategory,
@@ -134,7 +132,7 @@ export function useProductGrid<TProduct>({
     if (!syncUrl || typeof window === "undefined") return;
 
     const handlePopState = () => {
-      const state = parseProductGridSearchParams(new URLSearchParams(window.location.search), {
+      const state = parseBlogGridSearchParams(new URLSearchParams(window.location.search), {
         pageSize: itemsPerPage,
         category: initialCategory,
         sort: initialSort,
@@ -148,18 +146,18 @@ export function useProductGrid<TProduct>({
     return () => window.removeEventListener("popstate", handlePopState);
   }, [initialCategory, initialSort, itemsPerPage, syncUrl]);
 
-  const handleCategoryChange = useCallback((categoryId: string) => {
+  const handleCategoryChange = useCallback((category: string) => {
     const page = 1;
-    setSelectedCategory(categoryId);
+    setSelectedCategory(category);
     setCurrentPage(page);
-    syncLocation({ page, category: categoryId, sort: sortBy });
+    syncLocation({ page, category, sort: sortBy });
   }, [sortBy, syncLocation]);
 
-  const handleSortChange = useCallback((sortId: ProductGridSortId) => {
+  const handleSortChange = useCallback((sort: BlogGridSortId) => {
     const page = 1;
-    setSortBy(sortId);
+    setSortBy(sort);
     setCurrentPage(page);
-    syncLocation({ page, category: selectedCategory, sort: sortId });
+    syncLocation({ page, category: selectedCategory, sort });
   }, [selectedCategory, syncLocation]);
 
   const handlePageChange = useCallback((page: number) => {
@@ -172,7 +170,7 @@ export function useProductGrid<TProduct>({
     selectedCategory,
     sortBy,
     currentPage,
-    displayedProducts,
+    displayedBlogs,
     totalCount,
     isLoading,
     setCurrentPage: handlePageChange,

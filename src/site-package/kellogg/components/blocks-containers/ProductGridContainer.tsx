@@ -5,7 +5,7 @@ import { $currency, $rates, formatPrice } from "@/cms/lib/currency";
 import type { ProductGridContent } from "../blocks";
 import type { Category, Language, Product } from "@/cms/types";
 import { ProductGrid as ProductGridView } from "../blocks";
-import { useProductGrid } from "@core-webApp/hooks/useProductGrid";
+import { useProductGrid, type ProductGridSortId } from "@core-webApp/hooks/useProductGrid";
 import { createTranslate } from "../../utils/i18n";
 
 export interface ProductGridContainerProps extends ProductGridContent {
@@ -13,6 +13,9 @@ export interface ProductGridContainerProps extends ProductGridContent {
   products: Product[];
   totalProducts?: number;
   lang: Language;
+  initialPage?: number;
+  initialCategory?: string;
+  initialSort?: ProductGridSortId;
 }
 
 const PRODUCT_GRID_SORT_OPTIONS = [
@@ -29,9 +32,12 @@ export default function ProductGridContainer({
   products: initialProducts = [],
   totalProducts: initialTotal = 0,
   lang,
+  initialPage = 1,
+  initialCategory: serverInitialCategory,
+  initialSort = "newest",
 }: ProductGridContainerProps) {
   const currentItemsPerPage = defaultItemsPerPage || 12;
-  const initialCategory = category && category !== "all" ? category : "all";
+  const initialCategory = serverInitialCategory || (category && category !== "all" ? category : "all");
   const currency = useStore($currency);
   const rates = useStore($rates);
   const [hasMounted, setHasMounted] = useState(false);
@@ -52,8 +58,11 @@ export default function ProductGridContainer({
   } = useProductGrid<Product>({
     initialProducts,
     initialTotal,
+    initialPage,
     initialCategory,
+    initialSort,
     itemsPerPage: currentItemsPerPage,
+    syncUrl: true,
     fetchProducts: (query, options) => api.getProducts(query as any, options),
   });
 

@@ -9,8 +9,6 @@ export interface ProductCardContent {
 
 export interface InquiryContent {}
 import type { CategoriesContent } from "../components/blocks/Categories";
-export type { CategoriesContent };
-
 import type { FeaturedProductsContent } from "../components/blocks/FeaturedProducts";
 import type { NewArrivalsContent } from "../components/blocks/NewArrivals";
 export type { FeaturedProductsContent, NewArrivalsContent };
@@ -38,7 +36,6 @@ import type { TestimonialMasonryContent } from "../components/blocks/Testimonial
 import type { VideoGridContent } from "../components/blocks/VideoGrid";
 
 export interface BlockContentMap {
-  productCard: ProductCardContent;
   categories: CategoriesContent;
   newArrivals: NewArrivalsContent;
   featuredProducts: FeaturedProductsContent;

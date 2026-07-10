@@ -8,6 +8,7 @@ import type {
 
 import type {
   Blog,
+  BlogCategory,
   BlogSummary,
   Category,
   CmsCustomPage,
@@ -89,12 +90,15 @@ export function createSiteApiClient(config: ApiClientConfig) {
       body: JSON.stringify(data),
     }),
 
-    getBlogs: (params?: BlogsQuery) => {
+    getBlogs: (params?: BlogsQuery, options: Pick<RequestInit, "signal"> = {}) => {
       const queryStr = buildQuery(params);
       return request<PaginatedResponse<BlogSummary>>(
         `/api/blogs${queryStr ? `?${queryStr}` : ""}`,
+        options,
       );
     },
+
+    getBlogCategories: () => request<BlogCategory[]>("/api/blog-categories"),
 
     getBlog: (idOrSlug: string) => request<Blog>(`/api/blogs/${idOrSlug}`),
 

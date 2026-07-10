@@ -4,7 +4,7 @@ import CustomerReviews from "./customerReviews/CustomerReviews";
 import { toCustomerReviewsViewProps } from "./customerReviews/adapter";
 import { api } from "@services/api";
 import { SiteService } from "@services/siteService";
-import MainHeading from "../components/blocks/MainHeading";
+import MainHeading, { type MainHeadingContent } from "../components/blocks/MainHeading";
 
 const siteData = await SiteService.getSiteData(Astro);
 const { lang } = siteData;
@@ -27,15 +27,23 @@ const pageSEO = customerReviewsPage?.seo || {
     en: "Real try-on videos and honest client reviews from global brand buyers — see Lilian Fashion apparel quality in action.",
   },
 };
+
+const content: MainHeadingContent = {
+      title:{zh: "客户评价" , en: "Customer Reviews"},
+      subtitle:{zh: "客户见证" , en: "Testimonials"},
+      description:{
+        zh: "听听来自全球合作伙伴的真实反馈，见证高品质服装制造。" , 
+        en: "Real feedback from global partners, witnessing premium apparel manufacturing."
+      }
+    }
+
 const customerReviewsProps = toCustomerReviewsViewProps(reviews, lang);
 ---
 
 <Layout seo={pageSEO} lang={lang}>
   <main class="py-12 bg-surface min-h-[60vh]">
     <MainHeading
-      titleText={lang === "zh" ? "客户评价" : "Customer Reviews"}
-      subtitleText={lang === "zh" ? "客户见证" : "Testimonials"}
-      descriptionText={lang === "zh" ? "听听来自全球合作伙伴的真实反馈，见证高品质服装制造。" : "Real feedback from global partners, witnessing premium apparel manufacturing."}
+      content={content}
       lang={lang}
     />
     

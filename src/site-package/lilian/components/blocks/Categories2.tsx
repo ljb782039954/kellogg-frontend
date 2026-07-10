@@ -2,14 +2,14 @@
 import { createTranslate } from "../../utils/i18n";
 import type { Category, Language, Translation } from "@/cms/types";
 
-export interface CategoriesContent {
+export interface Categories2Content {
   showAll?: boolean;
   maxItems?: number;
   categories: Category[];
 }
 
 export interface Categories2Props {
-  content: CategoriesContent;
+  content: Categories2Content;
   lang: Language;
 }
 

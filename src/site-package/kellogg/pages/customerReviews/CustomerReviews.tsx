@@ -1,4 +1,6 @@
+import { useState } from "react";
 import OptimizedImage from "@/runtime/components/OptimizedImage";
+import { Pagination } from "../../components/base";
 
 export type CustomerReviewMedia =
   | { kind: "embed"; url: string; title: string }
@@ -22,6 +24,8 @@ export interface CustomerReviewsProps {
   emptyTitle: string;
   emptyDescription: string;
   noMediaText?: string;
+  itemsPerPage?: number;
+  totalText?: string;
 }
 
 export default function CustomerReviews({
@@ -29,7 +33,11 @@ export default function CustomerReviews({
   emptyTitle,
   emptyDescription,
   noMediaText = "No media",
+  itemsPerPage = 10,
+  totalText,
 }: CustomerReviewsProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+
   if (items.length === 0) {
     return (
       <section className="max-w-5xl mx-auto px-6 py-24 text-center text-gray-400">
@@ -39,9 +47,12 @@ export default function CustomerReviews({
     );
   }
 
+  const totalPages = Math.ceil(items.length / itemsPerPage);
+  const pageItems = items.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   return (
     <section className="max-w-5xl mx-auto px-6 py-12 space-y-14">
-      {items.map((review) => {
+      {pageItems.map((review) => {
         return (
           <article key={review.id} className="group relative overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
             <div className="flex flex-col md:flex-row">
@@ -75,6 +86,16 @@ export default function CustomerReviews({
           </article>
         );
       })}
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          totalCount={items.length}
+          totalText={totalText}
+        />
+      )}
     </section>
   );
 }

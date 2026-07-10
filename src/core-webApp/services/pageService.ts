@@ -1,4 +1,4 @@
-import type { Category, Product, Blog, BlogSummary } from "@/cms/types";
+import type { BlogCategory, Category, Product, Blog, BlogSummary } from "@/cms/types";
 
 export interface ProductDetailPageData {
   product: Product & { categoryName?: string };
@@ -9,6 +9,12 @@ export interface BlogIndexPageData {
   blogs: BlogSummary[];
   categories: string[];
   blogPageDetail: any;
+  pagination: {
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  };
 }
 
 export interface BlogDetailPageData {
@@ -67,25 +73,45 @@ export class PageService {
    */
   static async loadBlogIndexPageData({
     api,
-  }: CommonPageOptions): Promise<BlogIndexPageData> {
-    const [blogsResp, blogPageDetail] = await Promise.all([
-      api.getBlogs({ page: 1, pageSize: 100, sort: "newest" }),
+    page = 1,
+    pageSize = 12,
+    category = "All",
+    sort = "newest",
+  }: CommonPageOptions & {
+    page?: number;
+    pageSize?: number;
+    category?: string;
+    sort?: string;
+  }): Promise<BlogIndexPageData> {
+    const [blogsResp, blogCategories, blogPageDetail] = await Promise.all([
+      api.getBlogs({
+        page,
+        pageSize,
+        category: category === "All" ? undefined : category,
+        sort,
+      }),
+      api.getBlogCategories(),
       api.getPageById("system-blog").catch(() => null),
     ]);
 
     const blogs = blogsResp.data || [];
     
-    // Dynamically build and deduplicate category list from blogs content
-    const cats = new Set<string>();
-    blogs.forEach((blog: BlogSummary) => {
-      if (blog.category) cats.add(blog.category);
-    });
+    const cats = new Set<string>((blogCategories as BlogCategory[])
+      .map((item) => item.name_en)
+      .filter(Boolean));
+    if (category !== "All") cats.add(category);
     const categories = ["All", ...Array.from(cats)];
 
     return {
       blogs,
       categories,
       blogPageDetail,
+      pagination: blogsResp.pagination || {
+        total: blogs.length,
+        page,
+        pageSize,
+        totalPages: 1,
+      },
     };
   }
 

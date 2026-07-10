@@ -53,17 +53,17 @@ const { block, lang } = Astro.props as Props;
 const content = (block.content ?? {}) as any;
 const data = block.data ?? {};
 
-const productCardProps = block.type === "productCard" && data.product
-  ? toProductCardViewProps(data.product, {
-      lang,
-      formatPriceText: formatPrice,
-      categoryNames: Object.fromEntries((data.categories ?? []).map((category: any) => [category.id, category.name])),
-    })
-  : null;
+// const productCardProps = block.type === "productCard" && data.product
+//   ? toProductCardViewProps(data.product, {
+//       lang,
+//       formatPriceText: formatPrice,
+//       categoryNames: Object.fromEntries((data.categories ?? []).map((category: any) => [category.id, category.name])),
+//     })
+//   : null;
 
 
 const renderedBlockTypes = {
-  productCard: true,
+  // productCard: true,
   categories: true,
   newArrivals: true,
   featuredProducts: true,
@@ -87,8 +87,6 @@ const renderedBlockTypes = {
   numberCounter: true,
   testimonialMasonry: true,
   faqAccordion: true,
-  blogSidebar: true,
-  certificationBadges: true,
   brochureDownload: true,
   mainHeading: true,
   richTextBlock: true,

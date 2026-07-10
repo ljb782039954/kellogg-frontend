@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/SiteLayout.astro";
 import CustomerReviews from "./customerReviews/CustomerReviews";
-import { toCustomerReviewsViewProps } from "@/core-webApp/components/customerReviewsAdapter";
+import { toCustomerReviewsViewProps } from "./customerReviews/customerReviewsAdapter";
 import { api } from "@services/api";
 import { kelloggSiteConfig } from "../config";
 import { SiteService } from "@services/siteService";
@@ -49,5 +49,9 @@ const customerReviewsProps = toCustomerReviewsViewProps(kelloggSiteConfig ,revie
     </div>
   </section>
 
-  <CustomerReviews {...customerReviewsProps} />
+  <CustomerReviews
+    {...customerReviewsProps}
+    totalText={lang === "zh" ? `共 ${reviews.length} 条评价` : `${reviews.length} reviews total`}
+    client:load
+  />
 </Layout>

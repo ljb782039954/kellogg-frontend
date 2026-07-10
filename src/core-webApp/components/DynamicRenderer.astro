@@ -6,6 +6,7 @@ type LoadBlockData = (options: {
   block: CmsPageBlock;
   api: any;
   requestMemo: RequestMemo;
+  url?: URL;
 }) => Promise<Record<string, any>>;
 
 interface Props {
@@ -14,9 +15,10 @@ interface Props {
   api: any;
   blockRenderer: any;
   loadBlockData?: LoadBlockData;
+  url?: URL;
 }
 
-const { schema, lang, api, blockRenderer: BlockRenderer, loadBlockData } = Astro.props;
+const { schema, lang, api, blockRenderer: BlockRenderer, loadBlockData, url } = Astro.props;
 const enabledBlocks = schema.blocks.filter((block) => block.isVisible);
 const requestMemo = createRequestMemo();
 
@@ -24,7 +26,7 @@ const requestMemo = createRequestMemo();
 const blocksWithData: any[] = await Promise.all(
   enabledBlocks.map(async (block) => {
     const data = loadBlockData
-      ? await loadBlockData({ block, api, requestMemo })
+      ? await loadBlockData({ block, api, requestMemo, url })
       : {};
     return { ...block, data };
   })

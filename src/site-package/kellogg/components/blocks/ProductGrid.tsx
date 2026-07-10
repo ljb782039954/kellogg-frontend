@@ -1,5 +1,6 @@
 import { SlidersHorizontal } from "lucide-react";
 import { Pagination, ProductCardStatic, type ProductCardStaticProps } from "../base";
+import { type ProductGridSortId } from '@/cms/types'
 
 export interface ProductGridContent {
   itemsPerPage?: number;
@@ -7,7 +8,6 @@ export interface ProductGridContent {
 }
 
 
-export type ProductGridSortId = "newest" | "price-asc" | "price-desc" | "sales";
 
 export interface ProductGridOption<TId extends string = string> {
   id: TId;
