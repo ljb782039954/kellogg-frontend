@@ -21,13 +21,13 @@ export interface VideoGridProps {
 }
 
 export default function VideoGrid({ content, lang = "en"}: VideoGridProps) {
-  const translate = createTranslate(lang);
+  const t = createTranslate(lang);
   const resolvedItems = (Array.isArray(content?.items) ? content.items : [])
     .map((item) => ({
-        title: translate(item.title),
-        description: translate(item.description),
+        title: t(item.title),
+        description: t(item.description),
         coverImage: item.coverImage,
-        coverImageAlt: translate(item.coverImageAlt),
+        coverImageAlt: t(item.coverImageAlt),
         url: item.url,
         canEmbed: Boolean(getVideoEmbedSource(item.url)),
       }))

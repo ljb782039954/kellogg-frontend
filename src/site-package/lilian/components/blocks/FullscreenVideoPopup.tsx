@@ -1,10 +1,12 @@
 import EmbeddedVideo, { type EmbeddedVideoAspect } from "@/runtime/components/EmbeddedVideo";
+// import VideoEmbed, { getVideoEmbedSource } from "@/runtime/components/VideoEmbed";
 import OptimizedImage from "@/runtime/components/OptimizedImage";
-import { getSafeVideoSource, type SafeVideoProvider, type SafeVideoSource } from "@/cms/lib/video";
+import { getSafeVideoSource, type SafeVideoProvider, } from "@/cms/lib/video";
 import type { Language, Translation } from "@/cms/types";
 import { Play } from "lucide-react";
 import { useState } from "react";
 import type { LilianExternalVideoItem } from "../../types/common";
+export type { LilianExternalVideoItem } from "../../types/common";
 import { createTranslate } from "../../utils/i18n";
 
 const EXTERNAL_VIDEO_PROVIDERS: SafeVideoProvider[] = ["youtube", "vimeo", "facebook", "tiktok"];
@@ -14,30 +16,24 @@ function toEmbeddedVideoAspect(aspect: LilianExternalVideoItem["aspect"]): Embed
   return aspect;
 }
 
-export interface VideoPopupContent extends LilianExternalVideoItem {
-  caption?: Translation;
-}
-
 export interface FullscreenVideoPopupProps {
-  content?: VideoPopupContent;
+  content?: LilianExternalVideoItem;
   lang?: Language;
-  source?: SafeVideoSource | null;
 }
 
 export default function FullscreenVideoPopup({
   content,
   lang = "en",
-  source,
 }: FullscreenVideoPopupProps) {
   if (!content) return null;
 
-  const translate = createTranslate(lang);
-  const resolvedSource = getSafeVideoSource(content.url, { providers: EXTERNAL_VIDEO_PROVIDERS }) || source;
-  const resolvedTitle = translate(content.title) || "Video";
+  const t = createTranslate(lang);
+  const resolvedSource = getSafeVideoSource(content.url, { providers: EXTERNAL_VIDEO_PROVIDERS }) ;
+  const resolvedTitle = t(content.title) || "Video";
+  const resolvedCaption = t(content.description) || t(content.title);
   const resolvedCoverImage = content.coverImage || "";
-  const resolvedCoverImageAlt = translate(content.coverImageAlt);
+  const resolvedCoverImageAlt = t(content.coverImageAlt);
   const resolvedAspect = toEmbeddedVideoAspect(content.aspect) || "auto";
-  const resolvedCaption = translate(content.caption);
   const [isPlaying, setIsPlaying] = useState(false);
   if (!resolvedSource) return null;
   const coverAspectClass = resolvedAspect === "portrait"
@@ -57,7 +53,7 @@ export default function FullscreenVideoPopup({
           onClick={() => setIsPlaying(true)}
           aria-label={resolvedTitle}
         >
-          <OptimizedImage src={resolvedCoverImage} alt={resolvedCoverImageAlt || resolvedCaption} className="w-full h-full object-cover" sizes="900px" />
+          <OptimizedImage src={resolvedCoverImage} alt={resolvedCoverImageAlt} className="w-full h-full object-cover" sizes="900px" />
           <div className="absolute inset-0 flex items-center justify-center bg-overlay-soft hover:bg-overlay-soft transition-colors">
             <div className="w-16 h-16 bg-surface-glass rounded-full flex items-center justify-center text-ink shadow-sm">
               <Play className="w-6 h-6 fill-current translate-x-0.5" />

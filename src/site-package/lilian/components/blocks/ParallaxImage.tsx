@@ -26,11 +26,11 @@ export default function ParallaxImage({
 }: ParallaxImageProps) {
   if (!content) return null;
 
-  const translate = createTranslate(lang);
+  const t = createTranslate(lang);
   const resolvedImage = content.image || "";
-  const resolvedTitle = translate(content.title);
-  const resolvedEyebrow = translate(content.eyebrow);
-  const resolvedImageAlt = translate(content.imageAlt, resolvedTitle);
+  const resolvedTitle = t(content.title);
+  const resolvedEyebrow = t(content.eyebrow);
+  const resolvedImageAlt = t(content.imageAlt, resolvedTitle);
   const resolvedHeight = content.height || "medium";
 
   return (

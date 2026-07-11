@@ -29,7 +29,7 @@ export { default as FullscreenImageBackground } from "./FullscreenImageBackgroun
 export type { FullscreenImageBackgroundProps, FullscreenImageBackgroundContent } from "./FullscreenImageBackground";
 
 export { default as FullscreenVideoPopup } from "./FullscreenVideoPopup";
-export type { FullscreenVideoPopupProps, VideoPopupContent } from "./FullscreenVideoPopup";
+export type { FullscreenVideoPopupProps, LilianExternalVideoItem } from "./FullscreenVideoPopup";
 
 export { default as FullWidthBanner } from "./FullWidthBanner";
 export type { FullWidthBannerProps, FullWidthBannerContent } from "./FullWidthBanner";

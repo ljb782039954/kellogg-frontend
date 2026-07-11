@@ -15,11 +15,11 @@ export interface ImagePairGridProps {
 export default function ImagePairGrid({ content, lang = "en" }: ImagePairGridProps) {
   if (!content) return null;
 
-  const translate = createTranslate(lang);
+  const t = createTranslate(lang);
   const resolvedImages = (content.images || []).map((item) => ({
     image: item.image,
-    imageAlt: translate(item.imageAlt),
-    caption: translate(item.caption),
+    imageAlt: t(item.imageAlt),
+    caption: t(item.caption),
   }));
 
   return (

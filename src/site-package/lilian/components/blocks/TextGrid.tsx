@@ -17,8 +17,8 @@ export interface TextGridProps {
 export default function TextGrid({ content, lang = "en", }: TextGridProps) {
   if (!content) return null;
 
-  const translate = createTranslate(lang);
-  const resolvedItems = (content.items || []).map((item) => ({ title: translate(item.title), text: translate(item.text) }));
+  const t = createTranslate(lang);
+  const resolvedItems = (content.items || []).map((item) => ({ title: t(item.title), text: t(item.text) }));
 
   return (
     <section className="max-w-5xl mx-auto px-6 py-10">

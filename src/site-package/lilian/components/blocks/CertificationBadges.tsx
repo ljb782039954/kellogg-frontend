@@ -25,12 +25,12 @@ export default function CertificationBadges({
 }: CertificationBadgesProps) {
   if (!content) return null;
 
-  const translate = createTranslate(lang);
-  const resolvedEyebrow = translate(content.eyebrow);
+  const t = createTranslate(lang);
+  const resolvedEyebrow = t(content.eyebrow);
   const resolvedCertifications = (content.certifications || []).map((item) => ({
     name: item.name,
-    fullName: translate(item.fullName),
-    description: translate(item.description),
+    fullName: t(item.fullName),
+    description: t(item.description),
   }));
   const [hovered, setHovered] = useState<number | null>(null);
 

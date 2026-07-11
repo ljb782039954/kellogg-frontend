@@ -17,11 +17,11 @@ export interface MasonryGalleryProps {
 }
 
 export default function MasonryGallery({ content, lang = "en"}: MasonryGalleryProps) {
-  const translate = createTranslate(lang);
+  const t = createTranslate(lang);
   const resolvedImages = content.images.map((item) => ({
         image: item.image,
-        imageAlt: translate(item.imageAlt),
-        caption: translate(item.caption),
+        imageAlt: t(item.imageAlt),
+        caption: t(item.caption),
         heightClass: item.heightClass,
       }));
 

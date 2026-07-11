@@ -3,43 +3,38 @@ import RichText from "@/runtime/components/RichText";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
-export interface TestimonialMasonryItemProps {
-  name: string;
-  company?: string;
-  avatar?: string;
-  text: string;
-  rating?: number;
-}
-
-export interface TestimonialMasonryItemContent {
-  name: string;
-  company?: string;
+export interface TestimonialMasonryItem {
+  name: Translation;
+  company?: Translation;
   avatar?: string;
   text: Translation;
   rating?: number;
 }
 
 export interface TestimonialMasonryContent {
-  reviews: TestimonialMasonryItemContent[];
+  items: TestimonialMasonryItem[];
 }
 
 export interface TestimonialMasonryProps {
   content?: TestimonialMasonryContent;
   lang?: Language;
-  reviews?: TestimonialMasonryItemProps[];
 }
 
-export default function TestimonialMasonry({ content, lang = "en", reviews = [] }: TestimonialMasonryProps) {
+export default function TestimonialMasonry({ 
+  content,
+  lang = "en",
+}: TestimonialMasonryProps) {
   const t = createTranslate(lang);
-  const resolvedReviews = content
-    ? content.reviews.map((item) => ({
-        name: item.name,
-        company: item.company,
+
+  const reviews = content?.items ?? [];
+
+  const resolvedReviews = reviews.map((item) => ({
+        name: t(item.name),
+        company: t(item.company),
         avatar: item.avatar,
         text: t(item.text),
         rating: item.rating,
-      }))
-    : reviews;
+      }));
 
   return (
     <section className="max-w-6xl mx-auto px-6 py-12">

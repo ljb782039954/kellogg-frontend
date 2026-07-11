@@ -26,9 +26,9 @@ export default function RichTextBlock({
 }: RichTextBlockProps) {
   if (!content) return null;
 
-  const translate = createTranslate(lang);
-  const resolvedTitle = translate(content.title);
-  const resolvedContent = translate(content.content) || "";
+  const t = createTranslate(lang);
+  const resolvedTitle = t(content.title);
+  const resolvedContent = t(content.content) || "";
   const resolvedAlign = content.align || "left";
   const resolvedMaxWidth = content.maxWidth || "medium";
 

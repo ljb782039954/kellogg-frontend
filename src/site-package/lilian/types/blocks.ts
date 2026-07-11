@@ -15,7 +15,7 @@ import type { FaqAccordionContent } from "../components/blocks/FaqAccordion";
 import type { FeatureListContent } from "../components/blocks/FeatureList";
 import type { FullWidthBannerContent } from "../components/blocks/FullWidthBanner";
 import type { FullscreenImageBackgroundContent } from "../components/blocks/FullscreenImageBackground";
-import type { VideoPopupContent } from "../components/blocks/FullscreenVideoPopup";
+import type { LilianExternalVideoItem } from "../components/blocks/FullscreenVideoPopup";
 import type { ImageCarouselContent } from "../components/blocks/ImageCarousel";
 import type { ImagePairGridContent } from "../components/blocks/ImagePairGrid";
 import type { ImageTextSplitContent } from "../components/blocks/ImageTextSplit";
@@ -47,7 +47,7 @@ export interface BlockContentMap {
   lightboxGallery: LightboxGalleryContent;
   fullscreenImageBackground: FullscreenImageBackgroundContent;
   videoGrid: VideoGridContent;
-  fullscreenVideoPopup: VideoPopupContent;
+  fullscreenVideoPopup: LilianExternalVideoItem;
   brandManifesto: BrandManifestoContent;
   numberCounter: NumberCounterContent;
   testimonialMasonry: TestimonialMasonryContent;

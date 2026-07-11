@@ -7,7 +7,6 @@ export interface ProductGridContent {
   title?: Translation;
   subtitle?: Translation;
   itemsPerPage?: number;
-  // category?: string; // 这里不需要
 }
 
 

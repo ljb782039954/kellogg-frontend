@@ -21,11 +21,11 @@ export default function FullscreenImageBackground({
 }: FullscreenImageBackgroundProps) {
   if (!content) return null;
 
-  const translate = createTranslate(lang);
+  const t = createTranslate(lang);
   const resolvedImage = content.image || "";
-  const resolvedTitle = translate(content.title);
-  const resolvedEyebrow = translate(content.eyebrow);
-  const resolvedImageAlt = translate(content.imageAlt, resolvedTitle || resolvedEyebrow);
+  const resolvedTitle = t(content.title);
+  const resolvedEyebrow = t(content.eyebrow);
+  const resolvedImageAlt = t(content.imageAlt, resolvedTitle || resolvedEyebrow);
   const resolvedOverlay = content.overlay ?? true;
 
   return (

@@ -20,7 +20,6 @@ export interface ProductCardProps {
   product?: Product;
   lang?: Language;
   formatPriceText?: (price?: number) => string;
-  categoryNames?: Record<string, Translation>;
 }
 
 export function toProductCardViewProps(
@@ -29,18 +28,15 @@ export function toProductCardViewProps(
     lang,
     variant = "standard",
     formatPriceText,
-    categoryNames = {},
   }: {
     lang: Language;
     variant?: ProductCardProps["variant"];
     formatPriceText?: (price?: number) => string;
-    categoryNames?: Record<string, Translation>;
   },
 ): ProductCardProps {
   const card = toProductCardData(product, {
     lang,
     formatPriceText: formatPriceText || formatPrice,
-    categoryNames,
     includeReleaseDate: variant === "arrival",
     includeDescription: true,
   });
@@ -73,7 +69,6 @@ export default function ProductCard({
   product,
   lang,
   formatPriceText,
-  categoryNames,
 }: ProductCardProps) {
   let title = initialTitle;
   let imageSrc = initialImageSrc;
@@ -90,7 +85,7 @@ export default function ProductCard({
       lang,
       variant,
       formatPriceText,
-      categoryNames,
+      // categoryNames,
     });
     title = card.title || "";
     imageSrc = card.imageSrc;

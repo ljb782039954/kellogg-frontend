@@ -25,9 +25,9 @@ export default function FullWidthBanner({
 }: FullWidthBannerProps) {
   if (!content) return null;
 
-  const translate = createTranslate(lang);
+  const t = createTranslate(lang);
   const resolvedImage = content.image || "";
-  const resolvedImageAlt = translate(content.imageAlt, "Banner");
+  const resolvedImageAlt = t(content.imageAlt, "Banner");
   const resolvedHeight = content.height || "medium";
 
   return (

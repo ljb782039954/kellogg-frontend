@@ -23,12 +23,12 @@ export default function ImageTextSplit({
 }: ImageTextSplitProps) {
   if (!content) return null;
 
-  const translate = createTranslate(lang);
-  const resolvedEyebrow = translate(content.eyebrow);
-  const resolvedTitle = translate(content.title);
-  const resolvedContent = translate(content.content);
+  const t = createTranslate(lang);
+  const resolvedEyebrow = t(content.eyebrow);
+  const resolvedTitle = t(content.title);
+  const resolvedContent = t(content.content);
   const resolvedImage = content.image || "";
-  const resolvedImageAlt = translate(content.imageAlt, resolvedTitle);
+  const resolvedImageAlt = t(content.imageAlt, resolvedTitle);
   const resolvedImagePosition = content.imagePosition || "right";
   const imageFirst = resolvedImagePosition === "left";
 

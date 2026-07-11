@@ -1,6 +1,6 @@
 import RichText from "@/runtime/components/RichText";
 import ProductCard from "../base/ProductCard";
-import type { Category, Language, Product, Translation } from "@/cms/types";
+import type { Language, Product, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
 export interface NewArrivalsContent {
@@ -12,14 +12,12 @@ export interface NewArrivalsContent {
 export interface NewArrivalsProps {
   content: NewArrivalsContent;
   products: Product[];
-  categories: Category[];
   lang: Language;
 }
 
 export default function NewArrivals({
   content,
   products = [],
-  categories = [],
   lang,
 }: NewArrivalsProps) {
   if (!content) return null;
@@ -31,7 +29,6 @@ export default function NewArrivals({
 
   const titleText = t(content.title);
   const subtitleText = t(content.subtitle);
-  const categoryNames = Object.fromEntries(categories.map((c) => [c.id, c.name]));
 
   return (
     <section className="px-6 py-12 bg-panel">
@@ -49,7 +46,6 @@ export default function NewArrivals({
               product={product} 
               lang={lang} 
               variant="arrival"
-              categoryNames={categoryNames} 
             />
           ))}
         </div>

@@ -19,10 +19,10 @@ export default function BrandManifesto({
 }: BrandManifestoProps) {
   if (!content) return null;
 
-  const translate = createTranslate(lang);
-  const resolvedEyebrow = translate(content.eyebrow);
-  const resolvedQuote = translate(content.quote) || "";
-  const resolvedAttribution = translate(content.attribution);
+  const t = createTranslate(lang);
+  const resolvedEyebrow = t(content.eyebrow);
+  const resolvedQuote = t(content.quote) || "";
+  const resolvedAttribution = t(content.attribution);
   const resolvedBackgroundColor = content.backgroundColor || "var(--color-ink)";
 
   return (

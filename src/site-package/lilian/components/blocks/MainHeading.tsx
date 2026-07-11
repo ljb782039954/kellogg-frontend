@@ -20,10 +20,10 @@ export default function MainHeading({
 }: MainHeadingProps) {
   if (!content) return null;
 
-  const translate = createTranslate(lang);
-  const resolvedTitle = translate(content.title) || "";
-  const resolvedSubtitle = translate(content.subtitle);
-  const resolvedDescription = translate(content.description);
+  const t = createTranslate(lang);
+  const resolvedTitle = t(content.title) || "";
+  const resolvedSubtitle = t(content.subtitle);
+  const resolvedDescription = t(content.description);
   const resolvedAlign = content.align || "center";
 
   return (

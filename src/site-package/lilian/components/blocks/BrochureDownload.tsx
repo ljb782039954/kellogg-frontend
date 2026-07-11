@@ -25,14 +25,14 @@ export default function BrochureDownload({
 }: BrochureDownloadProps) {
   if (!content) return null;
 
-  const translate = createTranslate(lang);
+  const t = createTranslate(lang);
   const resolvedImage = content.image || "";
-  const resolvedTitle = translate(content.title);
-  const resolvedImageAlt = translate(content.imageAlt, resolvedTitle);
-  const resolvedEyebrow = translate(content.eyebrow);
-  const resolvedDescription = translate(content.description);
-  const resolvedButtonText = translate(content.buttonText);
-  const resolvedFileMeta = translate(content.fileMeta);
+  const resolvedTitle = t(content.title);
+  const resolvedImageAlt = t(content.imageAlt, resolvedTitle);
+  const resolvedEyebrow = t(content.eyebrow);
+  const resolvedDescription = t(content.description);
+  const resolvedButtonText = t(content.buttonText);
+  const resolvedFileMeta = t(content.fileMeta);
   const resolvedHref = content.href || "#";
 
   return (

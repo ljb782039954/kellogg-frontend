@@ -50,11 +50,11 @@ function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string
 export default function NumberCounter({ content, lang = "en" }: NumberCounterProps) {
   if (!content) return null;
 
-  const translate = createTranslate(lang);
+  const t = createTranslate(lang);
   const resolvedStats = (content.stats || []).map((item) => ({
     value: item.value,
     suffix: item.suffix,
-    label: translate(item.label),
+    label: t(item.label),
   }));
 
   return (

@@ -27,13 +27,13 @@ export default function FeatureList({
 }: FeatureListProps) {
   if (!content) return null;
 
-  const translate = createTranslate(lang);
-  const resolvedTitle = translate(content.title);
-  const resolvedSubtitle = translate(content.subtitle);
+  const t = createTranslate(lang);
+  const resolvedTitle = t(content.title);
+  const resolvedSubtitle = t(content.subtitle);
   const resolvedItems = (content.items || []).map((item) => ({
     icon: item.icon,
-    titleText: translate(item.title),
-    descriptionText: translate(item.description),
+    titleText: t(item.title),
+    descriptionText: t(item.description),
   }));
 
   if (resolvedItems.length === 0) return null;

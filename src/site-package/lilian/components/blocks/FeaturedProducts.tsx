@@ -1,6 +1,6 @@
 import RichText from "@/runtime/components/RichText";
 import ProductCard from "../base/ProductCard";
-import type { Category, Language, Product, Translation } from "@/cms/types";
+import type {Language, Product, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
 export interface FeaturedProductsContent {
@@ -12,14 +12,12 @@ export interface FeaturedProductsContent {
 export interface FeaturedProductsProps {
   content: FeaturedProductsContent;
   products: Product[];
-  categories: Category[];
   lang: Language;
 }
 
 export default function FeaturedProducts({
   content,
   products = [],
-  categories = [],
   lang,
 }: FeaturedProductsProps) {
   if (!content) return null;
@@ -31,7 +29,6 @@ export default function FeaturedProducts({
 
   const titleText = t(content.title);
   const subtitleText = t(content.subtitle);
-  const categoryNames = Object.fromEntries(categories.map((c) => [c.id, c.name]));
 
   return (
     <section className="px-6 py-12 bg-surface">
@@ -48,7 +45,6 @@ export default function FeaturedProducts({
               key={product.id} 
               product={product} 
               lang={lang} 
-              categoryNames={categoryNames} 
             />
           ))}
         </div>
