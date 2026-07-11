@@ -5,11 +5,12 @@ import {
   parseProductGridSearchParams,
   toProductGridApiQuery,
 } from "@core-webApp/lib/productGrid";
-import type {
+
+import type { 
+  ProductGridContent ,
   FeaturedProductsContent,
   NewArrivalsContent,
-} from "../types/blocks";
-import type { ProductGridContent } from "../components/blocks";
+} from "../components/blocks";
 
 interface LoadBlockDataOptions {
   block: CmsPageBlock;

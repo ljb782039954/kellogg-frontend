@@ -56,7 +56,7 @@ export { default as MasonryGallery } from "./MasonryGallery";
 export type { MasonryGalleryProps, MasonryGalleryContent } from "./MasonryGallery";
 
 export { default as NewArrivals } from "./NewArrivals";
-export type { NewArrivalsProps, NewArrivalsContent } from "./NewArrivals";
+export type { NewArrivalsProps, NewArrivalsContent ,} from "./NewArrivals";
 
 export { default as NumberCounter } from "./NumberCounter";
 export type { NumberCounterProps, NumberCounterContent } from "./NumberCounter";

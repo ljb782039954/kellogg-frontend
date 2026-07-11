@@ -3,6 +3,9 @@ import { Pagination, ProductCard, type ProductCardProps } from "../base";
 import type { ProductGridSortId , Translation} from "@/cms/types";
 
 // NOTE 这个Content将被用于后台编辑, 最好放在对应的积木块组件中，方便管理
+// WARNING: This type represents the fields edited in the admin management background.
+// Do not modify it lightly; any change requires manual verification.
+// Arbitrary alterations may cause page builder block data errors and prevent normal page assembly.
 export interface ProductGridContent {
   title?: Translation;
   subtitle?: Translation;
