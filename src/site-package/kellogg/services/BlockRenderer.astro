@@ -62,7 +62,7 @@ const knownBlockTypes = new Set(Object.keys(renderedBlockTypes));
 {block.type === "imageBanner" && <ImageBanner content={content as any} lang={lang} />}
 {block.type === "textSection" && <TextSection content={content as any} lang={lang} />}
 {block.type === "carousel" && <Carousel content={content as any} lang={lang} client:load />}
-{block.type === "categories" && <Categories content={{ ...content, categories: data.categories ?? [] } as any} lang={lang} />}
+{block.type === "categories" && <Categories content={content as any} categories={data.categories}  lang={lang} />}
 {block.type === "productGrid" && <ProductGridContainer {...content} {...data} lang={lang} client:load />}
 {block.type === "featuredProducts" && <FeaturedProducts {...content} {...data} lang={lang} />}
 {block.type === "newArrivals" && <NewArrivals {...content} {...data} lang={lang} />}

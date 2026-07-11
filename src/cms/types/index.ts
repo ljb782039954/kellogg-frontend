@@ -8,6 +8,20 @@ export * from "./review";
 export * from "./query";
 export * from "./inquiry";
 
+import type { CompanyInfo, HeaderContent, FooterContent } from "./baseEditor";
+import type { CmsCustomPage } from "./pages";
+
+// ============================================
+// 核心聚合与 API 响应类型
+// ============================================
+
+export interface SiteContent {
+  companyInfo: CompanyInfo;
+  header: HeaderContent;
+  footer: FooterContent;
+  pages: CmsCustomPage[];
+}
+
 
 // ============================================
 // 响应类型封装

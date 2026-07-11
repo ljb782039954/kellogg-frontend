@@ -5,14 +5,14 @@ import { createTranslate } from "../../utils/i18n";
 export interface CategoriesContent{
   showAll?: boolean;
   maxItems?: number;
-  categories?: Category[];
 }
 export interface CategoriesProps {
   content: CategoriesContent;
+  categories: Category[];
   lang: Language;
 }
 
-export default function Categories({ content:{ showAll, maxItems, categories = []}, lang }: CategoriesProps) {
+export default function Categories({ content:{ showAll, maxItems, }, categories = [], lang }: CategoriesProps) {
   const t = createTranslate(lang);
   const displayCategories = showAll
     ? categories

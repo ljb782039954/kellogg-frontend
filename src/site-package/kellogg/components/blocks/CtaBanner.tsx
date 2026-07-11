@@ -3,9 +3,7 @@ import type { Language, Translation, NavLink } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
 // 实际的内容编辑栏
-export interface CtaBannerContent {
-  title?: Translation;
-  subtitle?: Translation;
+export interface CtaBannerValues {
   primaryButton?: NavLink;
   secondaryButton?: NavLink;
   backgroundImage?: string;
@@ -13,10 +11,16 @@ export interface CtaBannerContent {
   alignment?: "left" | "center" | "right";
 }
 
+export interface CtaBannerContent {
+  title?: Translation;
+  subtitle?: Translation;
+  values?: CtaBannerValues;
+}
+
 export interface CtaBannerProps {
   content: CtaBannerContent;
-  getImageUrl?: (src: string, width: number) => string;
   lang: Language;
+  getImageUrl?: (src: string, width: number) => string;
 }
 
 const alignmentClass = {
@@ -33,24 +37,25 @@ export default function CtaBanner({
   const translate = createTranslate(lang);
   const titleText = content.title ? translate(content.title) : "";
   const subtitleText = content.subtitle ? translate(content.subtitle) : "";
-  
-  const alignment = content.alignment || "center";
-  const backgroundColor = content.backgroundColor;
-  const backgroundImageUrl = content.backgroundImage && getImageUrl
-    ? getImageUrl(content.backgroundImage, 1920)
-    : (content.backgroundImage || "");
 
-  const primaryButton = content.primaryButton?.name
+  const values = content.values ?? {};
+  const alignment = values.alignment || "center";
+  const backgroundColor = values.backgroundColor;
+  const backgroundImageUrl = values.backgroundImage && getImageUrl
+    ? getImageUrl(values.backgroundImage, 1920)
+    : (values.backgroundImage || "");
+
+  const primaryButton = values.primaryButton?.name
     ? {
-        href: content.primaryButton.href,
-        label: translate(content.primaryButton.name),
+        href: values.primaryButton.href,
+        label: translate(values.primaryButton.name),
       }
     : undefined;
 
-  const secondaryButton = content.secondaryButton?.name
+  const secondaryButton = values.secondaryButton?.name
     ? {
-        href: content.secondaryButton.href,
-        label: translate(content.secondaryButton.name),
+        href: values.secondaryButton.href,
+        label: translate(values.secondaryButton.name),
       }
     : undefined;
   const backgroundStyle: CSSProperties | undefined = backgroundColor ? { backgroundColor } : undefined;

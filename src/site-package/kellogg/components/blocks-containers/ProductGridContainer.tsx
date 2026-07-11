@@ -10,6 +10,7 @@ import { createTranslate } from "../../utils/i18n";
 
 export interface ProductGridContainerProps extends ProductGridContent {
   categories: Category[];
+  category:string;
   products: Product[];
   totalProducts?: number;
   lang: Language;
@@ -110,15 +111,17 @@ export default function ProductGridContainer({
       sortOptions={sortOptions}
       products={mappedProducts}
       labels={labels}
-      totalCount={totalCount}
-      totalPages={Math.ceil(totalCount / currentItemsPerPage)}
-      currentPage={currentPage}
-      selectedCategory={selectedCategory}
       sortBy={sortBy as any}
       isLoading={isLoading}
       onCategoryChange={setSelectedCategory}
       onSortChange={setSortBy as any}
-      onPageChange={setCurrentPage}
+      pagination={{
+        currentPage,
+        totalPages: Math.ceil(totalCount / currentItemsPerPage),
+        totalCount,
+        totalText: labels.total,
+        onPageChange: setCurrentPage,
+      }}
     />
   );
 }

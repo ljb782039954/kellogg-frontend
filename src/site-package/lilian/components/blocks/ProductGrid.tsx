@@ -7,7 +7,7 @@ export interface ProductGridContent {
   title?: Translation;
   subtitle?: Translation;
   itemsPerPage?: number;
-  category?: string;
+  // category?: string; // 这里不需要
 }
 
 
@@ -24,23 +24,27 @@ export interface ProductGridItem extends ProductCardProps {
 export interface ProductGridLabels {
   loading: string;
   empty: string;
-  total: string;
+}
+
+export interface ProductGridPagination {
+  currentPage: number;
+  totalPages: number;
+  totalCount?: number;
+  totalText?: string;
+  onPageChange: (page: number) => void;
 }
 
 export interface ProductGridProps {
-  categories: ProductGridOption[];
   sortOptions: ProductGridOption<ProductGridSortId>[];
   products: ProductGridItem[];
-  labels: ProductGridLabels;
-  totalCount: number;
-  totalPages: number;
-  currentPage: number;
-  selectedCategory: string;
   sortBy: ProductGridSortId;
-  isLoading: boolean;
-  onCategoryChange: (categoryId: string) => void;
   onSortChange: (sortId: ProductGridSortId) => void;
-  onPageChange: (page: number) => void;
+
+  categories?: ProductGridOption[];
+  onCategoryChange?: (categoryId: string) => void;
+  pagination?: ProductGridPagination;
+  isLoading?: boolean;
+  labels?: Partial<ProductGridLabels>;
   titleText?: string;
   subtitleText?: string;
 }
@@ -49,19 +53,24 @@ export default function ProductGrid({
   categories,
   sortOptions,
   products,
-  labels,
-  totalCount,
-  totalPages,
-  currentPage,
-  selectedCategory,
   sortBy,
   isLoading,
   onCategoryChange,
   onSortChange,
-  onPageChange,
+  pagination,
+  labels,
   titleText,
   subtitleText,
 }: ProductGridProps) {
+  const resolvedLabels = {
+    loading: "Loading products...",
+    empty: "No products available",
+    ...labels,
+  };
+  const categoryControls = categories?.length && onCategoryChange
+    ? { items: categories, onChange: onCategoryChange }
+    : null;
+
   return (
     <section className="px-6 py-12 bg-surface">
       <div className="max-w-6xl mx-auto">
@@ -72,23 +81,27 @@ export default function ProductGrid({
           </div>
         )}
 
-        <div className="border-y border-border py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                type="button"
-                onClick={() => onCategoryChange(category.id)}
-                className={`px-4 py-2 text-xs uppercase border transition-colors ${
-                  category.selected || selectedCategory === category.id
-                    ? "bg-ink-strong text-on-dark border-ink-strong"
-                    : "bg-surface text-body border-border hover:border-subtle"
-                }`}
-              >
-                {category.label}
-              </button>
-            ))}
-          </div>
+        <div className={`border-y border-border py-4 flex flex-col md:flex-row md:items-center gap-4 ${
+          categoryControls ? "md:justify-between" : "md:justify-end"
+        }`}>
+          {categoryControls && (
+            <div className="flex flex-wrap gap-2">
+              {categoryControls.items.map((category) => (
+                <button
+                  key={category.id}
+                  type="button"
+                  onClick={() => categoryControls.onChange(category.id)}
+                  className={`px-4 py-2 text-xs uppercase border transition-colors ${
+                    category.selected
+                      ? "bg-ink-strong text-on-dark border-ink-strong"
+                      : "bg-surface text-body border-border hover:border-subtle"
+                  }`}
+                >
+                  {category.label}
+                </button>
+              ))}
+            </div>
+          )}
 
           <label className="flex items-center gap-2 text-sm text-body">
             <SlidersHorizontal className="w-4 h-4" />
@@ -109,12 +122,12 @@ export default function ProductGrid({
         <div className="relative min-h-[320px] py-8">
           {isLoading && (
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-surface-overlay backdrop-blur-sm">
-              <p className="text-sm text-body">{labels.loading}</p>
+              <p className="text-sm text-body">{resolvedLabels.loading}</p>
             </div>
           )}
 
           {products.length === 0 ? (
-            <div className="py-16 text-center text-body">{labels.empty}</div>
+            <div className="py-16 text-center text-body">{resolvedLabels.empty}</div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
               {products.map((product) => (
@@ -124,22 +137,17 @@ export default function ProductGrid({
           )}
         </div>
 
-        {totalPages > 1 ? (
+        {pagination && pagination.totalPages > 1 ? (
           <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            totalCount={totalCount}
-            totalText={labels.total}
-            onPageChange={onPageChange}
+            currentPage={pagination.currentPage}
+            totalPages={pagination.totalPages}
+            totalCount={pagination.totalCount}
+            totalText={pagination.totalText}
+            onPageChange={pagination.onPageChange}
           />
-        ) : (
-          <p className="text-xs uppercase text-subtle">
-            {labels.total || `${totalCount}`}
-          </p>
-        )}
+        ) : null}
       </div>
     </section>
   );
 }
-
 

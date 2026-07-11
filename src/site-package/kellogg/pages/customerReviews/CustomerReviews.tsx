@@ -33,7 +33,7 @@ export default function CustomerReviews({
   emptyTitle,
   emptyDescription,
   noMediaText = "No media",
-  itemsPerPage = 10,
+  itemsPerPage = 20,
   totalText,
 }: CustomerReviewsProps) {
   const [currentPage, setCurrentPage] = useState(1);

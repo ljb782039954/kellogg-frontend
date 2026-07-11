@@ -3,7 +3,7 @@ import OptimizedImage from "@/runtime/components/OptimizedImage";
 import type { Language, Translation } from "@/cms/types";
 import { createTranslate } from "../../utils/i18n";
 
-export interface TestimonialContent {
+export interface TestimonialItem {
   id: number;
   name: Translation;
   role?: Translation;
@@ -14,7 +14,7 @@ export interface TestimonialContent {
 export interface TestimonialsContent {
   title?: Translation;
   subtitle?: Translation;
-  items?: TestimonialContent[];
+  items?: TestimonialItem[];
 }
 export interface TestimonialsProps {
   content: TestimonialsContent;

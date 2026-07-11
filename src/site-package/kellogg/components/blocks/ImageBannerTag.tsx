@@ -10,8 +10,8 @@ export interface ImageBannerTagContent {
 }
   export interface ImageBannerTagProps {
     content: ImageBannerTagContent
-  getImageUrl?: (src: string, width: number) => string;
   lang: Language;
+  getImageUrl?: (src: string, width: number) => string;
 }
 
 export default function ImageBannerTag({
@@ -21,8 +21,8 @@ export default function ImageBannerTag({
     title,
     subtitle,
   },
-  getImageUrl,
   lang,
+  getImageUrl,
 }: ImageBannerTagProps) {
   const t = createTranslate(lang);
   const tagText = tag ? t(tag) : "";

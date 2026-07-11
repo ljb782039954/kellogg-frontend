@@ -1,6 +1,8 @@
 import { useState } from "react";
 import OptimizedImage from "@/runtime/components/OptimizedImage";
 import { Pagination } from "../../components/base";
+// import type { Language, Translation } from "@/cms/types";
+// import { createTranslate } from "../../utils/i18n";
 
 export type CustomerReviewMedia =
   | { kind: "embed"; url: string; title: string }
@@ -33,7 +35,7 @@ export default function CustomerReviews({
   emptyTitle,
   emptyDescription,
   noMediaText = "No media",
-  itemsPerPage = 10,
+  itemsPerPage = 20,
   totalText,
 }: CustomerReviewsProps) {
   const [currentPage, setCurrentPage] = useState(1);

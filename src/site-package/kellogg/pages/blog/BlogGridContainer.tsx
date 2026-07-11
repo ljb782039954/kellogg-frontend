@@ -1,6 +1,6 @@
 import { api } from "@services/api";
-import { useBlogGrid, type BlogGridSortId } from "@core-webApp/hooks/useBlogGrid";
-import type { BlogSummary, Language } from "@/cms/types";
+import { useBlogGrid } from "@core-webApp/hooks/useBlogGrid";
+import type { BlogGridSortId, BlogSummary, Language } from "@/cms/types";
 import BlogGrid from "./BlogGrid";
 
 export interface BlogGridContainerProps {
@@ -48,17 +48,20 @@ export default function BlogGridContainer({
   return (
     <BlogGrid
       blogs={displayedBlogs}
-      categories={categories}
       lang={lang}
-      totalCount={totalCount}
-      totalPages={Math.ceil(totalCount / itemsPerPage)}
-      currentPage={currentPage}
+      categories={categories}
       selectedCategory={selectedCategory}
+      sortOptions={["newest", "popular", "oldest"]}
       sortBy={sortBy}
       isLoading={isLoading}
       onCategoryChange={setSelectedCategory}
       onSortChange={setSortBy}
-      onPageChange={setCurrentPage}
+      pagination={{
+        currentPage,
+        totalPages: Math.ceil(totalCount / itemsPerPage),
+        totalCount,
+        onPageChange: setCurrentPage,
+      }}
     />
   );
 }

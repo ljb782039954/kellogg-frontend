@@ -8,15 +8,18 @@ export interface NewArrivalsContent {
   maxItems?: number;
 }
 
-export interface NewArrivalsProps extends NewArrivalsContent {
-  products?: Product[];
+export interface NewArrivalsProps {
+  content: NewArrivalsContent;
+  products: Product[];
   lang: Language;
 }
 
 export default function NewArrivals({
+  content: {
   title,
   subtitle,
   maxItems,
+  },
   products: initialProducts = [],
   lang,
 }: NewArrivalsProps) {

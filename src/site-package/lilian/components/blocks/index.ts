@@ -65,7 +65,14 @@ export { default as ParallaxImage } from "./ParallaxImage";
 export type { ParallaxImageProps, ParallaxImageContent } from "./ParallaxImage";
 
 export { default as ProductGrid } from "./ProductGrid";
-export type { ProductGridProps, ProductGridContent, ProductGridItem, ProductGridLabels, ProductGridOption } from "./ProductGrid";
+export type {
+  ProductGridProps,
+  ProductGridContent,
+  ProductGridItem,
+  ProductGridLabels,
+  ProductGridOption,
+  ProductGridPagination,
+} from "./ProductGrid";
 
 export { default as RichTextBlock } from "./RichTextBlock";
 export type { RichTextBlockProps, RichTextBlockContent } from "./RichTextBlock";
