@@ -4,7 +4,7 @@ import type { PageBlock } from "../types";
 import {
   BeforeAfterSlider,
   BrandManifesto,
-  BrochureDownload,
+  // BrochureDownload, 暂时不启用
   Categories,
   Categories2,
   CertificationBadges,
@@ -81,8 +81,8 @@ const renderedBlockTypes = {
 const knownBlockTypes = new Set(Object.keys(renderedBlockTypes));
 ---
 
-{block.type === "categories" && <Categories content={{ ...content, categories: data.categories || [] }} lang={lang} />}
-{block.type === "categories2" && <Categories2 content={content} lang={lang} />}
+{block.type === "categories" && <Categories content={content} categories={data.categories} lang={lang} />}
+{block.type === "categories2" && <Categories2 content={content} categories={data.categories} lang={lang} />}
 {block.type === "newArrivals" && <NewArrivals {...content} {...data} lang={lang} />}
 {block.type === "featuredProducts" && <FeaturedProducts {...content} {...data} lang={lang} />}
 {block.type === "productGrid" && <ProductGridContainer {...content} {...data} lang={lang} client:load />}
@@ -104,7 +104,7 @@ const knownBlockTypes = new Set(Object.keys(renderedBlockTypes));
 {block.type === "testimonialMasonry" && <TestimonialMasonry content={content} lang={lang} />}
 {block.type === "faqAccordion" && <FaqAccordion content={content} lang={lang} client:visible />}
 {block.type === "certificationBadges" && <CertificationBadges content={content} lang={lang} client:visible />}
-{block.type === "brochureDownload" && <BrochureDownload content={content} lang={lang} />}
+<!-- {block.type === "brochureDownload" && <BrochureDownload content={content} lang={lang} />} -->
 {block.type === "mainHeading" && <MainHeading content={content} lang={lang} />}
 {block.type === "richTextBlock" && <RichTextBlock content={content} lang={lang} />}
 {block.type === "textGrid" && <TextGrid content={content} lang={lang} />}

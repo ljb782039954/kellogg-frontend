@@ -4,9 +4,6 @@ export type { BeforeAfterSliderProps, BeforeAfterSliderContent } from "./BeforeA
 export { default as BrandManifesto } from "./BrandManifesto";
 export type { BrandManifestoProps, BrandManifestoContent } from "./BrandManifesto";
 
-export { default as BrochureDownload } from "./BrochureDownload";
-export type { BrochureDownloadProps, BrochureDownloadContent } from "./BrochureDownload";
-
 export { default as Categories } from "./Categories";
 export type { CategoriesProps, CategoriesContent } from "./Categories";
 

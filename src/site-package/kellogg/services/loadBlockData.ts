@@ -33,7 +33,6 @@ export async function loadKelloggBlockData({
     const pageSize = content.itemsPerPage || 12;
     const queryState = parseProductGridSearchParams(url?.searchParams || new URLSearchParams(), {
       pageSize,
-      category: content.category,
     });
 
     const [productsData, categoriesData] = await Promise.all([

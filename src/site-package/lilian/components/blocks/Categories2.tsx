@@ -8,19 +8,19 @@ import type { Category, Language, Translation } from "@/cms/types";
 export interface Categories2Content {
   showAll?: boolean;
   maxItems?: number;
-  categories: Category[];
 }
 
 export interface Categories2Props {
   content: Categories2Content;
+  categories: Category[];
   lang: Language;
 }
 
-export default function Categories2({ content, lang = "en",}: Categories2Props) {
+export default function Categories2({ content, categories, lang = "en",}: Categories2Props) {
   const t = createTranslate(lang);
   const displayCategories = content.showAll 
-    ? (content.categories || []) 
-    : (content.categories || []).slice(0, content.maxItems);
+    ? (categories || []) 
+    : (categories || []).slice(0, content.maxItems);
 
   if (displayCategories.length === 0) return null;
 
