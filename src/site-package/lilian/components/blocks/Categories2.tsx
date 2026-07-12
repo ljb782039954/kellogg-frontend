@@ -1,6 +1,6 @@
 ﻿import OptimizedImage from "@/runtime/components/OptimizedImage";
 import { createTranslate } from "../../utils/i18n";
-import type { Category, Language, Translation } from "@/cms/types";
+import type { Category, Language,} from "@/cms/types";
 
 // WARNING: This type represents the fields edited in the admin management background.
 // Do not modify it lightly; any change requires manual verification.
@@ -38,7 +38,7 @@ export default function Categories2({ content, categories, lang = "en",}: Catego
                 sizes="112px"
               />
             </div>
-            {item.name && <p className="text-xs text-body group-hover:text-ink-strong transition-colors">{t(item.name)}</p>}
+            {item.name && <p className="text-xs md:text-sm lg:text-base font-luxury-heading group-hover:text-ink-strong transition-colors">{t(item.name)}</p>}
           </div>
         ))}
       </div>

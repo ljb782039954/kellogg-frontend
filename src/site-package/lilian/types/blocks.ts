@@ -1,7 +1,7 @@
 import type {
   BeforeAfterSliderContent,
   // BlogSidebarContent,
-  BrochureDownloadContent,
+  // BrochureDownloadContent,
   BrandManifestoContent,
   Categories2Content,
   CategoriesContent,
@@ -53,7 +53,7 @@ export interface BlockContentMap {
   testimonialMasonry: TestimonialMasonryContent;
   faqAccordion: FaqAccordionContent;
   certificationBadges: CertificationBadgesContent;
-  brochureDownload: BrochureDownloadContent;
+  // brochureDownload: BrochureDownloadContent;
   mainHeading: MainHeadingContent;
   richTextBlock: RichTextBlockContent;
   textGrid: TextGridContent;
