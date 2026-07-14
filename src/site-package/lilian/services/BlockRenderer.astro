@@ -85,11 +85,11 @@ const knownBlockTypes = new Set(Object.keys(renderedBlockTypes));
 
 {block.type === "categories" && <Categories content={content} categories={data.categories} lang={lang} />}
 {block.type === "categories2" && <Categories2 content={content} categories={data.categories} lang={lang} />}
-{block.type === "newArrivals" && <NewArrivals {...content} {...data} lang={lang} />}
-{block.type === "featuredProducts" && <FeaturedProducts {...content} {...data} lang={lang} />}
+{block.type === "newArrivals" && <NewArrivals content={content as any} products={data.products ?? []} lang={lang} />}
+{block.type === "featuredProducts" && <FeaturedProducts content={content as any} products={data.products ?? []} lang={lang} />}
 {block.type === "productGrid" && <ProductGridContainer {...content} {...data} lang={lang} client:load />}
 {block.type === "featureList" && <FeatureList content={content} lang={lang} />}
-{block.type === "inquiry" && <InquirySection {...content} lang={lang} client:visible />}
+{block.type === "inquiry" && <InquirySection lang={lang} client:visible />}
 {block.type === "imagePairGrid" && <ImagePairGrid content={content} lang={lang} />}
 {block.type === "masonryGallery" && <MasonryGallery content={content} lang={lang} />}
 {block.type === "imageCarousel" && <ImageCarousel content={content} lang={lang} client:load />}
