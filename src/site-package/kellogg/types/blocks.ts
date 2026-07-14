@@ -20,6 +20,7 @@ import type { PartnerLogosContent } from "../components/blocks/PartnerLogos";
 import type { StatisticsContent } from "../components/blocks/Statistics";
 import type { TestimonialsContent } from "../components/blocks/Testimonials";
 import type { TextSectionContent } from "../components/blocks/TextSection";
+import type { TableContent } from "../components/blocks";
 import type { VideoSectionContent } from "../components/blocks/VideoSection";
 
 // TODO Countdown Content 这个组件已经移除了，并不需要
@@ -43,6 +44,7 @@ export interface BlockContentMap {
   statistics: StatisticsContent;
   testimonials: TestimonialsContent;
   textSection: TextSectionContent;
+  table:TableContent;
   videoSection: VideoSectionContent;
   
   newArrivals: NewArrivalsContent;

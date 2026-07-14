@@ -72,7 +72,7 @@ export async function loadLilianBlockData({
     };
   }
 
-  if (block.type === "categories") {
+  if (block.type === "categories" || block.type === "categories2" ) {
     const categoriesData = await getCategories();
     return { categories: categoriesData };
   }

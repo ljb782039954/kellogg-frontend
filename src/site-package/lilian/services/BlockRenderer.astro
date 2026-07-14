@@ -26,6 +26,7 @@ import {
   NewArrivals,
   TestimonialMasonry,
   TextGrid,
+  Table,
   VideoGrid,
 } from "../components/blocks";
 import {
@@ -72,10 +73,11 @@ const renderedBlockTypes = {
   numberCounter: true,
   testimonialMasonry: true,
   faqAccordion: true,
-  brochureDownload: true,
+  // brochureDownload: true,
   mainHeading: true,
   richTextBlock: true,
   textGrid: true,
+  table:true,
 } satisfies Record<BlockType, true>;
 
 const knownBlockTypes = new Set(Object.keys(renderedBlockTypes));
@@ -108,6 +110,7 @@ const knownBlockTypes = new Set(Object.keys(renderedBlockTypes));
 {block.type === "mainHeading" && <MainHeading content={content} lang={lang} />}
 {block.type === "richTextBlock" && <RichTextBlock content={content} lang={lang} />}
 {block.type === "textGrid" && <TextGrid content={content} lang={lang} />}
+{block.type === "table" && <Table content={content} lang={lang} />}
 
 {!knownBlockTypes.has(block.type) && import.meta.env.DEV && (
   <div class="py-10 border-b border-dashed border-gray-200">
