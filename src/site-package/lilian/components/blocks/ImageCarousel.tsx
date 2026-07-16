@@ -33,7 +33,7 @@ export default function ImageCarousel({ content : {images = [], autoplay = true,
   if (images.length === 0) return null;
 
   return (
-    <section className="max-w-6xl mx-auto px-6 py-12">
+    <section className="max-w-7xl mx-auto px-6 py-12">
       <div className="relative overflow-hidden rounded-sm aspect-video">
         {images.map((item, index) => (
           <div

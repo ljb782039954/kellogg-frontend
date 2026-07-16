@@ -30,7 +30,7 @@ export default function MainHeading({
   const resolvedAlign = content.align || "center";
 
   return (
-    <section className={`max-w-4xl mx-auto px-6 py-10 space-y-6 ${resolvedAlign === "center" ? "text-center" : ""}`}>
+    <section className={`max-w-5xl mx-auto px-6 py-10 space-y-6 ${resolvedAlign === "center" ? "text-center" : ""}`}>
       <h2
         className="text-3xl sm:text-4xl font-bold leading-tight"
         style={{ fontFamily: "Georgia, serif", color: "var(--color-ink)" }}

@@ -34,7 +34,7 @@ export default function FeaturedProducts({
 
   return (
     <section className="px-6 py-12 bg-surface">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {(titleText || subtitleText) && (
           <div className="text-center mb-10">
             {titleText && <h2 className="font-luxury-heading text-3xl md:text-4xl font-light">{titleText}</h2>}

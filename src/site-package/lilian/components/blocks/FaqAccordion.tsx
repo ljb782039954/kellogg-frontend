@@ -32,7 +32,7 @@ export default function FaqAccordion({ content, lang = "en" }: FaqAccordionProps
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="max-w-3xl mx-auto px-6 py-12">
+    <section className="max-w-4xl mx-auto px-6 py-12">
       {resolvedTitle && (
         <h3 className="font-luxury-heading text-base md:text-lg lg:text-xl font-medium mb-8 text-center text-body">{resolvedTitle}</h3>
       )}

@@ -43,7 +43,7 @@ export default function FullscreenVideoPopup({
       : "aspect-video";
 
   return (
-    <section className="max-w-4xl mx-auto px-6 py-12 text-center">
+    <section className="max-w-6xl mx-auto px-6 py-12 text-center">
       {isPlaying ? (
         <EmbeddedVideo source={resolvedSource} title={resolvedTitle} aspect={resolvedAspect} className="rounded-md shadow-2xl" />
       ) : (

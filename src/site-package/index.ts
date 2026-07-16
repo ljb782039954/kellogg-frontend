@@ -1,7 +1,9 @@
 import { kelloggSiteConfig } from "./kellogg/config";
+import { lilianSiteConfig } from "./lilian/config";
 
 const siteConfigs = {
   kellogg: kelloggSiteConfig,
+  lilian: lilianSiteConfig,
 } as const;
 
 export type SiteName = keyof typeof siteConfigs;

@@ -19,8 +19,11 @@
       "@services/*": ["src/services/*"],
       "@site-package": ["src/site-package/index.ts"],
       "@site-package/*": ["src/site-package/*"],
-      "@site": ["src/site-package/kellogg"],
-      "@site/*": ["src/site-package/kellogg/*"],
+      // "@site": ["src/site-package/kellogg"],
+      // "@site/*": ["src/site-package/kellogg/*"],
+      "@site": ["src/site-package/lilian"],
+      "@site/*": ["src/site-package/lilian/*"],
+
 
     },
     "jsx": "react-jsx",

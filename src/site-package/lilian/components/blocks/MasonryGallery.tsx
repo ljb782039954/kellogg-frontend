@@ -32,7 +32,7 @@ export default function MasonryGallery({ content, lang = "en"}: MasonryGalleryPr
       }));
 
   return (
-    <section className="max-w-6xl mx-auto px-6 py-12">
+    <section className="max-w-7xl mx-auto px-6 py-12">
       <div className="columns-2 md:columns-3 gap-3">
         {resolvedImages.map((item, index) => (
           <div
@@ -43,7 +43,7 @@ export default function MasonryGallery({ content, lang = "en"}: MasonryGalleryPr
               src={item.image}
               alt={item.imageAlt || item.caption || ""}
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-              sizes="(max-width: 768px) 50vw, 400px"
+              // sizes="(max-width: 768px) 50vw, 400px"
             />
           </div>
         ))}

@@ -39,7 +39,7 @@ export default function TestimonialMasonry({
       }));
 
   return (
-    <section className="max-w-6xl mx-auto px-6 py-12">
+    <section className="max-w-7xl mx-auto px-6 py-12">
       <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
         {resolvedReviews.map((item, index) => (
           <div key={`${item.name}-${index}`} className={`bg-panel p-5 rounded-md mb-4 break-inside-avoid`}>

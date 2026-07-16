@@ -36,7 +36,7 @@ export default function ImageTextSplit({
   const imageFirst = resolvedImagePosition === "left";
 
   return (
-    <section className="max-w-6xl mx-auto px-6 py-12">
+    <section className="max-w-7xl mx-auto px-6 py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         <div className={imageFirst ? "md:order-2" : ""}>
           {resolvedEyebrow && <span className="text-[10px] tracking-[0.2em] text-subtle uppercase">{resolvedEyebrow}</span>}

@@ -18,7 +18,7 @@ export default function Inquiry({
 
   return (
     <section className="px-6 py-12 bg-ink-strong text-on-dark">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-10 items-start">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-10 items-start">
         <div>
           <div className="w-12 h-12 border border-on-dark-border flex items-center justify-center mb-6">
             <Mail className="w-5 h-5" />

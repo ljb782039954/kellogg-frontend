@@ -12,7 +12,7 @@ interface FooterViewProps {
 export default function FooterView({ footer, companyInfo, lang, t }: FooterViewProps) {
   return (
     <footer className="bg-ink-strong text-on-dark">
-      <div className="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-20">
+      <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_2fr_1fr]">
           <div>
             <p className="mb-4 text-[11px] uppercase tracking-[0.28em] text-on-dark-faint">

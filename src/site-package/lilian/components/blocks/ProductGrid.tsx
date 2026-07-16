@@ -75,7 +75,7 @@ export default function ProductGrid({
 
   return (
     <section className="px-6 py-12 bg-surface">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {(titleText || subtitleText) && (
           <div className="mb-8">
             {titleText && <h2 className="font-luxury-heading text-3xl md:text-4xl font-light">{titleText}</h2>}
@@ -131,7 +131,7 @@ export default function ProductGrid({
           {products.length === 0 ? (
             <div className="py-16 text-center text-body">{resolvedLabels.empty}</div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
               {products.map((product) => (
                 <ProductCard key={product.id} {...product} />
               ))}

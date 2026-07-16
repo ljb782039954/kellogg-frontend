@@ -24,7 +24,7 @@ export default function TextGrid({ content, lang = "en", }: TextGridProps) {
   const resolvedItems = (content.items || []).map((item) => ({ title: t(item.title), text: t(item.text) }));
 
   return (
-    <section className="max-w-5xl mx-auto px-6 py-10">
+    <section className="max-w-7xl mx-auto px-6 py-10">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8">
         {resolvedItems.map((item, i) => (
           <div key={i}>

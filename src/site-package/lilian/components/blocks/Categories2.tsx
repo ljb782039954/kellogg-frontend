@@ -26,7 +26,7 @@ export default function Categories2({ content, categories, lang = "en",}: Catego
 
 
   return (
-    <section className="max-w-6xl mx-auto px-6 py-12">
+    <section className="max-w-7xl mx-auto px-6 py-12">
       <div className="flex justify-center gap-8 flex-wrap">
         {displayCategories.map((item, index) => (
           <div key={`${item.image}-${index}`} className="text-center group cursor-pointer">

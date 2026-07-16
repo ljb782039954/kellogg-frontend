@@ -28,7 +28,7 @@ export default function LightboxGallery({ content, lang = "en"}: LightboxGallery
   const activeImage = openIndex === null ? null : resolvedImages[openIndex];
 
   return (
-    <section className="max-w-6xl mx-auto px-6 py-12">
+    <section className="max-w-7xl mx-auto px-6 py-12">
       <div className="grid grid-cols-2 md:grid-cols-4  gap-2">
         {resolvedImages.map((item, index) => (
           <button key={`${item.image}-${index}`} onClick={() => setOpenIndex(index)} className="overflow-hidden rounded-sm aspect-square">

@@ -43,7 +43,7 @@ export default function FeatureList({
 
   return (
     <section className="px-6 py-12 bg-page">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {(resolvedTitle || resolvedSubtitle) && (
           <div className="max-w-2xl mb-10">
             {resolvedTitle && <h2 className="font-luxury-heading text-3xl md:text-4xl font-light">{resolvedTitle}</h2>}

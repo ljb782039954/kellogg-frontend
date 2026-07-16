@@ -39,8 +39,8 @@ export default function HeaderView({
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-surface-glass backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:h-20 md:px-8">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-surface-glass backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:h-20 ">
         <a href="/" className="flex items-center gap-3">
           {companyInfo.logo && (
               <OptimizedImage
