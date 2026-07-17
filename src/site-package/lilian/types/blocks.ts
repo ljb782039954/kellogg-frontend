@@ -11,6 +11,7 @@ import type {
   FeatureListContent,
   FullWidthBannerContent,
   FullscreenImageBackgroundContent,
+  FullscreenImageCarouselContent,
   LilianExternalVideoItem,
   ImageCarouselContent,
   ImagePairGridContent,
@@ -41,6 +42,7 @@ export interface BlockContentMap {
   imagePairGrid: ImagePairGridContent;
   masonryGallery: MasonryGalleryContent;
   imageCarousel: ImageCarouselContent;
+  fullscreenImageCarousel: FullscreenImageCarouselContent;
   fullWidthBanner: FullWidthBannerContent;
   imageTextSplit: ImageTextSplitContent;
   parallaxImage: ParallaxImageContent;

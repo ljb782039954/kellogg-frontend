@@ -33,8 +33,8 @@ export default function FeaturedProducts({
   const subtitleText = t(content.subtitle);
 
   return (
-    <section className="px-6 py-12 bg-surface">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-12 bg-surface">
+      <div className="max-w-7xl mx-auto px-6">
         {(titleText || subtitleText) && (
           <div className="text-center mb-10">
             {titleText && <h2 className="font-luxury-heading text-3xl md:text-4xl font-light">{titleText}</h2>}

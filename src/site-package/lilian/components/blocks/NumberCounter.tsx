@@ -13,6 +13,8 @@ export interface NumberCounterItem {
 // Arbitrary alterations may cause page builder block data errors and prevent normal page assembly.
 export interface NumberCounterContent {
   stats: NumberCounterItem[];
+  backgroundColor?: string;
+  textColor?: string;
 }
 
 export interface NumberCounterProps {
@@ -60,17 +62,23 @@ export default function NumberCounter({ content, lang = "en" }: NumberCounterPro
     label: t(item.label),
   }));
 
+  const resolvedBackgroundColor = content.backgroundColor || "white";
+  const resolvedTextColor = content.textColor || "var(--color-ink)";
+  const hasCustomColor = !!content.textColor;
+
   return (
-    <section className="max-w-5xl mx-auto px-6 py-16">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-        {resolvedStats.map((item) => (
-          <div key={item.label}>
-            <p className="text-3xl md:text-4xl mb-2 text-brand">
-              <AnimatedNumber value={item.value} suffix={item.suffix} />
-            </p>
-            <p className="text-xs tracking-wider text-subtle uppercase">{item.label}</p>
-          </div>
-        ))}
+    <section className="py-16" style={{ background: resolvedBackgroundColor }}>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center" style={{ color: resolvedTextColor }}>
+          {resolvedStats.map((item) => (
+            <div key={item.label}>
+              <p className={`text-3xl md:text-4xl lg:text-5xl mb-2 font-bold ${hasCustomColor ? "" : "text-brand"}`}>
+                <AnimatedNumber value={item.value} suffix={item.suffix} />
+              </p>
+              <p className={`text-xs tracking-wider uppercase ${hasCustomColor ? "opacity-70" : "text-subtle"}`}>{item.label}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

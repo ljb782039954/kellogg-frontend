@@ -60,8 +60,8 @@ export default function BlogGrid({
     : null;
 
   return (
-    <section className="px-6 py-4 bg-surface">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-4 bg-surface">
+      <div className="max-w-7xl mx-auto px-6">
         <div className={`border-y border-border py-4 flex flex-col md:flex-row md:items-center gap-4 mb-8 ${
           categoryControls ? "md:justify-between" : "md:justify-end"
         }`}>

@@ -11,6 +11,7 @@ import {
   FaqAccordion,
   FeatureList,
   FullscreenImageBackground,
+  FullscreenImageCarousel,
   FullscreenVideoPopup,
   FullWidthBanner,
   ImageCarousel,
@@ -61,6 +62,7 @@ const renderedBlockTypes = {
   imagePairGrid: true,
   masonryGallery: true,
   imageCarousel: true,
+  fullscreenImageCarousel: true,
   fullWidthBanner: true,
   imageTextSplit: true,
   parallaxImage: true,
@@ -93,6 +95,7 @@ const knownBlockTypes = new Set(Object.keys(renderedBlockTypes));
 {block.type === "imagePairGrid" && <ImagePairGrid content={content} lang={lang} />}
 {block.type === "masonryGallery" && <MasonryGallery content={content} lang={lang} />}
 {block.type === "imageCarousel" && <ImageCarousel content={content} lang={lang} client:load />}
+{block.type === "fullscreenImageCarousel" && <FullscreenImageCarousel content={content} lang={lang} client:load />}
 {block.type === "fullWidthBanner" && <FullWidthBanner content={content} lang={lang} />}
 {block.type === "imageTextSplit" && <ImageTextSplit content={content} lang={lang} />}
 {block.type === "parallaxImage" && <ParallaxImage content={content} lang={lang} />}

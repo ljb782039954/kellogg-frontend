@@ -34,6 +34,9 @@ export type { FullWidthBannerProps, FullWidthBannerContent } from "./FullWidthBa
 export { default as ImageCarousel } from "./ImageCarousel";
 export type { ImageCarouselProps, ImageCarouselContent } from "./ImageCarousel";
 
+export { default as FullscreenImageCarousel } from "./FullscreenImageCarousel";
+export type { ImageCarouselProps as FullscreenImageCarouselProps, ImageCarouselContent as FullscreenImageCarouselContent } from "./FullscreenImageCarousel";
+
 export { default as ImagePairGrid } from "./ImagePairGrid";
 export type { ImagePairGridProps, ImagePairGridContent } from "./ImagePairGrid";
 

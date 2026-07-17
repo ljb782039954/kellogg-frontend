@@ -1,4 +1,4 @@
-﻿import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { Pagination, ProductCard, type ProductCardProps } from "../base";
 import type { ProductGridSortId , Translation} from "@/cms/types";
 
@@ -74,8 +74,8 @@ export default function ProductGrid({
     : null;
 
   return (
-    <section className="px-6 py-12 bg-surface">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-12 bg-surface">
+      <div className="max-w-7xl mx-auto px-6">
         {(titleText || subtitleText) && (
           <div className="mb-8">
             {titleText && <h2 className="font-luxury-heading text-3xl md:text-4xl font-light">{titleText}</h2>}

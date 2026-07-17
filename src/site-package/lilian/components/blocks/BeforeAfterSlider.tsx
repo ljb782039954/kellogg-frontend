@@ -7,7 +7,8 @@ import { createTranslate } from "../../utils/i18n";
 // Do not modify it lightly; any change requires manual verification.
 // Arbitrary alterations may cause page builder block data errors and prevent normal page assembly.
 export interface BeforeAfterSliderContent {
-  eyebrow?: Translation;
+  title?: Translation;
+  subtitle?: Translation;
   beforeImage: string;
   beforeImageAlt?: Translation;
   afterImage: string;
@@ -24,6 +25,8 @@ export default function BeforeAfterSlider({
   lang = "en",
 }: BeforeAfterSliderProps) {
   const t = createTranslate(lang);
+  const resolvedTitle = t(content.title);
+  const resolvedSubtitle = t(content.subtitle);
   const [position, setPosition] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -36,7 +39,12 @@ export default function BeforeAfterSlider({
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-12">
-      {t(content.eyebrow) && <p className="text-[10px] tracking-[0.2em] text-subtle uppercase mb-4 text-center">{t(content.eyebrow)}</p>}
+      {(resolvedTitle || resolvedSubtitle) && (
+        <div className="text-center mb-8">
+          {resolvedTitle && <h2 className="font-luxury-heading text-3xl md:text-4xl font-light">{resolvedTitle}</h2>}
+          {resolvedSubtitle && <p className="mt-3 text-sm md:text-base text-body max-w-2xl mx-auto">{resolvedSubtitle}</p>}
+        </div>
+      )}
       <div
         ref={containerRef}
         className="relative overflow-hidden rounded-sm select-none aspect-video"
